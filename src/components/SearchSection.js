@@ -98,7 +98,7 @@ const SearchSection = (props) => {
         <Tooltip data-cy="infoButtonInfo" id="button-tooltip" {...props}>
             {getStem()}
             <br/>
-            {information.map((item, i) => (<li>{item}</li>))}
+            {information.map((item, i) => (<li className="unbullet">{item}</li>))}
         </Tooltip>
     );
 
@@ -125,13 +125,6 @@ const SearchSection = (props) => {
         return wordInformation;
     }
 
-    let dictionary_index = function (type) {
-        try {
-            return citationChoices[type[0]]
-        } catch (KeyError) {
-            return maskwacis
-        }
-    };
 
     const wolvengrey =
         "Wolvengrey, Arok, editor. Cree: Words. Regina, University of Regina Press, 2001";
@@ -141,9 +134,6 @@ const SearchSection = (props) => {
     const tvpd = "Starlight, Bruce, Gary Donovan, and Christopher Cox, editors. Tsuut'ina Verb Phrase Dictionary"
 
     const citationChoices = {"CW": wolvengrey, "MD": maskwacis, "AECD": aecd, "TVPD": tvpd}
-
-    const inflectionalCategory = getInflectionalCategory(wordInformation); // This is passed into LikeWord
-    const inflectionalCategoryPlainEnglish = getInflectionalCategoryPlainEnglish(wordInformation); // This is passed into LikeWord
 
     const getLemmaWordform = () => {
         try {
@@ -232,9 +222,7 @@ const SearchSection = (props) => {
         }
     }
 
-    const emoticon = getEmoticon();
     const slug = getSlug();
-    const ic = getIc();
 
     //change
     wordBtn = (
@@ -281,7 +269,7 @@ const SearchSection = (props) => {
             />
             <ul className="list-group text-center">
                 {wordsDefs.map((item, i) => (
-                    <li className="list-group-item " data-cy="definitionText" key={i}>
+                    <li className="list-group-item result-definition" data-cy="definitionText" key={i}>
                         {i + 1}. {item["text"]} &nbsp; {item.source_ids.map((i, index) => (
                         <OverlayTrigger
                             placement="bottom"

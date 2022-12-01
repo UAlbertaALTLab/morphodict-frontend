@@ -934,6 +934,14 @@ a.menu-choice__label:active {
 }
 
 /**
+ * Left-align search result definitions
+ */
+
+.result-definition {
+  text-align: left;
+}
+
+/**
  * Fill the width of the container.
  */
 
