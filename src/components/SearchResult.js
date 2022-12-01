@@ -26,7 +26,7 @@ function replaceSpecials(query) {
 }
 
 function SearchResult(props) {
-  const port = process.env.REACT_APP_PORT_NUMBER
+  const apiUrl = process.env.REACT_APP_BACKEND
   const query = window.location.href.toString().split("q=")[1];
   console.log("QUERY", query);
   async function getAllData() {
@@ -34,7 +34,7 @@ function SearchResult(props) {
     if (query === "") {
       return [];
     }
-    return fetch("http://127.0.0.1:" + port + "/api/search/?name=" + query).then((res) =>
+    return fetch(apiUrl + "/api/search/?name=" + query).then((res) =>
       res.json()
     );
   }
