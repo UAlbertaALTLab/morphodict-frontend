@@ -5,7 +5,7 @@
 version: "3"
 
 services:
-  crkeng:
+  crkeng-frontend:
     restart: always
     build:
       context: ..
@@ -23,7 +23,7 @@ services:
       - "/data_local/application-data/crkeng/vector_models:/app/src/crkeng/resources/vector_models/"
       - "/data_local/application-data/crkeng/db:/app/src/crkeng/db/"
       - "/data_local/application-data/crkeng/search_quality:/app/src/crkeng/CreeDictionary/search_quality/"
-  cwdeng:
+  cwdeng-frontend:
     restart: always
     build:
       context: ..
@@ -41,7 +41,7 @@ services:
       - "/data_local/application-data/cwdeng/vector_models:/app/src/cwdeng/resources/vector_models/"
       - "/data_local/application-data/cwdeng/db:/app/src/cwdeng/db/"
       - "/data_local/application-data/cwdeng/search_quality:/app/src/cwdeng/CreeDictionary/search_quality/"
-  srseng:
+  srseng-frontend:
     restart: always
     build:
       context: ..
@@ -59,7 +59,7 @@ services:
       - "/data_local/application-data/srseng/vector_models:/app/src/srseng/resources/vector_models/"
       - "/data_local/application-data/srseng/db:/app/src/srseng/db/"
       - "/data_local/application-data/srseng/search_quality:/app/src/srseng/CreeDictionary/search_quality/"
-  arpeng:
+  arpeng-frontend:
     restart: always
     build:
       context: ..
@@ -77,7 +77,7 @@ services:
       - "/data_local/application-data/arpeng/vector_models:/app/src/arpeng/resources/vector_models/"
       - "/data_local/application-data/arpeng/db:/app/src/arpeng/db/"
       - "/data_local/application-data/arpeng/search_quality:/app/src/arpeng/CreeDictionary/search_quality/"
-  hdneng:
+  hdneng-frontend:
     restart: always
     build:
       context: ..
