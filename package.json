@@ -31,11 +31,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start:crk": "PORT=3000 ./node_modules/.bin/env-cmd -f .env.crkeng react-scripts start",
-    "start:srs": "PORT=3001 ./node_modules/.bin/env-cmd -f .env.srseng react-scripts start",
-    "start:cwd": "PORT=3002 ./node_modules/.bin/env-cmd -f .env.cwdeng react-scripts start",
-    "start:hdn": "PORT=3003 ./node_modules/.bin/env-cmd -f .env.hdneng react-scripts start",
-    "start:arp": "PORT=3004 ./node_modules/.bin/env-cmd -f .env.arpeng react-scripts start",
+    "start:crkeng": "PORT=3000 ./node_modules/.bin/env-cmd -f .env.crkeng react-scripts start",
+    "start:srseng": "PORT=3001 ./node_modules/.bin/env-cmd -f .env.srseng react-scripts start",
+    "start:cwdeng": "PORT=3002 ./node_modules/.bin/env-cmd -f .env.cwdeng react-scripts start",
+    "start:hdneng": "PORT=3003 ./node_modules/.bin/env-cmd -f .env.hdneng react-scripts start",
+    "start:arpeng": "PORT=3004 ./node_modules/.bin/env-cmd -f .env.arpeng react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
