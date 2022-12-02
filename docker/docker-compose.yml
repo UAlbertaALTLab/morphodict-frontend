@@ -7,115 +7,90 @@ version: "3"
 services:
   crkeng:
     restart: always
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
-    hostname: crkeng-container
-    image: ghcr.io/ualbertaaltlab/itwewina.altlab.app:latest
+    hostname: crkeng-frontend-container
     command: /app/app.sh crkeng
     ports:
-      - "8011:8000" # http
-      - "9011:9191" # uWSGI stats
+      - "3000:3000" # http
+      - "4000:4141" # uWSGI stats
     volumes:
-      - "./.env:/app/.env"
-
-      # LFS mounts
-      - "../src/morphodict/lexicon/resources/vector_models/:/app/src/morphodict/lexicon/resources/vector_models/:ro"
-      - "../src/crkeng/resources/fst:/app/src/crkeng/resources/fst:ro"
-      - "../src/CreeDictionary/res/fst/:/app/src/CreeDictionary/res/fst/:ro"
-      - "../src/CreeDictionary/res/:/app/src/CreeDictionary/res/:ro"
-      - "../src/crkeng/resources/dictionary/:/app/src/crkeng/resources/dictionary/:ro"
+      - "./.env.crkeng:/app/.env.crkeng"
 
       - "/data_local/application-data/crkeng/vector_models:/app/src/crkeng/resources/vector_models/"
       - "/data_local/application-data/crkeng/db:/app/src/crkeng/db/"
       - "/data_local/application-data/crkeng/search_quality:/app/src/crkeng/CreeDictionary/search_quality/"
   cwdeng:
     restart: always
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
-    hostname: cwdeng-container
-    image: ghcr.io/ualbertaaltlab/itwewina.altlab.app:latest
+    hostname: cwdeng-frontend-container
     command: /app/app.sh cwdeng
     ports:
-      - "8012:8000" # http
-      - "9012:9191" # uWSGI stats
+      - "3002:3000" # http
+      - "4002:4141" # uWSGI stats
     volumes:
-      - "./.env:/app/.env"
-
-      # LFS mounts
-      - "../src/morphodict/lexicon/resources/vector_models/:/app/src/morphodict/lexicon/resources/vector_models/:ro"
-      - "../src/cwdeng/resources/fst:/app/src/cwdeng/resources/fst:ro"
-      - "../src/CreeDictionary/res/fst/:/app/src/CreeDictionary/res/fst/:ro"
-      - "../src/CreeDictionary/res/:/app/src/CreeDictionary/res/:ro"
-      - "../src/cwdeng/resources/dictionary/:/app/src/cwdeng/resources/dictionary/:ro"
+      - "./.env.cwdeng:/app/.env.cwdeng"
 
       - "/data_local/application-data/cwdeng/vector_models:/app/src/cwdeng/resources/vector_models/"
       - "/data_local/application-data/cwdeng/db:/app/src/cwdeng/db/"
       - "/data_local/application-data/cwdeng/search_quality:/app/src/cwdeng/CreeDictionary/search_quality/"
   srseng:
     restart: always
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
-    hostname: srseng-container
-    image: ghcr.io/ualbertaaltlab/itwewina.altlab.app:latest
+    hostname: srseng-frontend-container
     command: /app/app.sh srseng
     ports:
-      - "8013:8000" # http
-      - "9013:9191" # uWSGI stats
+      - "3001:3000" # http
+      - "4001:4141" # uWSGI stats
     volumes:
-      - "./.env:/app/.env"
-
-      # LFS mounts
-      - "../src/morphodict/lexicon/resources/vector_models/:/app/src/morphodict/lexicon/resources/vector_models/:ro"
-      - "../src/srseng/resources/fst:/app/src/srseng/resources/fst:ro"
-      - "../src/CreeDictionary/res/fst/:/app/src/CreeDictionary/res/fst/:ro"
-      - "../src/CreeDictionary/res/:/app/src/CreeDictionary/res/:ro"
-      - "../src/srseng/resources/dictionary/:/app/src/srseng/resources/dictionary/:ro"
+      - "./.env.srseng:/app/.env.srseng"
 
       - "/data_local/application-data/srseng/vector_models:/app/src/srseng/resources/vector_models/"
       - "/data_local/application-data/srseng/db:/app/src/srseng/db/"
       - "/data_local/application-data/srseng/search_quality:/app/src/srseng/CreeDictionary/search_quality/"
   arpeng:
     restart: always
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
-    hostname: arpeng-container
-    image: ghcr.io/ualbertaaltlab/itwewina.altlab.app:latest
+    hostname: arpeng-frontend-container
     command: /app/app.sh arpeng
     ports:
-      - "8014:8000" # http
-      - "9014:9191" # uWSGI stats
+      - "3004:3000" # http
+      - "4004:4141" # uWSGI stats
     volumes:
-      - "./.env:/app/.env"
-
-      # LFS mounts
-      - "../src/morphodict/lexicon/resources/vector_models/:/app/src/morphodict/lexicon/resources/vector_models/:ro"
-      - "../src/arpeng/resources/fst:/app/src/arpeng/resources/fst:ro"
-      - "../src/CreeDictionary/res/fst/:/app/src/CreeDictionary/res/fst/:ro"
-      - "../src/CreeDictionary/res/:/app/src/CreeDictionary/res/:ro"
-      - "../src/arpeng/resources/dictionary/:/app/src/arpeng/resources/dictionary/:ro"
+      - "./.env.arpeng:/app/.env.arpeng"
 
       - "/data_local/application-data/arpeng/vector_models:/app/src/arpeng/resources/vector_models/"
       - "/data_local/application-data/arpeng/db:/app/src/arpeng/db/"
       - "/data_local/application-data/arpeng/search_quality:/app/src/arpeng/CreeDictionary/search_quality/"
   hdneng:
     restart: always
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
-    hostname: hdneng-container
-    image: ghcr.io/ualbertaaltlab/itwewina.altlab.app:latest
+    hostname: hdneng-frontend-container
     command: /app/app.sh hdneng
     ports:
-      - "8015:8000" # http
-      - "9015:9191" # uWSGI stats
+      - "3003:3000" # http
+      - "4003:4141" # uWSGI stats
     volumes:
-      - "./.env:/app/.env"
-
-      # LFS mounts
-      - "../src/morphodict/lexicon/resources/vector_models/:/app/src/morphodict/lexicon/resources/vector_models/:ro"
-      - "../src/hdneng/resources/fst:/app/src/hdneng/resources/fst:ro"
-      - "../src/CreeDictionary/res/fst/:/app/src/CreeDictionary/res/fst/:ro"
-      - "../src/CreeDictionary/res/:/app/src/CreeDictionary/res/:ro"
-      - "../src/hdneng/resources/dictionary/:/app/src/hdneng/resources/dictionary/:ro"
+      - "./.env.hdneng:/app/.env.hdneng"
 
       - "/data_local/application-data/hdneng/vector_models:/app/src/hdneng/resources/vector_models/"
       - "/data_local/application-data/hdneng/db:/app/src/hdneng/db/"

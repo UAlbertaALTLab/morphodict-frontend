@@ -10,20 +10,6 @@ class App:
         self.port = port
         self.uwsgi_stats_port = uwsgi_stats_port
 
-    def lfs_mounts(self):
-        """Large files that are mounted from the local git lfs checkout,
-        instead of being built into the container."""
-        return [
-            "morphodict/lexicon/resources/vector_models/",
-            f"{self.name}/resources/fst",
-            # Holds phrase-translation FSTs
-            "CreeDictionary/res/fst/",
-            "CreeDictionary/res/",
-            # Not actually an LFS thing, but this is where production dictionary
-            # files get stored so they can be imported.
-            f"{self.name}/resources/dictionary/",
-        ]
-
     def prod_data_dir(self):
         return f"/data_local/application-data/{self.name}"
 

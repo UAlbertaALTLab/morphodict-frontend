@@ -25,7 +25,7 @@ services:
     image: morphodict:dev
 
     volumes:
-      - "./.env:/app/.env"
+      - "./.env.crkeng:/app/.env.crkeng"
       - "../src/crkeng/resources/vector_models/:/app/src/crkeng/resources/vector_models/"
       - "../src/crkeng/db/:/app/src/crkeng/db/"
       - "../src/crkeng/CreeDictionary/search_quality/:/app/src/crkeng/CreeDictionary/search_quality/"
@@ -41,7 +41,7 @@ services:
     image: morphodict:dev
 
     volumes:
-      - "./.env:/app/.env"
+      - "./.env.cwdeng:/app/.env.cwdeng"
       - "../src/cwdeng/resources/vector_models/:/app/src/cwdeng/resources/vector_models/"
       - "../src/cwdeng/db/:/app/src/cwdeng/db/"
       - "../src/cwdeng/CreeDictionary/search_quality/:/app/src/cwdeng/CreeDictionary/search_quality/"
@@ -57,7 +57,7 @@ services:
     image: morphodict:dev
 
     volumes:
-      - "./.env:/app/.env"
+      - "./.env.srseng:/app/.env.srseng"
       - "../src/srseng/resources/vector_models/:/app/src/srseng/resources/vector_models/"
       - "../src/srseng/db/:/app/src/srseng/db/"
       - "../src/srseng/CreeDictionary/search_quality/:/app/src/srseng/CreeDictionary/search_quality/"
@@ -73,7 +73,7 @@ services:
     image: morphodict:dev
 
     volumes:
-      - "./.env:/app/.env"
+      - "./.env.arpeng:/app/.env.arpeng"
       - "../src/arpeng/resources/vector_models/:/app/src/arpeng/resources/vector_models/"
       - "../src/arpeng/db/:/app/src/arpeng/db/"
       - "../src/arpeng/CreeDictionary/search_quality/:/app/src/arpeng/CreeDictionary/search_quality/"
@@ -89,7 +89,7 @@ services:
     image: morphodict:dev
 
     volumes:
-      - "./.env:/app/.env"
+      - "./.env.hdneng:/app/.env.hdneng"
       - "../src/hdneng/resources/vector_models/:/app/src/hdneng/resources/vector_models/"
       - "../src/hdneng/db/:/app/src/hdneng/db/"
       - "../src/hdneng/CreeDictionary/search_quality/:/app/src/hdneng/CreeDictionary/search_quality/"

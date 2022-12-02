@@ -11,8 +11,8 @@ from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 from pathlib import Path
 
 # Figure out shared_res_dir
-top_dir = Path(__file__).parent.parent
-add_to_path = top_dir / "src" / "CreeDictionary"
+top_dir = Path(__file__).parent
+add_to_path = top_dir / "src" / "crkeng"
 assert add_to_path.is_dir()
 sys.path.insert(0, str(add_to_path))
 shared_res_dir = __import__("utils").shared_res_dir
@@ -22,7 +22,7 @@ if __name__ == "__main__":
     default_files = [
         os.path.relpath(p, os.getcwd())
         for p in [
-            shared_res_dir / "crk.altlabel.tsv",
+            shared_res_dir / "altlabel.tsv",
             *(top_dir.glob("src/*/resources/altlabel.tsv")),
         ]
     ]
