@@ -15,7 +15,7 @@
 ################################ Build stage #################################
 FROM python:3.9-slim-buster AS builder
 
-LABEL maintainer="Eddie Antonio Santos <Eddie.Santos@nrc-cnrc.gc.ca>"
+LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
 ARG MORPHODICT_UID_GID=60006
 ARG NODE_VERSION=v12.20.2
@@ -67,18 +67,12 @@ RUN python -m compileall -q .
 # Build the application:
 ENV NODE_ENV=production
 RUN npm run build \
- && set -eu \
- `# the docker image contains assets for all language pairs` \
- && for MANAGE_COMMAND in *-manage; do \
-        echo ${MANAGE_COMMAND} collectstatic && \
-        /app/.venv/bin/python `# .venv python sees libs from pipenv` \
-            ./${MANAGE_COMMAND} collectstatic --noinput; \
-    done
+ && set -eu;
 
 ############################# Application image ##############################
 
 FROM python:3.9-slim-buster
-LABEL maintainer="Eddie Antonio Santos <Eddie.Santos@nrc-cnrc.gc.ca>"
+LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
 # Choose an ID that will be consistent across all machines in the network
 # To avoid overlap with user IDs, use an ID over
