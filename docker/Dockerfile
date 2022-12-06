@@ -31,4 +31,4 @@ COPY . ./
 
 # start app
 
-CMD ["npm", "run", "start:crk"]
+CMD ["npm", "run", "start:crkeng"]
