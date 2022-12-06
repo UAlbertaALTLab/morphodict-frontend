@@ -20,5 +20,14 @@ RUN npm install
 COPY . ./
 COPY docker/app.sh /app
 
+# uWSGI will bind HTTP to this port:
+EXPOSE 3000
+# uWSGI stats are accessible on this port
+# I view them with this command:
+#
+#    $ nc 127.0.0.1 9191 | jq
+#
+EXPOSE 4141
+
 # start apps
 CMD ["/app/app.sh"]
