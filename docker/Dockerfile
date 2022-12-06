@@ -19,5 +19,5 @@ RUN npm install
 # add app
 COPY . ./
 
-# start app
-CMD ["npm", "run", "start:crkeng"]
+# start apps
+CMD ["/app/docker/app.sh"]
