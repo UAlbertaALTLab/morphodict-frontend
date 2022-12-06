@@ -13,6 +13,7 @@ services:
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
     hostname: crkeng-frontend-container
+    command: /app/app.sh
     ports:
       - "3000:3000" # http
       - "4000:4141" # uWSGI stats
@@ -30,6 +31,7 @@ services:
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
     hostname: cwdeng-frontend-container
+    command: /app/app.sh
     ports:
       - "3002:3000" # http
       - "4002:4141" # uWSGI stats
@@ -47,6 +49,7 @@ services:
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
     hostname: srseng-frontend-container
+    command: /app/app.sh
     ports:
       - "3001:3000" # http
       - "4001:4141" # uWSGI stats
@@ -64,6 +67,7 @@ services:
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
     hostname: arpeng-frontend-container
+    command: /app/app.sh
     ports:
       - "3004:3000" # http
       - "4004:4141" # uWSGI stats
@@ -81,6 +85,7 @@ services:
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
     hostname: hdneng-frontend-container
+    command: /app/app.sh
     ports:
       - "3003:3000" # http
       - "4003:4141" # uWSGI stats
