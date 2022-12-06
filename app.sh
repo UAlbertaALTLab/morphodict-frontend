@@ -11,3 +11,7 @@ npm run start:cwdeng &
 npm run start:arpeng &
 
 npm run start:hdneng &
+
+wait -n
+
+exit $?
