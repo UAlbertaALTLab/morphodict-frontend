@@ -8,14 +8,14 @@ import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import {Redirect} from "react-router-dom";
 
 function WordEntry(props) {
-    const port = process.env.REACT_APP_PORT_NUMBER
+    const backendUrl = process.env.REACT_APP_BACKEND;
     const word = window.location.href.split("/")[4];
 
     async function getWord() {
         if (word === "") {
             return null;
         }
-        return fetch("http://127.0.0.1:" + port + "/api/word/" + word).then((res) => {
+        return fetch(backendUrl + "/api/word/" + word).then((res) => {
                 if (res.status !== 200) {
                     return res.status;
                 } else {
