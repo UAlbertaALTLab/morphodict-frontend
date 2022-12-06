@@ -3,4 +3,4 @@ def run(call):
 
     call(["./helper.py", "setup"])
     call(["docker-compose", "pull"])
-    call(["docker-compose", "up", "-d"])
+    call(["docker-compose", "up", "-d", "--remove-orphans"])

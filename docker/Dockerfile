@@ -13,7 +13,7 @@
 #
 
 ################################ Build stage #################################
-FROM python:3.9-slim-buster AS builder
+FROM node:latest AS builder
 
 LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
@@ -63,7 +63,7 @@ ADD --chown=morphodict . /app/
 
 ############################# Application image ##############################
 
-FROM python:3.9-slim-buster
+FROM node:latest
 LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
 # Choose an ID that will be consistent across all machines in the network
