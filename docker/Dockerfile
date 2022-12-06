@@ -122,4 +122,4 @@ EXPOSE 9191
 ENTRYPOINT ["tini", "--"]
 # Startup takes a bit of conditional logic, which we wrap it into a shell script
 # instead of inlining it here.
-CMD ["/app/app.sh"]
+CMD ["npm", "run", "start:crkeng"]
