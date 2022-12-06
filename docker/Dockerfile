@@ -13,7 +13,7 @@
 #
 
 ################################ Build stage #################################
-FROM node:latest AS builder
+FROM node:alpine AS builder
 
 LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
@@ -63,7 +63,7 @@ ADD --chown=morphodict . /app/
 
 ############################# Application image ##############################
 
-FROM node:latest
+FROM node:alpine
 LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
 # Choose an ID that will be consistent across all machines in the network
