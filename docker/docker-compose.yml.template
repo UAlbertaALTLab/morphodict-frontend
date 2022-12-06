@@ -18,7 +18,7 @@ services:
       - "{{ app.uwsgi_stats_port }}:4141" # uWSGI stats
     volumes:
       - "../.env.{{ app.name }}:/app/.env.{{ app.name }}"
-      - "app.sh:/app/app.sh"
+      - "./app.sh:/app/app.sh"
 
     {% for mount in app.data_mounts %}
       - "{{ mount.prod_src }}:{{ mount.target }}"
