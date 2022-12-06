@@ -16,7 +16,7 @@ services:
       - "{{ app.port }}:3000" # http
       - "{{ app.uwsgi_stats_port }}:4141" # uWSGI stats
     volumes:
-      - "./.env.{{ app.name }}:/app/.env.{{ app.name }}"
+      - "../.env.{{ app.name }}:/app/.env.{{ app.name }}"
 
     {% for mount in app.data_mounts %}
       - "{{ mount.prod_src }}:{{ mount.target }}"
