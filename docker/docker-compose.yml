@@ -19,6 +19,7 @@ services:
       - "4000:4141" # uWSGI stats
     volumes:
       - "../.env.crkeng:/app/.env.crkeng"
+      - "app.sh:/app/app.sh"
 
       - "/data_local/application-data/crkeng/vector_models:/app/src/crkeng/resources/vector_models/"
       - "/data_local/application-data/crkeng/db:/app/src/crkeng/db/"
@@ -37,6 +38,7 @@ services:
       - "4002:4141" # uWSGI stats
     volumes:
       - "../.env.cwdeng:/app/.env.cwdeng"
+      - "app.sh:/app/app.sh"
 
       - "/data_local/application-data/cwdeng/vector_models:/app/src/cwdeng/resources/vector_models/"
       - "/data_local/application-data/cwdeng/db:/app/src/cwdeng/db/"
@@ -55,6 +57,7 @@ services:
       - "4001:4141" # uWSGI stats
     volumes:
       - "../.env.srseng:/app/.env.srseng"
+      - "app.sh:/app/app.sh"
 
       - "/data_local/application-data/srseng/vector_models:/app/src/srseng/resources/vector_models/"
       - "/data_local/application-data/srseng/db:/app/src/srseng/db/"
@@ -73,6 +76,7 @@ services:
       - "4004:4141" # uWSGI stats
     volumes:
       - "../.env.arpeng:/app/.env.arpeng"
+      - "app.sh:/app/app.sh"
 
       - "/data_local/application-data/arpeng/vector_models:/app/src/arpeng/resources/vector_models/"
       - "/data_local/application-data/arpeng/db:/app/src/arpeng/db/"
@@ -91,6 +95,7 @@ services:
       - "4003:4141" # uWSGI stats
     volumes:
       - "../.env.hdneng:/app/.env.hdneng"
+      - "app.sh:/app/app.sh"
 
       - "/data_local/application-data/hdneng/vector_models:/app/src/hdneng/resources/vector_models/"
       - "/data_local/application-data/hdneng/db:/app/src/hdneng/db/"

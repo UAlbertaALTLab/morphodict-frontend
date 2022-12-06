@@ -18,7 +18,7 @@ RUN npm install
 
 # add app
 COPY . ./
-COPY docker/app.sh /app
+#COPY docker/app.sh /app
 
 # uWSGI will bind HTTP to this port:
 EXPOSE 3000
