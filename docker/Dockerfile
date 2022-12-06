@@ -18,6 +18,7 @@ RUN npm install
 
 # add app
 COPY . ./
+COPY docker/app.sh /app
 
 # start apps
-CMD ["/app/docker/app.sh"]
+CMD ["/app/app.sh"]
