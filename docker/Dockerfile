@@ -18,6 +18,7 @@ RUN npm install
 
 # add app
 COPY . ./
+COPY ../.env.crkeng /app/.env.crkeng
 
 # start app
 CMD ["npm", "run", "start:crkeng"]
