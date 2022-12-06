@@ -28,13 +28,14 @@ function replaceSpecials(query) {
 function SearchResult(props) {
   const apiUrl = process.env.REACT_APP_BACKEND
   const query = window.location.href.toString().split("q=")[1];
+  console.log("API URL", apiUrl);
   console.log("QUERY", query);
   async function getAllData() {
     await delay(1000);
     if (query === "") {
       return [];
     }
-    return fetch(apiUrl + "/api/search/?name=" + query).then((res) =>
+    return fetch(`${apiUrl}/api/search/?name=${query}`).then((res) =>
       res.json()
     );
   }
