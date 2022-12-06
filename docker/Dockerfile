@@ -61,14 +61,6 @@ RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy \
 # Add everything else now:
 ADD --chown=morphodict . /app/
 
-# pre-compile all .py files
-RUN python -m compileall -q .
-
-# Build the application:
-ENV NODE_ENV=production
-RUN npm run build \
- && set -eu;
-
 ############################# Application image ##############################
 
 FROM python:3.9-slim-buster
@@ -109,17 +101,12 @@ ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
 ENV PYTHONPATH="/app/src"
 
 # uWSGI will bind HTTP to this port:
-EXPOSE 8000
+EXPOSE 3000
 # uWSGI stats are accessible on this port
 # I view them with this command:
 #
 #    $ nc 127.0.0.1 9191 | jq
 #
-EXPOSE 9191
+EXPOSE 4141
 
-# Among other things, tini makes typing Ctrl-C into docker-compose work
-# see: https://github.com/krallin/tini#tini---a-tiny-but-valid-init-for-containers
-ENTRYPOINT ["tini", "--"]
-# Startup takes a bit of conditional logic, which we wrap it into a shell script
-# instead of inlining it here.
 CMD ["npm", "run", "start:crkeng"]
