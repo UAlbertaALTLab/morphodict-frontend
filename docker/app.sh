@@ -1,25 +1,13 @@
 #!/bin/bash
 
-set -eu
+-set eu
 
-PROG="$(basename -- "${0}")"
+npm run start:crkeng &
 
-if (( $# != 1 )); then
-    echo "Error: Missing required argument" 1>&2
-    echo "Usage: ${PROG} MORPHODICT_LANG_PAIR" 1>&2
-    exit 1
-fi
-MORPHODICT_LANG_PAIR="${1}"
+npm run start:srseng &
 
-# In production, allow any created files/directories to be group-writeable so
-# that both the morphodict and morphodict-run users can modify them.
-umask 0002
+npm run start:cwdeng &
 
-exec npm run start:MORPHODICT_LANG_PAIR
+npm run start:arpeng &
 
-# uwsgi --http-socket is intended to be used behind, e.g., nginx
-exec uwsgi --http-socket :3000 \
-    --stats :4141 \
-    --wsgi-file src/wsgi.py \
-    src/uwsgi.ini
-
+npm run start:hdneng &
