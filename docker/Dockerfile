@@ -23,9 +23,9 @@ ARG NODE_VERSION=v12.20.2
 WORKDIR /tmp
 
 # Create the non-root user/group that will own the application code
-RUN groupadd --gid ${MORPHODICT_UID_GID} morphodict \
- && useradd --no-log-init --gid morphodict \
-    --uid ${MORPHODICT_UID_GID} morphodict --create-home
+#RUN groupadd --gid ${MORPHODICT_UID_GID} morphodict \
+# && useradd --no-log-init --gid morphodict \
+#    --uid ${MORPHODICT_UID_GID} morphodict --create-home
 # Install and build dependencies,
 # then remove build-time dependencies to keep the image slim!
 RUN set -ex \
