@@ -1,24 +1,98 @@
-# referencing: https://www.pluralsight.com/guides/using-react.js-with-docker
+# = CHANGELOG =
+#
+# 2021-02-19:
+#
+#  - Use a multi-stage build to keep the application image small
+#
+# 2021-01-15:
+#
+#  - This Dockerfile was derived from Gūnáhà:
+#    https://github.com/UAlbertaALTLab/gunaha/blob/master/Dockerfile
+#  - use Gunicorn instead of uwsgi; I'm not sure why I chose uwsgi for Gūnáhà,
+#    but I've got itwêwina working with Gunicorn, so I'm gonna stick with that
+#
 
-# pull the base image
-FROM node:alpine
+################################ Build stage #################################
+FROM node:alpine AS builder
 
-# set the working direction
+LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
+
+ARG MORPHODICT_UID_GID=60006
+ARG NODE_VERSION=v12.20.2
+
+WORKDIR /tmp
+
+# Create the non-root user/group that will own the application code
+#RUN groupadd --gid ${MORPHODICT_UID_GID} morphodict \
+# && useradd --no-log-init --gid morphodict \
+#    --uid ${MORPHODICT_UID_GID} morphodict --create-home
+# Install and build dependencies,
+# then remove build-time dependencies to keep the image slim!
+RUN set -ex \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends \
+    build-essential \
+    libfoma0 \
+    git `# for installing python packages direct from github` \
+ && rm -rf /var/cache/apt \
+ && pip install pipenv \
+ && mkdir /app/ \
+ && chown morphodict /app
+
+USER morphodict
+
 WORKDIR /app/
 
-# add `/app/node_modules/.bin` to $PATH
-ENV PATH /app/node_modules/.bin:$PATH
+# Install Python and NodeJS dependencies
+ADD Pipfile Pipfile.lock package.json package-lock.json /app/
+# On Andrew’s linux machine, docker builds were sometimes ridiculously slow
+# without this option. npm would try to download/install(?) too many packages
+# all at once and some sort of resource would get exhausted leading to hangs.
+RUN echo maxsockets=4 > ~/.npmrc
+RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy \
+ && npm install --loglevel=verbose --only=production
 
-# install app dependencies
-COPY package.json ./
+# Add everything else now:
+ADD --chown=morphodict . /app/
 
-COPY package-lock.json ./
+############################# Application image ##############################
 
-RUN npm install
+FROM node:alpine
+LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
-# add app
-COPY . ./
-#COPY docker/app.sh /app
+# Choose an ID that will be consistent across all machines in the network
+# To avoid overlap with user IDs, use an ID over
+# /etc/login.defs:/UID_MAX/, which defaults to 60,000
+ARG MORPHODICT_UID_GID=60006
+ARG MORPHODICT_RUN_UID_GID=60007
+ARG TINI_VERSION=v0.19.0
+
+RUN set -ex \
+ && apt-get update \
+ && apt-get install -y --no-install-recommends tini libfoma0 \
+ && rm -rf /var/cache/apt
+
+# Create the user/group that will run the application code
+RUN set -xv ; groupadd --gid ${MORPHODICT_RUN_UID_GID} morphodict-run \
+ && useradd --no-log-init --gid morphodict-run \
+    --uid ${MORPHODICT_RUN_UID_GID} morphodict-run --create-home
+# Create the non-root user/group that will own the application code;
+# this user also belongs to the runtime group
+RUN set -xv ; groupadd --gid ${MORPHODICT_UID_GID} morphodict \
+ && useradd --no-log-init --gid morphodict -G morphodict-run \
+    --uid ${MORPHODICT_UID_GID} morphodict --create-home
+
+# Copy over the built application from the builder:
+COPY --from=builder --chown=morphodict /app /app
+
+COPY docker/app.sh /app
+
+USER morphodict-run
+WORKDIR /app
+# Activate the Python virtual environment
+ENV VIRTUAL_ENV="/app/.venv"
+ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
+ENV PYTHONPATH="/app/src"
 
 # uWSGI will bind HTTP to this port:
 EXPOSE 3000
@@ -29,5 +103,4 @@ EXPOSE 3000
 #
 EXPOSE 4141
 
-# start apps
 CMD ["npm", "run", "start:crkeng"]

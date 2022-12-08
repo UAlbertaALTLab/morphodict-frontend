@@ -20,7 +20,7 @@ services:
     restart: "no"
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile-tmp
     # The tag that will automatically be applied on build:
     image: morphodict:dev
 
@@ -36,7 +36,7 @@ services:
     restart: "no"
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile-tmp
     # The tag that will automatically be applied on build:
     image: morphodict:dev
 
@@ -52,7 +52,7 @@ services:
     restart: "no"
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile-tmp
     # The tag that will automatically be applied on build:
     image: morphodict:dev
 
@@ -68,7 +68,7 @@ services:
     restart: "no"
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile-tmp
     # The tag that will automatically be applied on build:
     image: morphodict:dev
 
@@ -84,7 +84,7 @@ services:
     restart: "no"
     build:
       context: ..
-      dockerfile: docker/Dockerfile
+      dockerfile: Dockerfile-tmp
     # The tag that will automatically be applied on build:
     image: morphodict:dev
 
