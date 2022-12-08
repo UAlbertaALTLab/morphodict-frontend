@@ -18,7 +18,7 @@ services:
       - "3001:3000" # http
       - "4001:4141" # uWSGI stats
     volumes:
-      - "../.env.srseng:/app/.env.srseng"
+      - "../../.env.srseng:/app/.env.srseng"
 
       - "/data_local/application-data/srseng/vector_models:/app/src/srseng/resources/vector_models/"
       - "/data_local/application-data/srseng/db:/app/src/srseng/db/"

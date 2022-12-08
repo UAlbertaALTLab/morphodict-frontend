@@ -18,7 +18,7 @@ services:
       - "3000:3000" # http
       - "4000:4141" # uWSGI stats
     volumes:
-      - "../.env.crkeng:/app/.env.crkeng"
+      - "../../.env.crkeng:/app/.env.crkeng"
 
       - "/data_local/application-data/crkeng/vector_models:/app/src/crkeng/resources/vector_models/"
       - "/data_local/application-data/crkeng/db:/app/src/crkeng/db/"
