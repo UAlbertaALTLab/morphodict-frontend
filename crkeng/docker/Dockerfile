@@ -28,6 +28,9 @@ WORKDIR /tmp
 #    --uid ${MORPHODICT_UID_GID} morphodict --create-home
 # Install and build dependencies,
 # then remove build-time dependencies to keep the image slim!
+
+USER morphodict
+
 RUN set -ex \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
@@ -38,8 +41,6 @@ RUN set -ex \
  && pip install pipenv \
  && mkdir /app/ \
  && chown morphodict /app
-
-USER morphodict
 
 WORKDIR /app/
 
