@@ -13,13 +13,10 @@ services:
     # Specify hostname to make it clearer which container is active when
     # using docker to get a shell in the container.
     hostname: crkeng-frontend-container
-    command: python keep_alive.py
+    command: npm run start:crkeng
     ports:
       - "3000:3000" # http
       - "4000:4141" # uWSGI stats
     volumes:
       - "../../.env.crkeng:/app/.env.crkeng"
 
-      - "/data_local/application-data/crkeng/vector_models:/app/src/crkeng/resources/vector_models/"
-      - "/data_local/application-data/crkeng/db:/app/src/crkeng/db/"
-      - "/data_local/application-data/crkeng/search_quality:/app/src/crkeng/CreeDictionary/search_quality/"
