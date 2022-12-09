@@ -13,7 +13,7 @@
 #
 
 ################################ Build stage #################################
-FROM node:alpine AS builder
+FROM python:3.9-slim-buster AS builder
 
 LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
@@ -35,11 +35,12 @@ RUN set -ex \
     libfoma0 \
     git `# for installing python packages direct from github` \
  && rm -rf /var/cache/apt \
- && pip install pipenv \
- && mkdir /app/ \
- && chown morphodict /app
+ && pip install pipenv
 
 USER morphodict
+
+RUN mkdir /app/ \
+ && chown morphodict /app
 
 WORKDIR /app/
 
@@ -57,7 +58,7 @@ ADD --chown=morphodict . /app/
 
 ############################# Application image ##############################
 
-FROM node:alpine
+FROM python:3.9-slim-buster
 LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
 # Choose an ID that will be consistent across all machines in the network
@@ -84,8 +85,6 @@ RUN set -xv ; groupadd --gid ${MORPHODICT_UID_GID} morphodict \
 
 # Copy over the built application from the builder:
 COPY --from=builder --chown=morphodict /app /app
-
-COPY docker/app.sh /app
 
 USER morphodict-run
 WORKDIR /app
