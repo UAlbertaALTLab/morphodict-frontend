@@ -35,7 +35,7 @@ RUN set -ex \
     libfoma0 \
     git `# for installing python packages direct from github` \
  && rm -rf /var/cache/apt \
- && pip install pipenv \
+ && pip install pipenv
 
 USER morphodict
 
