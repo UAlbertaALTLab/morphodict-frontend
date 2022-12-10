@@ -91,6 +91,8 @@ RUN set -xv ; groupadd --gid ${MORPHODICT_UID_GID} morphodict \
 # Copy over the built application from the builder:
 COPY --from=builder --chown=morphodict /app /app
 
+COPY crkeng/docker/app.sh /app
+
 USER morphodict-run
 WORKDIR /app
 # Activate the Python virtual environment
@@ -107,4 +109,4 @@ EXPOSE 3000
 #
 EXPOSE 4141
 
-CMD ["npm", "run", "start:crkeng"]
+CMD ["/app/app.sh"]
