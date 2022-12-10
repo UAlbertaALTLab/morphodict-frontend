@@ -66,13 +66,6 @@ RUN python -m compileall -q .
 ENV NODE_ENV=production
 RUN ls /app/generated 2>&1 && echo 0 || mkdir /app/generated
 RUN ls /app/generated/frontend 2>&1 && echo 0 || mkdir /app/generated/frontend
-RUN set -eu \
- `# the docker image contains assets for all language pairs` \
- && for MANAGE_COMMAND in *-manage; do \
-        echo ${MANAGE_COMMAND} collectstatic && \
-        /app/.venv/bin/python `# .venv python sees libs from pipenv` \
-            ./${MANAGE_COMMAND} collectstatic --noinput; \
-    done
 
 ############################# Application image ##############################
 
