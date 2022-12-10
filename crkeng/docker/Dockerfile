@@ -41,6 +41,7 @@ RUN set -ex \
     build-essential \
     libfoma0 \
     git `# for installing python packages direct from github` \
+    npm \
  && rm -rf /var/cache/apt \
  && mkdir /app/ \
  && chown morphodict /app
