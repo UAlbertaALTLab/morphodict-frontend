@@ -97,7 +97,7 @@ RUN set -xv ; groupadd --gid ${MORPHODICT_UID_GID} morphodict \
 # Copy over the built application from the builder:
 COPY --from=builder --chown=morphodict /app /app
 
-COPY crkend/docker/app.sh /app
+COPY crkeng/docker/app.sh /app
 
 USER morphodict-run
 WORKDIR /app
