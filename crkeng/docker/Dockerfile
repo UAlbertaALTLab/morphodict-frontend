@@ -81,7 +81,7 @@ ARG TINI_VERSION=v0.19.0
 
 RUN set -ex \
  && apt-get update \
- && apt-get install -y --no-install-recommends tini libfoma0 \
+ && apt-get install -y --no-install-recommends tini libfoma0 npm \
  && rm -rf /var/cache/apt
 
 # Create the user/group that will run the application code
