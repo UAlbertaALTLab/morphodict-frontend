@@ -20,6 +20,8 @@ LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 ARG MORPHODICT_UID_GID=60006
 ARG NODE_VERSION=v12.20.2
 
+# Install Node + npm
+# (note: default npm is too old for the apt install'd version of NodeJS??!?!?!)
 WORKDIR /tmp
 ADD https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-x64.tar.gz /tmp/node.tar.gz
 RUN tar xf node.tar.gz \
@@ -30,9 +32,6 @@ ENV PATH="/opt/node/bin:${PATH}"
 RUN groupadd --gid ${MORPHODICT_UID_GID} morphodict \
  && useradd --no-log-init --gid morphodict \
     --uid ${MORPHODICT_UID_GID} morphodict --create-home
-#RUN groupadd --gid ${MORPHODICT_UID_GID} morphodict \
-# && useradd --no-log-init --gid morphodict \
-#    --uid ${MORPHODICT_UID_GID} morphodict --create-home
 # Install and build dependencies,
 # then remove build-time dependencies to keep the image slim!
 RUN set -ex \
@@ -41,7 +40,6 @@ RUN set -ex \
     build-essential \
     libfoma0 \
     git `# for installing python packages direct from github` \
-    npm \
  && rm -rf /var/cache/apt \
  && mkdir /app/ \
  && chown morphodict /app
@@ -60,6 +58,21 @@ RUN npm install --loglevel=verbose --only=production
 
 # Add everything else now:
 ADD --chown=morphodict . /app/
+
+# pre-compile all .py files
+RUN python -m compileall -q .
+
+# Build the application:
+ENV NODE_ENV=production
+RUN ls /app/generated 2>&1 && echo 0 || mkdir /app/generated
+RUN ls /app/generated/frontend 2>&1 && echo 0 || mkdir /app/generated/frontend
+RUN set -eu \
+ `# the docker image contains assets for all language pairs` \
+ && for MANAGE_COMMAND in *-manage; do \
+        echo ${MANAGE_COMMAND} collectstatic && \
+        /app/.venv/bin/python `# .venv python sees libs from pipenv` \
+            ./${MANAGE_COMMAND} collectstatic --noinput; \
+    done
 
 ############################# Application image ##############################
 
@@ -91,7 +104,7 @@ RUN set -xv ; groupadd --gid ${MORPHODICT_UID_GID} morphodict \
 # Copy over the built application from the builder:
 COPY --from=builder --chown=morphodict /app /app
 
-COPY crkeng/docker/app.sh /app
+COPY crkend/docker/app.sh /app
 
 USER morphodict-run
 WORKDIR /app
@@ -109,4 +122,9 @@ EXPOSE 3000
 #
 EXPOSE 4141
 
+# Among other things, tini makes typing Ctrl-C into docker-compose work
+# see: https://github.com/krallin/tini#tini---a-tiny-but-valid-init-for-containers
+ENTRYPOINT ["tini", "--"]
+# Startup takes a bit of conditional logic, which we wrap it into a shell script
+# instead of inlining it here.
 CMD ["/app/app.sh"]
