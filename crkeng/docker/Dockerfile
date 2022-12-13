@@ -18,7 +18,7 @@ FROM python:3.9-slim-buster AS builder
 LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
 ARG MORPHODICT_UID_GID=60006
-ARG NODE_VERSION=v12.20.2
+ARG NODE_VERSION=v15.4.0
 
 # Install Node + npm
 # (note: default npm is too old for the apt install'd version of NodeJS??!?!?!)
