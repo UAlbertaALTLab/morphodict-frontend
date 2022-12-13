@@ -115,13 +115,13 @@ ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
 ENV PYTHONPATH="/app/src"
 
 # uWSGI will bind HTTP to this port:
-EXPOSE 3000
+EXPOSE 3001
 # uWSGI stats are accessible on this port
 # I view them with this command:
 #
 #    $ nc 127.0.0.1 9191 | jq
 #
-EXPOSE 4141
+EXPOSE 4001
 
 # Among other things, tini makes typing Ctrl-C into docker-compose work
 # see: https://github.com/krallin/tini#tini---a-tiny-but-valid-init-for-containers
