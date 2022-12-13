@@ -15,8 +15,8 @@ services:
     hostname: srseng-frontend-container
     command: /app/app.sh
     ports:
-      - "3001:3000" # http
-      - "4001:4141" # uWSGI stats
+      - "3001:3001" # http
+      - "4001:4001" # uWSGI stats
     volumes:
       - "../../.env.srseng:/app/.env.srseng"
 
