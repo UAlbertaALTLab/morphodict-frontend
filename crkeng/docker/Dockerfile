@@ -49,7 +49,7 @@ USER morphodict
 WORKDIR /app/
 
 # Install Python and NodeJS dependencies
-ADD package.json package-lock.json /app/
+ADD --chown=morphodict package.json package-lock.json /app/
 # On Andrew’s linux machine, docker builds were sometimes ridiculously slow
 # without this option. npm would try to download/install(?) too many packages
 # all at once and some sort of resource would get exhausted leading to hangs.
