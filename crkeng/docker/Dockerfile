@@ -54,6 +54,7 @@ ADD package.json package-lock.json /app/
 # without this option. npm would try to download/install(?) too many packages
 # all at once and some sort of resource would get exhausted leading to hangs.
 RUN echo maxsockets=4 > ~/.npmrc
+RUN npm install -g npm@9.2.0
 RUN npm install --loglevel=verbose --only=production
 
 # Add everything else now:
