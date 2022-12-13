@@ -79,6 +79,14 @@ ARG MORPHODICT_UID_GID=60006
 ARG MORPHODICT_RUN_UID_GID=60007
 ARG TINI_VERSION=v0.19.0
 
+# Node >12 also needs to be installed here
+ARG NODE_VERSION=v15.4.0
+WORKDIR /tmp
+ADD https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-x64.tar.gz /tmp/node.tar.gz
+RUN tar xf node.tar.gz \
+ && mv node-${NODE_VERSION}-linux-x64 /opt/node
+ENV PATH="/opt/node/bin:${PATH}"
+
 RUN set -ex \
  && apt-get update \
  && apt-get install -y --no-install-recommends tini libfoma0 npm \
