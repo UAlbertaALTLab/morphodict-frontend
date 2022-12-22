@@ -50,9 +50,9 @@ function WordEntry(props) {
     let wordInformation = "";
     let recordings = "";
     let paradigm = "";
-    let type = getType()
+    let type = getType();
 
-    if (typeof (data) === "number" || (!isFetching && !data)) {
+    if ((!isFetching && typeof (data) === "number") || (!isFetching && !data)) {
         // No results found
         // or no search term given
         const searchWord = word.split("@")[0];
