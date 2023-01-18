@@ -166,7 +166,7 @@ const SearchSection = (props) => {
                     )
                 }
                 data-cy="infoButton">
-                <FontAwesomeIcon icon={faInfoCircle} size="sm"/>
+                <FontAwesomeIcon icon={faInfoCircle} size="xl" color="navy"/>
             </Button>
         );
     }
@@ -248,7 +248,7 @@ const SearchSection = (props) => {
                 should never happen!
             </div>
             }
-            <div className="d-flex flex-row">
+            <div className="d-flex align-items-end">
                 <div className="definition-title" data-cy="definitionTitle">{wordBtn}</div>
 
                 <div className="definition__icon definition-title__tooltip-icon">

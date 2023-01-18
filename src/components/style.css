@@ -1010,6 +1010,7 @@ a.menu-choice__label:active {
 
 .definition-title__tooltip-icon {
   display: inline-block;
+  margin-left: -12px;
 }
 
 .definition-title__tooltip-icon > img {
