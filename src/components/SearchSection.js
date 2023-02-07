@@ -13,7 +13,7 @@ import React, {useState} from "react";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faVolumeUp, faInfoCircle} from '@fortawesome/free-solid-svg-icons'
+import {faVolumeUp, faInfoCircle, faBorderNone} from '@fortawesome/free-solid-svg-icons'
 import LikeWord from "./LikeWord";
 
 function getInflectionalCategory(wordInformation) {
@@ -93,6 +93,7 @@ const SearchSection = (props) => {
     }
 
     let information = getInformation(wordInformation, settings);
+    console.log("INFORMATION:",information);
 
     const renderInformationToolTip = (props) => (
         <Tooltip data-cy="infoButtonInfo" id="button-tooltip" {...props}>
@@ -175,9 +176,11 @@ const SearchSection = (props) => {
     if (sound !== "") {
         soundBtn = (
             <Button variant="btn bg-white rounded"
+                    id="soundbutton"
                     onClick={handleSoundPlay}
-                    data-cy="playRecording">
-                <FontAwesomeIcon icon={faVolumeUp} size="sm"/>
+                    data-cy="playRecording"
+                    >
+                <FontAwesomeIcon icon={faVolumeUp} size="sm" />
             </Button>
         );
     }

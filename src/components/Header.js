@@ -2,9 +2,13 @@ import "./style.css";
 import morphodict_default_logo from "../static/morphodict-default-logo-192.png";
 
 import React, {useState} from "react";
-import {TextField} from "@mui/material";
+import {InputAdornment, rgbToHex, TextField} from "@mui/material";
 import {Redirect} from "react-router-dom";
 import Settings from "../HelperClasses/SettingClass";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { Button } from "react-bootstrap";
+
 
 const crkSettings = {
     Latn: "SRO (êîôâ)",
@@ -177,14 +181,32 @@ function Header(props) {
     };
 
     const handleSearchKey = (e) => {
+        if (e.target.value === "") {
+            e.target.labels[0].innerText = "Search in Cree or English";
+        }
+
+        //console.log(e.target.value);
+        
         if (e.key === "Enter") {
             setQuery(true);
         }
     };
 
-    const handleSearchText = ({target}) => {
+    //start search when magnifynig glass icon is clicked
+    const handleMagGlassClick = (e) => {
+        setQuery(true);
+    }
+
+    const handleSearchText = ({target}) => {     
         setQueryString(target.value);
+        
     };
+
+    //when user starts typing, search label disappears
+    const eraseLabel = (e) => {
+        e.target.labels[0].innerText = "";       
+    }
+
 
     return (
         <div className="top-bar app__header">
@@ -248,13 +270,47 @@ function Header(props) {
                 </a>
             </header>
             <nav className="search top-bar__search">
+                
                 <TextField
                     id="search"
+                    className="search-bar"
                     variant="outlined"
                     fullWidth
-                    label="Search"
+                    label="Search in Cree or English"
+                    autoComplete="off"  //prevents history from popping up
+                    
+                    
+                    //styling for label text
+                    InputLabelProps={                      
+                        {
+                        shrink: false, //prevents label text from hopping to top of search bar on focus  
+                        style:{
+                            fontStyle: "italic",
+                            fontFamily: "Calibri",  //other acceptable fonts? - Tahoma, Segoe UI, Microsoft PhagsPa, Microsoft YaHei, Nirmala UI
+                            fontSize: "170%", 
+                            marginTop: "-9px",
+                            color: "gray" 
+                            }
+                        }
+                    }
+
+                   size="small"
+
+                   InputProps={{                     
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <Button className="mag-glass-btn">
+                                <FontAwesomeIcon icon={faMagnifyingGlass} size="xl" color="gray"> </FontAwesomeIcon>
+                                </Button>
+                            </InputAdornment>
+                        ),   
+                    style: {backgroundColor: "white", fontStyle: "normal", borderRadius: "15px"},  //look of searchbar
+                    }}
+                    
                     onKeyUp={handleSearchKey}
                     onChange={handleSearchText}
+                    onKeyDown={eraseLabel}
+
                 ></TextField>
             </nav>
             <nav className="top-bar__nav">

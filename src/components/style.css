@@ -321,6 +321,15 @@ img {
   padding-right: var(--small-pad);
 }
 
+.mag-glass-btn{
+  background-color: white !important;
+  border: none !important;
+  outline: none !important;
+  
+}
+
+
+
 /**
  * The top-bar collapses both the logo, the language picker, AND the search
  * bar all into one long line.
@@ -1003,6 +1012,7 @@ a.menu-choice__label:active {
   display: inline;
 }
 
+
 .definition-title__tooltip-text {
   font-size: 0.5em;
   font-weight: normal;
@@ -1011,19 +1021,9 @@ a.menu-choice__label:active {
 .definition-title__tooltip-icon {
   display: inline-block;
   margin-left: -12px;
+
 }
 
-.definition-title__tooltip-icon > img {
-  width: var(--tooltip-icon-size);
-  filter: var(--blue-filter); /* blue color */
-
-  vertical-align: middle;
-}
-
-.definition-title__tooltip-icon:focus,
-.definition-title__tooltip-icon:focus-within {
-  outline: 3px solid var(--search-focus-color);
-}
 
 .definition__elaboration {
   margin: var(--small-gap) 0 0;
@@ -1039,9 +1039,14 @@ a.menu-choice__label:active {
  * The actual SVG for the 🔊 icon and the speaker playback/external link buttons
  */
 
-.definition-title__play-icon,
+
+ .definition-title__play-icon,
 .speaker-playback-action-button {
   width: 100%;
+  margin-left: -12px;
+  border: none !important;
+  outline: none !important;
+  
 }
 
 .elaboration__row {
