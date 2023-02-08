@@ -299,7 +299,7 @@ function Header(props) {
                    InputProps={{                     
                         endAdornment: (
                             <InputAdornment position="end">
-                                <Button className="mag-glass-btn">
+                                <Button onClick={handleMagGlassClick} onMouseDown={(e)=> {e.preventDefault()} } className="mag-glass-btn" >
                                 <FontAwesomeIcon icon={faMagnifyingGlass} size="xl" color="gray"> </FontAwesomeIcon>
                                 </Button>
                             </InputAdornment>

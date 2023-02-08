@@ -175,7 +175,7 @@ const SearchSection = (props) => {
     //Information on api only learned on 2/24/2022 moved into sp3
     if (sound !== "") {
         soundBtn = (
-            <Button variant="btn bg-white rounded"
+            <Button variant="btn bg-white rounded" onMouseDown={(e)=> {e.preventDefault()} }
                     id="soundbutton"
                     onClick={handleSoundPlay}
                     data-cy="playRecording"
