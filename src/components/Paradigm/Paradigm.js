@@ -1,5 +1,5 @@
 import "../style.css";
-import {useState, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import {useLocation} from "react-router-dom/cjs/react-router-dom.min";
 import {
     Card,
@@ -10,10 +10,13 @@ import {
     AccordionDetails,
     Grid,
 } from "@mui/material";
+import {faInfoCircle, faVolumeUp} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 function Paradigm(state) {
     const paradigm = state.paradigm;
     const type = state.type;
+    const showAudio = JSON.parse(window.localStorage.getItem("settings"))["showAudio"];
     let counter = 0;
     console.log("PARADIGM:", paradigm)
 
@@ -43,15 +46,41 @@ function Paradigm(state) {
                                             let actor = paradigm[label]["rows"][element]["label"];
                                             return <div className={"row"}>
                                                 <div className={"col"}>
-                                                    <p style={{fontStyle: "italic"}}>{actor}&emsp;&emsp;</p>
+                                                    <p style={{fontStyle: "italic"}}>{actor}</p>
                                                 </div>
                                                 {
                                                     Object.keys(entry["inflections"]).map((element, index) => {
-                                                        if ("wordform_text" in entry["inflections"][element]) {
-                                                            let wordform = entry["inflections"][element]["wordform_text"]
-                                                            return <div className={"col"}> <p>{wordform[type]}</p> </div>
+                                                        let currentEntry = entry["inflections"][element];
+
+                                                        let displayWord = currentEntry["wordform"];
+                                                        if ("wordform_text" in currentEntry && type) {
+                                                            displayWord = currentEntry["wordform_text"][type];
+                                                        }
+
+                                                        let recording = "";
+                                                        if ("recording" in currentEntry) {
+                                                            recording = currentEntry["recording"];
+                                                        }
+                                                        
+                                                        if (recording && showAudio) {
+                                                            function playRecording() {
+                                                                const audio = new Audio(recording);
+                                                                audio.play();
+                                                            }
+                                                            return (
+                                                                <div className={"col"}>
+                                                                    <p>
+                                                                        {displayWord}&nbsp;
+                                                                        <FontAwesomeIcon icon={faVolumeUp} size="xs" onClick={playRecording} />
+                                                                    </p>
+                                                                </div>
+                                                            )
                                                         } else {
-                                                            return <div className={"col"}> <p>{entry["inflections"][element]["wordform"]}</p> </div>
+                                                            return (
+                                                                <div className={"col"}>
+                                                                    <p>{displayWord}</p>
+                                                                </div>
+                                                            )
                                                         }
                                                     })
                                                 }
