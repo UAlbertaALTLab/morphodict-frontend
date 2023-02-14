@@ -13,7 +13,7 @@ import React, {useState} from "react";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
-import {faVolumeUp, faInfoCircle} from '@fortawesome/free-solid-svg-icons'
+import {faVolumeUp, faInfoCircle, faBorderNone} from '@fortawesome/free-solid-svg-icons'
 import LikeWord from "./LikeWord";
 
 function getInflectionalCategory(wordInformation) {
@@ -166,7 +166,7 @@ const SearchSection = (props) => {
                     )
                 }
                 data-cy="infoButton">
-                <FontAwesomeIcon icon={faInfoCircle} size="sm"/>
+                <FontAwesomeIcon icon={faInfoCircle} size="xl" color="navy"/>
             </Button>
         );
     }
@@ -174,10 +174,12 @@ const SearchSection = (props) => {
     //Information on api only learned on 2/24/2022 moved into sp3
     if (sound !== "") {
         soundBtn = (
-            <Button variant="btn bg-white rounded"
+            <Button variant="btn bg-white rounded" onMouseDown={(e)=> {e.preventDefault()} }
+                    id="soundbutton"
                     onClick={handleSoundPlay}
-                    data-cy="playRecording">
-                <FontAwesomeIcon icon={faVolumeUp} size="sm"/>
+                    data-cy="playRecording"
+                    >
+                <FontAwesomeIcon icon={faVolumeUp} size="sm" />
             </Button>
         );
     }
@@ -248,7 +250,7 @@ const SearchSection = (props) => {
                 should never happen!
             </div>
             }
-            <div className="d-flex flex-row">
+            <div className="d-flex align-items-end">
                 <div className="definition-title" data-cy="definitionTitle">{wordBtn}</div>
 
                 <div className="definition__icon definition-title__tooltip-icon">
