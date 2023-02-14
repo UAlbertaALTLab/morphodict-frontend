@@ -13,21 +13,32 @@ import {
 import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
+function getLabelSetting() {
+    let settings = JSON.parse(window.localStorage.getItem("settings"));
+    switch (settings["label"]) {
+        case "ENGLISH":
+            return "plain_english";
+        case "LINGUISTIC (LONG)":
+            return "ling_long";
+        case "LINGUISTIC (SHORT)":
+            return "ling_short";
+        default:
+            return "source_language";
+    }
+}
+
 function Paradigm(state) {
     const paradigm = state.paradigm;
     const type = state.type;
-    const settings = JSON.parse(window.localStorage.getItem("settings"));
     const showAudio = JSON.parse(window.localStorage.getItem("settings"))["showAudio"];
     let counter = 0;
 
-    let relabelling = "plain_english";
-
-    if (settings["niyaLabel"]) {
-        relabelling = "source_language";
-    } else if (settings["lingLabel"]) {
-        relabelling = "ling_short";
-    }
-
+    let labelSetting = getLabelSetting();
+    let [relabelling, setRelabelling] = useState(labelSetting);
+    window.addEventListener("settings", () => {
+        labelSetting = getLabelSetting();
+        setRelabelling(labelSetting);
+    });
 
     return (
         <div className="container">
