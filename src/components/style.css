@@ -1503,3 +1503,40 @@ textarea {
   width: 100%;
   text-align: justify;
 }
+
+
+
+/********************************* SETTINGS PAGE *********************************/
+
+.settings-listgroup-item{
+  border-width: 0px !important;
+  padding-top: 0px !important;
+  margin-top: -5px;
+  margin-bottom: -5px;
+
+}
+
+.settings-option-titles{
+  font-weight: bold;
+  font-size: 125%;
+  padding-top: 30px;
+  padding-left: 5px;
+} 
+
+.settings-listgroup-item-subtext{
+  font-size: 90%;
+  padding-left: 36px;
+}
+
+.settings-option-subtitles{
+  font-size: 90%;
+  padding-left: 5px;
+  margin-top: -5px !important;
+}
+
+.settings-listgroup-item-title{
+  font-weight: bold;
+  font-size: 105%;
+  padding-left: 35px !important;
+}
+
