@@ -93,7 +93,6 @@ const SearchSection = (props) => {
     }
 
     let information = getInformation(wordInformation, settings);
-    console.log("INFORMATION:",information);
 
     const renderInformationToolTip = (props) => (
         <Tooltip data-cy="infoButtonInfo" id="button-tooltip" {...props}>
