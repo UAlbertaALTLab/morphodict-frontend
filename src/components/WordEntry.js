@@ -1,7 +1,7 @@
 import {AiOutlineSound} from "react-icons/ai";
 import {Grid} from "@mui/material";
 import React, {useState} from "react";
-import Paradigm from "./Paradigm/Paradigm";
+import Paradigm from "./Paradigm/Paradigm.js";
 import MultiPlayer from './MultiPlayer';
 import {useQuery} from "react-query";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
@@ -130,7 +130,6 @@ function WordEntry(props) {
     if (!isFetching && !error && data !== null) {
         let settings = JSON.parse(window.localStorage.getItem("settings"));
         displayText = wordform["text"][type];
-        console.log("WORDFORM", wordform);
         let emoji = wordform["wordclass_emoji"];
 
         if (emoji && emoji.includes("🧑🏽")) {

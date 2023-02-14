@@ -1,99 +1,71 @@
 import "../style.css";
-import Pane from "./Pane";
-import SingleColumnPane from "./SingleColumnPane";
-import Labels from "./labels.json";
 import {useState, useEffect} from "react";
-import {Grid} from "@mui/material";
 import {useLocation} from "react-router-dom/cjs/react-router-dom.min";
+import {
+    Card,
+    Collapse,
+    Accordion,
+    AccordionSummary,
+    Typography,
+    AccordionDetails,
+    Grid,
+} from "@mui/material";
 
 function Paradigm(state) {
-    const panes = state.paradigm.panes;
+    const paradigm = state.paradigm;
     const type = state.type;
     let counter = 0;
+    console.log("PARADIGM:", paradigm)
 
-    // let settings = JSON.parse(window.localStorage.getItem("settings"));
-    // let type = "Latn";
-    // if (settings.latn_x_macron) {
-    //     type = "Latn-x-macron";
-    // }
-    // if (settings.syllabics) {
-    //     type = "Cans";
-    // }
+    return (
+        <div className="container">
+            <div className={"row"}>
+                {
+                    Object.keys(paradigm).map((label, index) => {
+                        console.log(label);
+                       return <Accordion key={index}>
+                            <AccordionSummary>
+                                <div>
+                                    <Typography style={{fontWeight: "bold", fontSize: "14pt"}}>
+                                        {label}
+                                    </Typography>
+                                </div>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                {
+                                    Object.keys(paradigm[label]["rows"]).map((element, index) => {
+                                        let entry = paradigm[label]["rows"][element];
+                                        if ("subheader" in entry) {
+                                            console.log("found a subheader");
+                                            return <div style={{fontWeight: "bolder"}}>{entry["subheader"]}</div>
+                                        } else {
+                                            // console.log(paradigm[label]["rows"][element]);
+                                            let actor = paradigm[label]["rows"][element]["label"];
+                                            return <div className={"row"}>
+                                                <div className={"col"}>
+                                                    <p style={{fontStyle: "italic"}}>{actor}&emsp;&emsp;</p>
+                                                </div>
+                                                {
+                                                    Object.keys(entry["inflections"]).map((element, index) => {
+                                                        if ("wordform_text" in entry["inflections"][element]) {
+                                                            let wordform = entry["inflections"][element]["wordform_text"]
+                                                            return <div className={"col"}> <p>{wordform[type]}</p> </div>
+                                                        } else {
+                                                            return <div className={"col"}> <p>{entry["inflections"][element]["wordform"]}</p> </div>
+                                                        }
+                                                    })
+                                                }
+                                            </div>
+                                        }
+                                    })
 
-    // parsing the paradigm
-    let pane_columns = [];
-    for (let i = 0; i < panes.length; i++) {
-        //for each panes
-        let rows = panes[i].tr_rows;
-        let num_of_columns = 0;
-        let pane_columns_buffer = null;
-        let header = null;
-        for (let j = 0; j < rows.length; j++) {
-            //for each row
-            let row = rows[j];
-
-            if (row.is_header) {
-                header = row;
-                continue;
-            } else if (num_of_columns === 0) {
-                num_of_columns = row.cells.length;
-                pane_columns_buffer = Array(num_of_columns - 1);
-                for (let k = 0; k < num_of_columns - 1; k++) {
-                    pane_columns_buffer[k] = {
-                        header: header,
-                        col_label: null,
-                        labels: [],
-                        cells: [],
-                    }
+                                }
+                            </AccordionDetails>
+                        </Accordion>
+                    })
                 }
-            }
-
-            let row_label = row.cells[0];
-            let column_index = 0;
-            for (let k = 1; k < row.cells.length; k++) {
-                //for each column
-                if (row.cells[k].is_label && row.cells[k].label_for === "col") {
-                    pane_columns_buffer[column_index].col_label = row.cells[k];
-                    column_index++;
-                } else if (!row.cells[k].should_suppress_output) {
-                    // normal wordform (including empty)
-                    pane_columns_buffer[column_index].labels.push(row_label);
-                    let row_resolved_inflection = row.cells[k];
-
-                    if (!row.cells[k].is_missing) {
-                        console.log("ROW CELLS K", row.cells[k])
-
-                        row_resolved_inflection.inflection = row.cells[k].inflection;
-
-                    }
-
-                    pane_columns_buffer[column_index].cells.push(row_resolved_inflection);
-                    column_index++;
-                } else {
-                    // multiple wordforms
-                    row_label = row.cells[k];
-                    column_index = 0;
-                }
-            }
-        }
-
-        if (pane_columns_buffer) {
-            pane_columns.push(...pane_columns_buffer);
-        }
-    }
-
-    const pane_layouts = pane_columns.map((pane_column, i) => {
-        counter += 1;
-        return (
-            <div data-cy="paradigm" className="col-sm-12 col-md-6 col-lg-4" key={counter.toString() + '-' + i.toString()}>
-                <div className="card">
-                    <SingleColumnPane pane={pane_column} counter={counter} type={type}></SingleColumnPane>
-                </div>
             </div>
-        );
-    });
-
-    return <div className="container"><div className={"row"}>{pane_layouts}</div></div>;
+        </div>);
 }
 
 export default Paradigm;
