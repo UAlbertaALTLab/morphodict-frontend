@@ -10,22 +10,30 @@ import {
     AccordionDetails,
     Grid,
 } from "@mui/material";
-import {faInfoCircle, faVolumeUp} from "@fortawesome/free-solid-svg-icons";
+import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 function Paradigm(state) {
     const paradigm = state.paradigm;
     const type = state.type;
+    const settings = JSON.parse(window.localStorage.getItem("settings"));
     const showAudio = JSON.parse(window.localStorage.getItem("settings"))["showAudio"];
     let counter = 0;
-    console.log("PARADIGM:", paradigm)
+
+    let relabelling = "plain_english";
+
+    if (settings["niyaLabel"]) {
+        relabelling = "source_language";
+    } else if (settings["lingLabel"]) {
+        relabelling = "ling_short";
+    }
+
 
     return (
         <div className="container">
             <div className={"row"}>
                 {
                     Object.keys(paradigm).map((label, index) => {
-                        console.log(label);
                        return <Accordion key={index}>
                             <AccordionSummary>
                                 <div>
@@ -39,14 +47,13 @@ function Paradigm(state) {
                                     Object.keys(paradigm[label]["rows"]).map((element, index) => {
                                         let entry = paradigm[label]["rows"][element];
                                         if ("subheader" in entry) {
-                                            console.log("found a subheader");
-                                            return <div style={{fontWeight: "bolder"}}>{entry["subheader"]}</div>
+                                            let subheader = entry["subheader"][relabelling];
+                                            return <div style={{fontWeight: "bolder", textAlign: "center"}}>{subheader}</div>
                                         } else {
-                                            // console.log(paradigm[label]["rows"][element]);
-                                            let actor = paradigm[label]["rows"][element]["label"];
+                                            let actor = paradigm[label]["rows"][element]["label"][relabelling];
                                             return <div className={"row"}>
                                                 <div className={"col"}>
-                                                    <p style={{fontStyle: "italic"}}>{actor}</p>
+                                                    <p style={{fontStyle: "italic", textAlign: "center"}}>{actor}</p>
                                                 </div>
                                                 {
                                                     Object.keys(entry["inflections"]).map((element, index) => {
@@ -61,14 +68,14 @@ function Paradigm(state) {
                                                         if ("recording" in currentEntry) {
                                                             recording = currentEntry["recording"];
                                                         }
-                                                        
+
                                                         if (recording && showAudio) {
                                                             function playRecording() {
                                                                 const audio = new Audio(recording);
                                                                 audio.play();
                                                             }
                                                             return (
-                                                                <div className={"col"}>
+                                                                <div className={"col"} style={{textAlign: "center"}}>
                                                                     <p>
                                                                         {displayWord}&nbsp;
                                                                         <FontAwesomeIcon icon={faVolumeUp} size="xs" onClick={playRecording} />
@@ -77,7 +84,7 @@ function Paradigm(state) {
                                                             )
                                                         } else {
                                                             return (
-                                                                <div className={"col"}>
+                                                                <div className={"col"}  style={{textAlign: "center"}}>
                                                                     <p>{displayWord}</p>
                                                                 </div>
                                                             )
