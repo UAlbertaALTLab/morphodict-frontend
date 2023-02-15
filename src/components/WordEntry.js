@@ -1,6 +1,6 @@
 import {AiOutlineSound} from "react-icons/ai";
 import {Grid} from "@mui/material";
-import React, {useState} from "react";
+import React, {useState, CSSProperties} from "react";
 import Paradigm from "./Paradigm.js";
 import MultiPlayer from './MultiPlayer';
 import {useQuery} from "react-query";
@@ -8,6 +8,7 @@ import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import {Redirect} from "react-router-dom";
 import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function WordEntry(props) {
     const backendUrl = process.env.REACT_APP_BACKEND;
@@ -46,7 +47,21 @@ function WordEntry(props) {
             refetchOnWindowFocus: false,
         }
     );
-    console.log(isFetching, error, data);
+
+    while (isFetching) {
+        const override: CSSProperties = {
+              display: "block",
+              margin: "0 auto",
+            };
+        return <ClipLoader
+        color={"red"}
+        loading={isFetching}
+        cssOverride={override}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+    }
 
     let wordform = "";
     let wordInformation = "";
@@ -84,7 +99,6 @@ function WordEntry(props) {
     if (!type) {
         type = "Latn"
     }
-    console.log("TYPE:", type);
 
     if (!isFetching && !error && data !== null) {
         wordform = data.entry.wordform;
