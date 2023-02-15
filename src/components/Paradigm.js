@@ -27,10 +27,30 @@ function getLabelSetting() {
     }
 }
 
+
+function getMorphemeSettings() {
+    const settings = JSON.parse(window.localStorage.getItem("settings"));
+    if (settings["morphemes_everywhere"]) {
+        return "everywhere";
+    }
+
+    if (settings["morphemes_headers"]) {
+        return "headers";
+    }
+
+    if (settings["morphemes_paradigms"]) {
+        return "paradigms";
+    }
+
+    return "no";
+}
+
+
 function Paradigm(state) {
     const paradigm = state.paradigm;
     const type = state.type;
     const showAudio = JSON.parse(window.localStorage.getItem("settings"))["showAudio"];
+    const showMorphemes = getMorphemeSettings();
     let counter = 0;
 
     let labelSetting = getLabelSetting();
@@ -75,6 +95,11 @@ function Paradigm(state) {
                                                         let displayWord = currentEntry["wordform"];
                                                         if ("wordform_text" in currentEntry && type) {
                                                             displayWord = currentEntry["wordform_text"][type];
+                                                        }
+                                                        if (showMorphemes == "paradigms" || showMorphemes == "everywhere") {
+                                                            if ("morphemes" in currentEntry && type) {
+                                                                displayWord = currentEntry["morphemes"][type].join("·");
+                                                            }
                                                         }
 
                                                         let recording = "";
