@@ -45,11 +45,12 @@ function Paradigm(state) {
             <div className={"row"}>
                 {
                     Object.keys(paradigm).map((label, index) => {
-                       return <Accordion key={index}>
+                        let header = paradigm[label]["relabelled_header"][labelSetting];
+                        return <Accordion key={index}>
                             <AccordionSummary>
                                 <div>
                                     <Typography style={{fontWeight: "bold", fontSize: "14pt"}}>
-                                        {label}
+                                        {header}
                                     </Typography>
                                 </div>
                             </AccordionSummary>
@@ -59,7 +60,8 @@ function Paradigm(state) {
                                         let entry = paradigm[label]["rows"][element];
                                         if ("subheader" in entry) {
                                             let subheader = entry["subheader"][relabelling];
-                                            return <div style={{fontWeight: "bolder", textAlign: "center"}}>{subheader}</div>
+                                            return <div
+                                                style={{fontWeight: "bolder", textAlign: "center"}}>{subheader}</div>
                                         } else {
                                             let actor = paradigm[label]["rows"][element]["label"][relabelling];
                                             return <div className={"row"}>
@@ -85,17 +87,19 @@ function Paradigm(state) {
                                                                 const audio = new Audio(recording);
                                                                 audio.play();
                                                             }
+
                                                             return (
                                                                 <div className={"col"} style={{textAlign: "center"}}>
                                                                     <p>
                                                                         {displayWord}&nbsp;
-                                                                        <FontAwesomeIcon icon={faVolumeUp} size="xs" onClick={playRecording} />
+                                                                        <FontAwesomeIcon icon={faVolumeUp} size="xs"
+                                                                                         onClick={playRecording}/>
                                                                     </p>
                                                                 </div>
                                                             )
                                                         } else {
                                                             return (
-                                                                <div className={"col"}  style={{textAlign: "center"}}>
+                                                                <div className={"col"} style={{textAlign: "center"}}>
                                                                     <p>{displayWord}</p>
                                                                 </div>
                                                             )
