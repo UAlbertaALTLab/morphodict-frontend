@@ -1,11 +1,13 @@
 import {AiOutlineSound} from "react-icons/ai";
 import {Grid} from "@mui/material";
 import React, {useState} from "react";
-import Paradigm from "./Paradigm/Paradigm.js";
+import Paradigm from "./Paradigm.js";
 import MultiPlayer from './MultiPlayer';
 import {useQuery} from "react-query";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import {Redirect} from "react-router-dom";
+import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 function WordEntry(props) {
     const backendUrl = process.env.REACT_APP_BACKEND;
@@ -138,7 +140,9 @@ function WordEntry(props) {
 
         wordInformation = wordform["inflectional_category"] + "  " + emoji + "  " + wordform["inflectional_category_plain_english"][type]
         if (settings.morphemes_everywhere || settings.morphemes_headers) {
-            displayText = wordform["morphemes"][type].join("•");
+            if ("morphemes" in wordform) {
+                displayText = wordform["morphemes"][type].join("•");
+            }
         }
     }
 
@@ -187,7 +191,7 @@ function WordEntry(props) {
                         <select id="audio_select" onChange={audioChanged}>
                             {recs}
                         </select>
-                        <button onClick={submittedAudio} data-cy="playRecording">&#9655;</button>
+                        &nbsp;<FontAwesomeIcon icon={faVolumeUp} size="sm" onClick={submittedAudio} data-cy={"playRecording"} />&nbsp;
                         <a href={recordings[0].speaker_bio_url} id={"learnMoreLink"} target={"_blank"}>Learn more about
                             the speaker...</a>
                     </section>) : <></>}
