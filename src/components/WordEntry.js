@@ -1,11 +1,14 @@
 import {AiOutlineSound} from "react-icons/ai";
 import {Grid} from "@mui/material";
-import React, {useState} from "react";
-import Paradigm from "./Paradigm/Paradigm";
+import React, {useState, CSSProperties} from "react";
+import Paradigm from "./Paradigm.js";
 import MultiPlayer from './MultiPlayer';
 import {useQuery} from "react-query";
 import {OverlayTrigger, Tooltip} from "react-bootstrap";
 import {Redirect} from "react-router-dom";
+import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function WordEntry(props) {
     const backendUrl = process.env.REACT_APP_BACKEND;
@@ -44,7 +47,21 @@ function WordEntry(props) {
             refetchOnWindowFocus: false,
         }
     );
-    console.log(isFetching, error, data);
+
+    while (isFetching) {
+        const override: CSSProperties = {
+              display: "block",
+              margin: "0 auto",
+            };
+        return <ClipLoader
+        color={"red"}
+        loading={isFetching}
+        cssOverride={override}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+    }
 
     let wordform = "";
     let wordInformation = "";
@@ -82,7 +99,6 @@ function WordEntry(props) {
     if (!type) {
         type = "Latn"
     }
-    console.log("TYPE:", type);
 
     if (!isFetching && !error && data !== null) {
         wordform = data.entry.wordform;
@@ -130,7 +146,6 @@ function WordEntry(props) {
     if (!isFetching && !error && data !== null) {
         let settings = JSON.parse(window.localStorage.getItem("settings"));
         displayText = wordform["text"][type];
-        console.log("WORDFORM", wordform);
         let emoji = wordform["wordclass_emoji"];
 
         if (emoji && emoji.includes("🧑🏽")) {
@@ -139,7 +154,9 @@ function WordEntry(props) {
 
         wordInformation = wordform["inflectional_category"] + "  " + emoji + "  " + wordform["inflectional_category_plain_english"][type]
         if (settings.morphemes_everywhere || settings.morphemes_headers) {
-            displayText = wordform["morphemes"][type].join("•");
+            if ("morphemes" in wordform) {
+                displayText = wordform["morphemes"][type].join("•");
+            }
         }
     }
 
@@ -188,7 +205,7 @@ function WordEntry(props) {
                         <select id="audio_select" onChange={audioChanged}>
                             {recs}
                         </select>
-                        <button onClick={submittedAudio} data-cy="playRecording">&#9655;</button>
+                        &nbsp;<FontAwesomeIcon icon={faVolumeUp} size="sm" onClick={submittedAudio} data-cy={"playRecording"} />&nbsp;
                         <a href={recordings[0].speaker_bio_url} id={"learnMoreLink"} target={"_blank"}>Learn more about
                             the speaker...</a>
                     </section>) : <></>}

@@ -14,8 +14,9 @@ import { Alert } from "react-bootstrap";
 
 import { useQuery } from "react-query";
 
-import { useEffect } from "react";
+import React, {CSSProperties, useEffect} from "react";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import ClipLoader from "react-spinners/ClipLoader";
 
 function replaceSpecials(query) {
   let result = query.replace(/%C3%A2/g, 'â')
@@ -131,6 +132,21 @@ function SearchResult(props) {
     _type = "Latn-x-macron"
   }
 
+  while (isFetching) {
+        const override: CSSProperties = {
+              display: "block",
+              margin: "0 auto",
+            };
+        return <ClipLoader
+        color={"red"}
+        loading={isFetching}
+        cssOverride={override}
+        size={150}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+    }
+
   return (
     <div className="container">
       {typeof results === "undefined" && !isFetching && (
@@ -160,14 +176,6 @@ function SearchResult(props) {
               No results found for {replaceSpecials(query)}
             </Alert.Heading>
           </Alert>
-        </>
-      )}
-
-      {isFetching && (
-        <>
-          <div className="spinner-grow text-primary" role="status">
-            <span className="sr-only">Loading...</span>
-          </div>
         </>
       )}
 
