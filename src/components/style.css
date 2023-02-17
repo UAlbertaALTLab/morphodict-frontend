@@ -990,6 +990,7 @@ a.menu-choice__label:active {
 .definition-title {
   font-size: var(--definition-title-size);
   margin: 0;
+  white-space: nowrap;
 }
 
 .definition-title__title {
