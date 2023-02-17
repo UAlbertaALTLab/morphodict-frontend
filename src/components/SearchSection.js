@@ -251,7 +251,7 @@ const SearchSection = (props) => {
             </div>
             }
             <div className="d-flex align-items-end">
-                <div className="definition-title" data-cy="definitionTitle">{wordBtn}</div>
+                <div className="definition-title" data-cy="definitionTitle" style={{whiteSpace: "nowrap"}}>{wordBtn}</div>
 
                 <div className="definition__icon definition-title__tooltip-icon">
                     <OverlayTrigger
