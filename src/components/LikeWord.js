@@ -111,9 +111,9 @@ const LikeWord = (props) => {
 
     const infoLink = (
         <Button
-            variant="btn bg-white rounded shadow-none text-decoration-underline"
             onClick={() => navigator.clipboard.writeText(secondaryInfo)}
-        >
+            className="like-word-text"
+            >
             {primaryInfo}
         </Button>
     );
