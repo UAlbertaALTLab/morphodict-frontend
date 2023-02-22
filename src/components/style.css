@@ -1540,3 +1540,25 @@ textarea {
   padding-left: 35px !important;
 }
 
+
+/*******************LEGENG OF ABBREVIATIONS PAGE********************/
+
+.abbr__section-title{
+  font-weight: bold;
+  font-size: 160%;
+  padding-top: 1.5rem;
+}
+
+.abbr__section-subtitle{
+  font-weight: normal;
+  padding-top: 0.5rem;
+  font-size: 110%;
+}
+
+.abbr__section-subsection{
+  padding-left: 2rem;
+  margin-top: -0.20rem;
+  font-size: 110%;
+  margin-bottom: -0.4rem;
+  line-height:125%
+}
