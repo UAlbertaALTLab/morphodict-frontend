@@ -228,7 +228,7 @@ const SearchSection = (props) => {
 
     //change
     wordBtn = (
-        <Button variant="btn bg-white rounded shadow-none">
+        <Button variant="btn bg-white rounded shadow-none" style={{fontSize:"105%", marginTop: "-1.5rem"}}>
             <Link
                 to={{
                     pathname: "/word/" + slug,
@@ -250,7 +250,7 @@ const SearchSection = (props) => {
                 should never happen!
             </div>
             }
-            <div className="d-flex align-items-end">
+            <div className="d-flex flex-row">
                 <div className="definition-title" data-cy="definitionTitle">{wordBtn}</div>
 
                 <div className="definition__icon definition-title__tooltip-icon">
