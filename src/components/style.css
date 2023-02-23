@@ -947,6 +947,7 @@ a.menu-choice__label:active {
  */
 
 .result-definition {
+  font-size: 120%;
   text-align: left;
 }
 
