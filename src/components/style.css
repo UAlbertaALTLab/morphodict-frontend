@@ -1542,7 +1542,7 @@ textarea {
 }
 
 
-/*******************LEGENG OF ABBREVIATIONS PAGE********************/
+/***********************LEGEND OF ABBREVIATIONS PAGE*****************************/
 
 .abbr__section-title{
   font-weight: bold;
@@ -1562,4 +1562,11 @@ textarea {
   font-size: 110%;
   margin-bottom: -0.4rem;
   line-height:125%
+}
+
+/*******************************WELCOME MAIN PAGE**********************************/
+
+.main-page{
+  line-height: 135%;
+  font-size: 105%;
 }

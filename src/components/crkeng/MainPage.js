@@ -1,20 +1,20 @@
 function MainPageCrk() {
   const long_word = "ê-kî-nitawi-kâh-kîmôci-kotiskâwêyâhk";
     return (
-        <div>
+        <div className="main-page">
             <p>
                 Type any Cree word to find its English translation. You can search for
                 short Cree words (e.g., <a href={
                 `/word/atim`
             }
 
-            > atim</a>) or very long
+            > <i>atim</i></a>) or very long
                 Cree words (e.g.,
                 {
                     " "
                 }
                 <a data-cy="long-word-example" href={`/search/?q=${long_word}`}>
-                    {long_word}
+                    <i>{long_word}</i>
                 </a>
                 ). Or you can type an English word and find its possible Cree
                 translations. You can write words in Cree using standard Roman
@@ -23,20 +23,20 @@ function MainPageCrk() {
                     " "
                 }
                 <a href="/word/acimosis">
-                    <span lang="cr">acimosis</span>
+                    <span lang="cr"><i>acimosis</i></span>
                 </a>
                 ) or using syllabics (e.g.,
                 {
                     " "
                 }
                 <a href="/word/ᐊᒋᒧᓯᐢ">
-                    <span lang="cr">ᐊᒋᒧᓯᐢ</span>
+                    <span lang="cr"><i>ᐊᒋᒧᓯᐢ</i></span>
                 </a>
                 ).
             </p>
 
             <p>
-                <a href="/words/itwêwina">itwêwina</a> was made by the{" "}
+                <a href="/words/itwêwina"><i>itwêwina</i></a> was made by the{" "}
                 <a href="https://altlab.artsrn.ualberta.ca/">
                     Alberta Language Technology Lab (ALTLab)
                 </a>
