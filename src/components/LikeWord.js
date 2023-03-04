@@ -11,6 +11,9 @@ Goal         : Show word information and also provide the ability to highlight a
 
 import React, {useState} from "react";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
+
 
 function updateLabelSettings(label, icPlainEnglish, icLinguisticLong, icLinguisticShort, icSourceLanguage) {
     let primaryInfo = "";
@@ -124,6 +127,12 @@ const LikeWord = (props) => {
         </Tooltip>
     );
 
+    const renderBookToopTip = (props) => (
+        <Tooltip id="book-tooltip" {...props}>
+            {"ABC"}
+        </Tooltip>
+    )
+
     return (<>
             <div data-cy="elaboration" className="container">
                 <div className="d-flex flex-row">
@@ -136,8 +145,12 @@ const LikeWord = (props) => {
                             overlay={renderInformationToolTip}
                         >
                             {infoLink}
-                        </OverlayTrigger>
+                        </OverlayTrigger>       
+                        <Button className="book-icon-button" onMouseDown={(e)=> {e.preventDefault()}}>
+                            <FontAwesomeIcon icon={faBookOpen} color="blue" overlay={renderBookToopTip} />
+                            </Button>    
                     </div>
+                    
                 </div>
             </div>
         </>

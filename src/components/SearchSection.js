@@ -283,6 +283,7 @@ const SearchSection = (props) => {
 
             <LikeWord
                 wordform={wordInformation}
+                
             />
             <ul className="list-group text-center">
                 {wordsDefs.map((item, i) => (

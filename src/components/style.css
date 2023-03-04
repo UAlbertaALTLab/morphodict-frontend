@@ -1048,6 +1048,11 @@ a.menu-choice__label:active {
   
 }
 
+.book-icon-button{
+  background-color: transparent !important;
+  border: none !important;
+}
+
 .elaboration__row {
   /* There's normally TOO MUCH MARGIN for these, so get rid of it: */
   margin-block: 0;
