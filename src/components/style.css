@@ -1043,7 +1043,6 @@ a.menu-choice__label:active {
  .definition-title__play-icon,
 .speaker-playback-action-button {
   width: 100%;
-  margin-left: -12px;
   border: none !important;
   outline: none !important;
   
