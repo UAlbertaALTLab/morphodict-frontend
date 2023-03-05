@@ -26,7 +26,7 @@ function AbbreviationsLegend(props) {
           stand for the <strong>inanimate goal</strong>. (e.g.{" "}
           <q>
             s/he sees
-            <dfn>s.t.</dfn>, i.e. something; s/he sees <dfn>it</dfn>
+            <dfn> s.t.</dfn>, i.e. something; s/he sees <dfn>it</dfn>
           </q>
           )
         </dd>
@@ -37,7 +37,7 @@ function AbbreviationsLegend(props) {
           “something animate” like <a href="/word/pahkwêsikan">pahkwêsikan</a>{" "}
           or <a href="/word/asikan">asikan</a>. Used in definitions to stand for
           the
-          <strong>animate goal</strong>. (e.g.{" "}
+          <strong> animate goal</strong>. (e.g.{" "}
           <q>
             s/he sees <dfn>s.o.</dfn>, i.e. someone; s/he sees <dfn>him</dfn>;
             s/he sees <dfn>her</dfn>
@@ -53,7 +53,7 @@ function AbbreviationsLegend(props) {
             <dfn>it</dfn> is blue
           </q>
           ) or
-          <strong>existential subject</strong> for impersonal verbs (the “it” in{" "}
+          <strong> existential subject</strong> for impersonal verbs (the “it” in{" "}
           <q>
             <dfn>it</dfn> is raining
           </q>
