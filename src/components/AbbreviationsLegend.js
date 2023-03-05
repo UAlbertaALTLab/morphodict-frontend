@@ -10,13 +10,12 @@ function AbbreviationsLegend(props) {
         <dt>s/he, she, he</dt>
         <dd>
           <strong>s</strong>he, <strong>h</strong>e, or (singular) th
-          <strong>e</strong>y. Used in definitions to stand for the
-          <strong>animate actor</strong>, which is mostly human but can
+          <strong>e</strong>y. Used in definitions to stand for the <strong>animate actor</strong>, which is mostly human but can
           sometimes refer to other animate entities as well. The approximate
           equivalent to the Cree pronoun <a href="/word/wiya">wiya</a>. (e.g.{" "}
           <q>
             <dfn>s/he</dfn> sees;
-            <dfn>s/he</dfn> sees something; <dfn>s/he</dfn> sees someone
+            <dfn> s/he</dfn> sees something; <dfn>s/he</dfn> sees someone
           </q>
           )
         </dd>
