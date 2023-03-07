@@ -51,14 +51,18 @@ function About(props) {
             nêhiyawêwin : itwêwina / Cree: Words
           </a>
           . (Compiled by Arok Wolvengrey. Regina: Canadian Plains Research
-          Center, 2001), and in the{" "}
+          Center, 2001), in the{" "}
           <a
             href="https://www.altlab.dev/maskwacis/dictionary.html"
             className="source-title"
           >
             Maskwacîs Dictionary of Cree Words / Nêhiyaw Pîkiskwêwinisa
           </a>{" "}
-          (Maskwachees Cultural College, Maskwacîs, 2009).
+          (Maskwachees Cultural College, Maskwacîs, 2009) ,and in the {" "}
+          <a href="https://www.uap.ualberta.ca/titles/122-9780888642844-alberta-elders-cree-dictionary-alperta-ohci-kehtehayak-nehiyaw-otwestamakewasinahikan">Alberta Elders' Cree Dictionary</a> / 
+          <a href="https://www.uap.ualberta.ca/titles/122-9780888642844-alberta-elders-cree-dictionary-alperta-ohci-kehtehayak-nehiyaw-otwestamakewasinahikan">
+            alperta ohci kehtehayak nehiyaw otwestamâkewasinahikan</a> (compiled by Nancy LeClaire and George Cardinal, 
+           edited by Earle H. Waugh. Edmonton: University of Alberta Press, 2022).
         </p>
 
         <h3 className="prose__heading"> Spoken Cree — nêhiyaw-pîkiskwêwina</h3>
@@ -84,6 +88,14 @@ function About(props) {
             this page
           </a>
           .
+        </p>
+        <p>Additional Cree recordings are provided by <a href="https://speech-db.altlab.app/moswacihk/speakers/OKI">Dr. Jean Okimâsis</a>, a Cree speaker
+        and scholar from Moswacîhk, Saskatchewan. The core of these recordings was collected for the
+        <a href="https://uofrpress.ca/Books/N/nehiyawewin-paskwawi-pikiskwewin-Cree-Language-of-the-Plains-Language-Lab-Workbook">Workbook</a> for her seminal Cree textbook,
+        <a href="https://uofrpress.ca/Books/C/Cree-Language-of-the-Plains2">Cree: language of the plains / nêhiyawêwin: paskwâw-pîkiskwêwin</a>. </p>
+        <p>More recordings of Dr. Okimâsis for paradigms have been collected by Dr. Arok Wolvengrey.</p>
+        <p>Synthesized Cree word-forms and phrases are generated with a <a href="https://aclanthology.org/W19-6009/">speech synthesizer</a> developed 
+        by Atticus Harrigan, Antti Arppe, and Timothy Mills, based on recordings of <a href="https://speech-db.altlab.app/synth/speakers/">Dolores Greyeyes Sand</a>, a Cree speaker from Maskêko-sâkahikanihk, Saskatchewan. 
         </p>
       </section>
 
