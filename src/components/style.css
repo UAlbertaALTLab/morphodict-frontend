@@ -948,6 +948,7 @@ a.menu-choice__label:active {
 
 .result-definition {
   text-align: left;
+  border: 0px !important;
 }
 
 /**
