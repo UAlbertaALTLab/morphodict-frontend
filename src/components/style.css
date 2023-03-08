@@ -169,6 +169,16 @@ img {
 }
 
 /**
+ * Highlight colour
+ */
+ 
+ ::selection {
+  background: firebrick;
+  color: white;
+}
+
+
+/**
  * BLOCK app
  *
  * A block containing the ENTIRE application.
