@@ -1147,6 +1147,17 @@ a.multiple-recordings__action-button {
 }
 
 /**
+* Like Word
+*/
+.like-word-text {
+  color:#000 !important;
+  text-decoration-line: underline !important;
+  text-decoration-style: dotted !important;
+  background-color: transparent !important;
+  border: none !important; 
+}
+
+/**
  * BLOCK wordclass
  */
 
