@@ -127,11 +127,31 @@ const LikeWord = (props) => {
         </Tooltip>
     );
 
-    const renderBookToopTip = (props) => (
+    const renderBookToolTip = (props) => (
+        /*
+        props.wordform !== undefined ?
+        <Tooltip id="book-tooltip" {...props}>
+            {props.wordform.lemma_wordform.linguist_info.stem}
+        </Tooltip> : 
+        <Tooltip id="book-tooltip" {...props}>
+            {"Stem not defined"}
+        </Tooltip>    */
+
         <Tooltip id="book-tooltip" {...props}>
             {"ABC"}
         </Tooltip>
+
     )
+
+
+    
+    console.log("BOOK TOOLTIP INFO");
+    if (props.wordform.lemma_wordform){
+        //console.log(props.wordform.lemma_wordform.linguist_info.stem);
+        console.log("DEFINED");
+    } else {
+        console.log("UNDEFINED");   //props.wordform.lemma_wordform undefined for nested search sections
+    }
 
     return (<>
             <div data-cy="elaboration" className="container">
@@ -145,9 +165,16 @@ const LikeWord = (props) => {
                             overlay={renderInformationToolTip}
                         >
                             {infoLink}
-                        </OverlayTrigger>       
+                        </OverlayTrigger>   
+
                         <Button className="book-icon-button" onMouseDown={(e)=> {e.preventDefault()}}>
-                            <FontAwesomeIcon icon={faBookOpen} color="blue" overlay={renderBookToopTip} />
+                            <OverlayTrigger
+                                placement="bottom"
+                                delay={{show: 250, hide: 400}}
+                                overlay={renderBookToolTip}
+                                >
+                            <FontAwesomeIcon icon={faBookOpen} color="blue" overlay={renderBookToolTip} />
+                            </OverlayTrigger>
                             </Button>    
                     </div>
                     

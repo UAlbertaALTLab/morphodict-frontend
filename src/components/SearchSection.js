@@ -87,6 +87,8 @@ const SearchSection = (props) => {
         return wordInformation["wordform_text"][displayType]
     }
 
+    console.log("PROPS IN SEARCH SECTION");
+    console.log(props);
     let wordInformation = props.display;
     if (!wordInformation) {
         return (<div>Something went wrong here</div>);

@@ -31,6 +31,7 @@ function SearchResult(props) {
   const query = window.location.href.toString().split("q=")[1];
   console.log("API URL", apiUrl);
   console.log("QUERY", query);
+  //console.log("PROPS IN SEARCH RESULT",props);
   async function getAllData() {
     await delay(1000);
     if (query === "") {
