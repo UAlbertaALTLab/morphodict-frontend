@@ -93,4 +93,4 @@ About.js
 In order to deploy the new site, follow the instructions [here](https://morphodict.readthedocs.io/en/latest/docker.html?highlight=nginx#nginx)
 and the deployment instructions above. You'll also need to make `/sssttt/docker/` with 
 all the appropriate files in it. I recommend copying the files from `/crkeng/docker/` and 
-replacing references of `crkeng` with `sssttt`.
+replacing references of `crkeng` with `sssttt` and ensuring the port is correct.
