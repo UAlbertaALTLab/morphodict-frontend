@@ -127,6 +127,18 @@ const LikeWord = (props) => {
         </Tooltip>
     );
 
+    let bookIconInfo = "";
+
+    if (props.wordform.lemma_wordform) {
+        if (props.wordform.lemma_wordform.linguist_info) {
+            if (props.wordform.lemma_wordform.linguist_info.stem) {
+                bookIconInfo = props.wordform.lemma_wordform.linguist_info.stem;
+            }
+        }
+    } else if (props.wordform){
+        bookIconInfo = props.wordform.linguist_info.stem;
+    }
+
     const renderBookToolTip = (props) => (
         /*
         props.wordform !== undefined ?
@@ -138,11 +150,12 @@ const LikeWord = (props) => {
         </Tooltip>    */
 
         <Tooltip id="book-tooltip" {...props}>
-            {"ABC"}
+            {bookIconInfo}
         </Tooltip>
 
     )
 
+   
 
     
     console.log("BOOK TOOLTIP INFO");
@@ -152,6 +165,9 @@ const LikeWord = (props) => {
     } else {
         console.log("UNDEFINED");   //props.wordform.lemma_wordform undefined for nested search sections
     }
+
+    
+
 
     return (<>
             <div data-cy="elaboration" className="container">
