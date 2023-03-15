@@ -10,10 +10,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap";
 import Settings from "../../HelperClasses/SettingClass";
 import { color } from "@mui/system";
+import { useState } from "react";
+import { Snackbar } from "@mui/material";
+import { Alert } from "@mui/material";
 
 function CreeDictionarySettings(props) {
     let localStorage = window.localStorage;
-
+    let [showAlert,setShowAlert] = useState(false);
     let settings = localStorage.getItem("settings");
     if (!settings) {
         settings = new Settings();
@@ -228,12 +231,24 @@ function CreeDictionarySettings(props) {
             default:
                 break;
         }
+        //window.dispatchEvent(new Event("settings-change-alert"));
+        setShowAlert(true);
 
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
+    function handleClose() {
+        setShowAlert(false);
+    }
+
+
+    window.addEventListener("settings-change-alert", () => {
+        let saveAlertHTML = "<div><Snackbar open={true} onClose={handleClose} autoHideDuration={6000}><Alert onClose={handleClose} severity='success'>This is a success message!</Alert></Snackbar></div>";
+        document.getElementById("settings-page").innerHTML += saveAlertHTML;
+    });
+
     return (
-        <div className="container bg-white">
+        <div id="settings-page" className="container bg-white">
             <h2 style={{fontWeight: "bold", fontSize: "160%", paddingTop: "25px", paddingLeft: "5px", paddingBottom:"5px"}}>Settings</h2>
 
             <h2 className="settings-option-titles" style={{paddingTop:"10px"}}> Paradigm labels</h2>
@@ -823,6 +838,10 @@ function CreeDictionarySettings(props) {
                     </p>
                 </ListGroup.Item>
             </ListGroup>
+            {showAlert && (<div>
+                <Snackbar open={true} onClose={handleClose} autoHideDuration={6000}>
+                    <Alert onClose={handleClose} severity='success'>This is a success message!</Alert>
+                    </Snackbar></div>)}
         </div>
     );
 }
