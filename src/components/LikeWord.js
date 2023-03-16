@@ -127,16 +127,22 @@ const LikeWord = (props) => {
         </Tooltip>
     );
 
-    let bookIconInfo = "";
+    let bookIconInfo = "No info found";
 
     if (props.wordform.lemma_wordform) {
         if (props.wordform.lemma_wordform.linguist_info) {
-            if (props.wordform.lemma_wordform.linguist_info.stem) {
+            if (props.wordform.lemma_wordform.linguist_info.analysis){
+                bookIconInfo = props.wordform.lemma_wordf0rm.linguist_info.analysis;
+            } else if (props.wordform.lemma_wordform.linguist_info.stem) {
                 bookIconInfo = props.wordform.lemma_wordform.linguist_info.stem;
             }
         }
     } else if (props.wordform){
-        bookIconInfo = props.wordform.linguist_info.stem;
+        if (props.wordform.linguist_info.analysis){
+            bookIconInfo = props.wordform.linguist_ingo.analysis;
+        } else {
+            bookIconInfo = props.wordform.linguist_info.stem;
+        }
     }
 
     const renderBookToolTip = (props) => (
@@ -182,16 +188,14 @@ const LikeWord = (props) => {
                         >
                             {infoLink}
                         </OverlayTrigger>   
-
-                        <Button className="book-icon-button" onMouseDown={(e)=> {e.preventDefault()}}>
-                            <OverlayTrigger
-                                placement="bottom"
-                                delay={{show: 250, hide: 400}}
-                                overlay={renderBookToolTip}
-                                >
-                            <FontAwesomeIcon icon={faBookOpen} color="blue" overlay={renderBookToolTip} />
-                            </OverlayTrigger>
-                            </Button>    
+                        <OverlayTrigger
+                            placement="bottom"
+                            delay={{show: 250, hide: 400}}
+                            overlay={renderBookToolTip}
+                            >
+                        <Button className="book-icon-button">📖</Button>
+                        </OverlayTrigger>
+                               
                     </div>
                     
                 </div>

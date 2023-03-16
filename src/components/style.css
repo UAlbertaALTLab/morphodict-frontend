@@ -1051,7 +1051,7 @@ a.menu-choice__label:active {
 .book-icon-button{
   background-color: transparent !important;
   border: none !important;
-  color: red;
+  margin-left: -0.8em;
 }
 
 .elaboration__row {
