@@ -139,7 +139,9 @@ const LikeWord = (props) => {
         }
     } else if (props.wordform){
         if (props.wordform.linguist_info.analysis){
-            bookIconInfo = props.wordform.linguist_ingo.analysis;
+            //bookIconInfo = <div>dangerouslySetInnerHTML={{__html: props.wordform.linguist_ingo.analysis}}</div>;
+            console.log(props.wordform.linguist_info.analysis);
+            //dangerouslySetInnerHTML={{__html: data}}
         } else {
             bookIconInfo = props.wordform.linguist_info.stem;
         }
