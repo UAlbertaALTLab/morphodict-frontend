@@ -47,16 +47,20 @@ function MainPageCrk() {
                 </a>
                 . The dictionary entries are courtesy of{" "}
                 <a href="https://www.fnuniv.ca/academic/faculty/dr-arok-wolvengrey/">
-                    Dr. Arok Wolvengrey
+                    Prof. Arok Wolvengrey
                 </a>
-                and MESC.
+                , MESC and Prof. emeritus Earle Waugh.
             </p>
 
             <p>
-                The spoken Cree word recordings are courtesy of{" "}
+                The spoken Cree word recordings are courtesy of {" "}
                 <a href="https://speech-db.altlab.app/maskwacis/speakers/">
-                    speakers in Maskwacîs
-                </a>
+                    speakers in Maskwacîs</a> and {" "}
+                <a href="https://speech-db.altlab.app/moswacihk/speakers/OKI">Moswacîhk</a>
+                . The {" "}
+                <a href="https://aclanthology.org/W19-6009/">synthesized word-forms </a>
+                are based on recording of a {" "}
+                <a href="https://speech-db.altlab.app/synth/speakers/">speaker from Maskêko-sâkahikanihk</a>
                 .
             </p>
         </div>
