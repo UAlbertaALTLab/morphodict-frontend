@@ -9,10 +9,14 @@ import {ListGroup, Form} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap";
 import Settings from "../../HelperClasses/SettingClass";
-import { color } from "@mui/system";
+import { useState } from "react";
+import { Snackbar } from "@mui/material";
+import { Alert } from "@mui/material";
 
 function CreeDictionarySettings(props) {
     let localStorage = window.localStorage;
+
+    let [showAlert,setShowAlert] = useState(false); //for success snackbar alert, default = false
 
     let settings = localStorage.getItem("settings");
     if (!settings) {
@@ -24,11 +28,13 @@ function CreeDictionarySettings(props) {
 
     let changeSettingsMain = (e) => {
         settings.label = e.target.id;
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     };
 
     let changeSettingsEmoji = (e) => {
         settings.active_emoji = e.target.id;
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     };
 
@@ -61,6 +67,8 @@ function CreeDictionarySettings(props) {
             default:
                 break;
         }
+
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     };
 
@@ -76,6 +84,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     };
 
@@ -100,6 +109,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -133,6 +143,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -149,6 +160,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -165,6 +177,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -181,6 +194,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -197,6 +211,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -213,6 +228,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -229,11 +245,17 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
+    function handleSaveAlertClose() {
+        setShowAlert(false);
+    }
+
+
     return (
-        <div className="container bg-white">
+        <div id="settings-page" className="container bg-white">
             <h2 style={{fontWeight: "bold", fontSize: "160%", paddingTop: "25px", paddingLeft: "5px", paddingBottom:"5px"}}>Settings</h2>
 
             <h2 className="settings-option-titles" style={{paddingTop:"10px"}}> Paradigm labels</h2>
@@ -386,8 +408,8 @@ function CreeDictionarySettings(props) {
                         id={"IC-NO"}
                         name="ic"
                         label="No"
-                        defaultChecked={settings.ShowIC ? false : true}
-                        value={settings.ShowIC}
+                        defaultChecked={settings.showIC ? false : true}
+                        value={settings.showIC}
                         onChange={changeSettingsIc}
                         className="settings-listgroup-item-title"
                     />
@@ -823,6 +845,15 @@ function CreeDictionarySettings(props) {
                     </p>
                 </ListGroup.Item>
             </ListGroup>
+            {showAlert && (<div>
+                <Snackbar  className="settings-save-alert" open={true} onClose={handleSaveAlertClose} autoHideDuration={2000}>
+                    <Alert  
+                        className="settings-save-alert" 
+                        severity='success'
+                        variant="filled"
+                        >
+                        Saved!</Alert>
+                    </Snackbar></div>)}
         </div>
     );
 }
