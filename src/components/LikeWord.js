@@ -136,8 +136,10 @@ const LikeWord = (props) => {
             } else if (props.wordform.lemma_wordform.linguist_info.stem) {
                 bookIconInfo = props.wordform.lemma_wordform.linguist_info.stem;
             }
-        }
-    } else if (props.wordform){
+        }       
+    } 
+    // needed for Gunáhà refactor
+    /*else if (props.wordform){
         if (props.wordform.linguist_info.analysis){
             //bookIconInfo = <div>dangerouslySetInnerHTML={{__html: props.wordform.linguist_ingo.analysis}}</div>;
             console.log(props.wordform.linguist_info.analysis);
@@ -145,7 +147,7 @@ const LikeWord = (props) => {
         } else {
             bookIconInfo = props.wordform.linguist_info.stem;
         }
-    }
+    }*/
 
     const renderBookToolTip = (props) => (
         /*
