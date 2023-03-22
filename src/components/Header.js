@@ -8,6 +8,7 @@ import Settings from "../HelperClasses/SettingClass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "react-bootstrap";
+import { useDebounce } from "use-debounce";
 
 
 const crkSettings = {
@@ -77,9 +78,12 @@ function Header(props) {
     const description = process.env.REACT_APP_SUBTITLE;
     const sourceLanguageName = process.env.REACT_APP_SOURCE_LANGUAGE_ENDONYM;
     const [queryString, setQueryString] = useState("");
+    const [queryStringDebounced] = useDebounce(queryString, 500);
     const [query, setQuery] = useState(false);
+    const [queryDebounced] = useDebounce(query, 500);
     const [type, setDispType] = useState("Latn");
     const settingMenu = defaultSettings;
+
 
     if (!window.localStorage.getItem("settings")) {
         window.localStorage.setItem("settings", JSON.stringify(new Settings()));
@@ -185,7 +189,9 @@ function Header(props) {
             e.target.labels[0].innerText = "Search in Cree or English";
         }
 
-        //console.log(e.target.value);
+        if (queryStringDebounced) {
+            setQuery(true);
+        }
         
         if (e.key === "Enter") {
             setQuery(true);
@@ -234,12 +240,12 @@ function Header(props) {
                     ></Redirect>
                 </>
             )}
-            {query ? (
+            {queryDebounced ? (
                 <Redirect
                     to={{
-                        pathname: "/search/?q=" + queryString,
+                        pathname: "/search/?q=" + queryStringDebounced,
                         state: {
-                            queryString: queryString,
+                            queryString: queryStringDebounced,
                             query: query,
                             type: type,
                         },
