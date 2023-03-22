@@ -14,7 +14,7 @@ import { Alert } from "react-bootstrap";
 
 import { useQuery } from "react-query";
 
-import React, {CSSProperties, useEffect} from "react";
+import React, { CSSProperties, useEffect, useState } from "react";
 import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
 import ClipLoader from "react-spinners/ClipLoader";
 
@@ -28,11 +28,15 @@ function replaceSpecials(query) {
 
 function SearchResult(props) {
   const apiUrl = process.env.REACT_APP_BACKEND
-  const query = window.location.href.toString().split("q=")[1];
+  const [query, setQuery] = useState(props.location.state.queryString);
   console.log("API URL", apiUrl);
   console.log("QUERY", query);
+
+  window.addEventListener("newSearch", () => {
+    setQuery(props.location.state.queryString);
+  })
+
   async function getAllData() {
-    await delay(1000);
     if (query === "") {
       return [];
     }
@@ -61,7 +65,7 @@ function SearchResult(props) {
   );
 
   const debounce = function () {
-    delay(2000);
+    delay(500);
     refetch();
   };
 
@@ -71,9 +75,22 @@ function SearchResult(props) {
     () => {
       debounce();
     },
-    [props.location.state.queryString] // eslint-disable-line react-hooks/exhaustive-deps
+    [query] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
+
+    if (!query) {
+    return (
+        <>
+          <Redirect
+              to={{
+                  pathname: "/",
+              }}
+          ></Redirect>
+        </>
+    );
+  }
+    
   let results = data;
 
   let filterFunc = (d) => { return d; };

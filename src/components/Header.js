@@ -189,12 +189,16 @@ function Header(props) {
             e.target.labels[0].innerText = "Search in Cree or English";
         }
 
+        setQueryString(e.target.value);
+
         if (queryStringDebounced) {
             setQuery(true);
+            window.dispatchEvent(new Event("newSearch"));
         }
-        
+
         if (e.key === "Enter") {
             setQuery(true);
+            window.dispatchEvent(new Event("newSearch"));
         }
     };
 
@@ -216,6 +220,20 @@ function Header(props) {
 
     return (
         <div className="top-bar app__header">
+            {window.location.href.includes("search") && queryStringDebounced && (
+                <>
+                    <Redirect
+                        to={{
+                            pathname: "/search/?q=" + queryStringDebounced,
+                            state: {
+                                queryString: queryStringDebounced,
+                                query: queryDebounced,
+                                type: type,
+                            },
+                        }}
+                    ></Redirect>
+                </>
+            )}
             {window.location.href.includes("search") && (
                 <>
                     <Redirect
