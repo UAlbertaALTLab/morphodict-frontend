@@ -138,7 +138,8 @@ const LikeWord = (props) => {
             }
         }       
     } 
-    // needed for Gunáhà refactor
+
+    // needed for Gunáhà refactor - analyis tag indicates an html table instead of a string
     /*else if (props.wordform){
         if (props.wordform.linguist_info.analysis){
             //bookIconInfo = <div>dangerouslySetInnerHTML={{__html: props.wordform.linguist_ingo.analysis}}</div>;
@@ -150,34 +151,11 @@ const LikeWord = (props) => {
     }*/
 
     const renderBookToolTip = (props) => (
-        /*
-        props.wordform !== undefined ?
-        <Tooltip id="book-tooltip" {...props}>
-            {props.wordform.lemma_wordform.linguist_info.stem}
-        </Tooltip> : 
-        <Tooltip id="book-tooltip" {...props}>
-            {"Stem not defined"}
-        </Tooltip>    */
-
         <Tooltip id="book-tooltip" {...props}>
             {bookIconInfo}
         </Tooltip>
 
     )
-
-   
-
-    
-    console.log("BOOK TOOLTIP INFO");
-    if (props.wordform.lemma_wordform){
-        //console.log(props.wordform.lemma_wordform.linguist_info.stem);
-        console.log("DEFINED");
-    } else {
-        console.log("UNDEFINED");   //props.wordform.lemma_wordform undefined for nested search sections
-    }
-
-    
-
 
     return (<>
             <div data-cy="elaboration" className="container">
