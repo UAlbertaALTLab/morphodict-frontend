@@ -8,7 +8,6 @@ import Settings from "../HelperClasses/SettingClass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "react-bootstrap";
-import { useDebounce } from "use-debounce";
 
 
 const crkSettings = {
@@ -78,9 +77,7 @@ function Header(props) {
     const description = process.env.REACT_APP_SUBTITLE;
     const sourceLanguageName = process.env.REACT_APP_SOURCE_LANGUAGE_ENDONYM;
     const [queryString, setQueryString] = useState("");
-    const [queryStringDebounced] = useDebounce(queryString, 500);
     const [query, setQuery] = useState(false);
-    const [queryDebounced] = useDebounce(query, 500);
     const [type, setDispType] = useState("Latn");
     const settingMenu = defaultSettings;
 
@@ -191,14 +188,9 @@ function Header(props) {
 
         setQueryString(e.target.value);
 
-        if (queryStringDebounced) {
+        if (e.key === "Enter" && queryString) {
             setQuery(true);
-            window.dispatchEvent(new Event("newSearch"));
-        }
-
-        if (e.key === "Enter") {
-            setQuery(true);
-            window.dispatchEvent(new Event("newSearch"));
+            window.dispatchEvent(new Event("executeSearch"));
         }
     };
 
@@ -220,14 +212,14 @@ function Header(props) {
 
     return (
         <div className="top-bar app__header">
-            {window.location.href.includes("search") && queryStringDebounced && (
+            {window.location.href.includes("search") && query && (
                 <>
                     <Redirect
                         to={{
-                            pathname: "/search/?q=" + queryStringDebounced,
+                            pathname: "/search/?q=" + queryString,
                             state: {
-                                queryString: queryStringDebounced,
-                                query: queryDebounced,
+                                queryString: queryString,
+                                query: query,
                                 type: type,
                             },
                         }}
@@ -258,12 +250,12 @@ function Header(props) {
                     ></Redirect>
                 </>
             )}
-            {queryDebounced ? (
+            {query ? (
                 <Redirect
                     to={{
-                        pathname: "/search/?q=" + queryStringDebounced,
+                        pathname: "/search/?q=" + queryString,
                         state: {
-                            queryString: queryStringDebounced,
+                            queryString: queryString,
                             query: query,
                             type: type,
                         },
