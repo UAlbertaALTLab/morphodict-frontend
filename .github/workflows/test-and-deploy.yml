@@ -142,68 +142,25 @@ jobs:
           path: |
             cypress/videos
 
-  build-docker-image:
-    runs-on: ubuntu-latest
-
-    # Only build the Docker Image when we're deploying!
-    needs:
-      - should-deploy
-    if: needs.should-deploy.outputs.should-run == 'true'
-
-    steps:
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHCR_PERSONAL_ACCESS_TOKEN }}
-      - uses: actions/checkout@v2
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v2
-        with:
-          # build-push-action with the default ‘git context’ ignores the
-          # .dockerignore file
-          # https://github.com/docker/build-push-action/issues/182
-          context: .
-          file: docker/Dockerfile
-          push: true
-          # hopefully this will speed up builds and save disk space by
-          # sharing layers with the existing docker image, where possible
-          cache-from: |
-            type=registry,ref=ghcr.io/ualbertaaltlab/itwewina.altlab.app:latest
-          tags: |
-            ghcr.io/ualbertaaltlab/itwewina.altlab.app:${{ github.sha }}
 
   trigger-deployment:
     runs-on: ubuntu-latest
 
     needs:
       - should-deploy
-      - unit-test
-      - integration-test
-      - build-docker-image
+#      - unit-test
+#      - integration-test
 
     if: needs.should-deploy.outputs.should-run == 'true'
 
     steps:
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GHCR_PERSONAL_ACCESS_TOKEN }}
-      - uses: actions/checkout@v2
       - name: 🐍 Set up Python ${{ env.ACTIONS_PYTHON_VERSION }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ env.ACTIONS_PYTHON_VERSION }}
       - name: Install requests
         run: pip install requests
-      - name: Update tag
-        run: docker/copy-registry-tag ${{ github.sha }} latest
-        env:
-          GHCR_PERSONAL_ACCESS_TOKEN: ${{ secrets.GHCR_PERSONAL_ACCESS_TOKEN }}
-      - name: send HTTP request to deploy.altlab.dev webhook
+      - name: send HTTP request to deploy.altlab.dev webhook for crkeng
         # Be careful with spacing here.
         #
         # What https://yaml-multiline.info *doesn’t* warn you about: although
@@ -224,6 +181,105 @@ jobs:
         #
         # turns into `{ "foo": "a\n a" }` !
         run: >-
-          curl -X POST https://deploy.altlab.dev/itwewina --fail
-          -d '{ "secret": "${{ secrets.DEPLOY_ALTLAB_DEV_ITWEWINA_KEY }}" }'
+          curl -X POST https://deploy.altlab.dev/crkeng-frontend --fail
+          -d '{ "secret": "${{ secrets.DEPLOY_ALTLAB_DEV_CRKENG_FRONTEND_KEY }}" }'
           -H 'Content-Type: application/json'
+      - name: send HTTP request to deploy.altlab.dev webhook for cwdeng
+        # Be careful with spacing here.
+        #
+        # What https://yaml-multiline.info *doesn’t* warn you about: although
+        # `>-` means “replace newlines with spaces,” if you have an extra
+        # space on the next line, the newline gets preserved!
+        #
+        # So although
+        #
+        #     foo: >-
+        #       a
+        #       a
+        #
+        # means `{ "foo": "a a" }`,
+        #
+        #     foo: >-
+        #       a
+        #        a
+        #
+        # turns into `{ "foo": "a\n a" }` !
+        run: >-
+          curl -X POST https://deploy.altlab.dev/cwdeng-frontend --fail
+          -d '{ "secret": "${{ secrets.DEPLOY_ALTLAB_DEV_CWDENG_FRONTEND_KEY }}" }'
+          -H 'Content-Type: application/json'
+      - name: send HTTP request to deploy.altlab.dev webhook for srseng
+        # Be careful with spacing here.
+        #
+        # What https://yaml-multiline.info *doesn’t* warn you about: although
+        # `>-` means “replace newlines with spaces,” if you have an extra
+        # space on the next line, the newline gets preserved!
+        #
+        # So although
+        #
+        #     foo: >-
+        #       a
+        #       a
+        #
+        # means `{ "foo": "a a" }`,
+        #
+        #     foo: >-
+        #       a
+        #        a
+        #
+        # turns into `{ "foo": "a\n a" }` !
+        run: >-
+          curl -X POST https://deploy.altlab.dev/srseng-frontend --fail
+          -d '{ "secret": "${{ secrets.DEPLOY_ALTLAB_DEV_SRSENG_FRONTEND_KEY }}" }'
+          -H 'Content-Type: application/json'
+      - name: send HTTP request to deploy.altlab.dev webhook for arpeng
+        # Be careful with spacing here.
+        #
+        # What https://yaml-multiline.info *doesn’t* warn you about: although
+        # `>-` means “replace newlines with spaces,” if you have an extra
+        # space on the next line, the newline gets preserved!
+        #
+        # So although
+        #
+        #     foo: >-
+        #       a
+        #       a
+        #
+        # means `{ "foo": "a a" }`,
+        #
+        #     foo: >-
+        #       a
+        #        a
+        #
+        # turns into `{ "foo": "a\n a" }` !
+        run: >-
+          curl -X POST https://deploy.altlab.dev/arpeng-frontend --fail
+          -d '{ "secret": "${{ secrets.DEPLOY_ALTLAB_DEV_ARPENG_FRONTEND_KEY }}" }'
+          -H 'Content-Type: application/json'
+      - name: send HTTP request to deploy.altlab.dev webhook for hdneng
+        # Be careful with spacing here.
+        #
+        # What https://yaml-multiline.info *doesn’t* warn you about: although
+        # `>-` means “replace newlines with spaces,” if you have an extra
+        # space on the next line, the newline gets preserved!
+        #
+        # So although
+        #
+        #     foo: >-
+        #       a
+        #       a
+        #
+        # means `{ "foo": "a a" }`,
+        #
+        #     foo: >-
+        #       a
+        #        a
+        #
+        # turns into `{ "foo": "a\n a" }` !
+        run: >-
+          curl -X POST https://deploy.altlab.dev/hdneng-frontend --fail
+          -d '{ "secret": "${{ secrets.DEPLOY_ALTLAB_DEV_HDNENG_FRONTEND_KEY }}" }'
+          -H 'Content-Type: application/json'
+
+
+
