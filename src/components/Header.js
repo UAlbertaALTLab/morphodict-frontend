@@ -1,9 +1,9 @@
 import "./style.css";
 import morphodict_default_logo from "../static/morphodict-default-logo-192.png";
 
-import React, {useState} from "react";
-import {InputAdornment, rgbToHex, TextField} from "@mui/material";
-import {Redirect} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { InputAdornment, rgbToHex, TextField, Snackbar, Alert } from "@mui/material";
+import { Redirect } from "react-router-dom";
 import Settings from "../HelperClasses/SettingClass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -79,6 +79,9 @@ function Header(props) {
     const [queryString, setQueryString] = useState("");
     const [query, setQuery] = useState(false);
     const [type, setDispType] = useState("Latn");
+    const [isTyping, setIsTyping] = useState(false);
+    const [timeOfLastKeystroke, setTimeOfLastKeystroke] = useState(Date.now());
+    const [shouldNudge, setShouldNudge] = useState(false);
     const settingMenu = defaultSettings;
 
 
@@ -181,28 +184,56 @@ function Header(props) {
         console.log(JSON.parse(window.localStorage.getItem("settings")));
     };
 
+    setInterval(() => {
+        console.log("query string?", queryString);
+        console.log("should nudge?", shouldNudge);
+        if (queryString && !shouldNudge) {
+            let timeSinceLastKeystroke = Date.now() - timeOfLastKeystroke;
+            if (timeSinceLastKeystroke > 5000) {
+                // no keys have been pressed for 5 seconds
+                // dispatch Nudge
+                setShouldNudge(true);
+                setIsTyping(false);
+            }
+        } else {
+            setTimeOfLastKeystroke(Date.now());
+        }
+    }, 1000);
+
     const handleSearchKey = (e) => {
+        console.log("triggered handle search");
         if (e.target.value === "") {
             e.target.labels[0].innerText = "Search in Cree or English";
-        }
-
-        setQueryString(e.target.value);
-
-        if (e.key === "Enter" && queryString) {
+            setIsTyping(false);
+            setShouldNudge(false);
+        } else if (e.key === "Enter" && queryString) {
+            setIsTyping(false);
+            setShouldNudge(false);
             setQuery(true);
             window.dispatchEvent(new Event("executeSearch"));
+        } else {
+            setIsTyping(true);
+            setTimeOfLastKeystroke(Date.now());
+            setQueryString(e.target.value);
         }
     };
+
+    const closeNudge = () => {
+        setShouldNudge(false);
+        setIsTyping(false);
+        setTimeOfLastKeystroke(Date.now());
+    }
 
     //start search when magnifynig glass icon is clicked
     const handleMagGlassClick = (e) => {
         setQuery(true);
+        setIsTyping(false);
     }
-
-    const handleSearchText = ({target}) => {     
-        setQueryString(target.value);
-        
-    };
+    //
+    // const handleSearchText = ({target}) => {
+    //     setQueryString(target.value);
+    //
+    // };
 
     //when user starts typing, search label disappears
     const eraseLabel = (e) => {
@@ -263,6 +294,12 @@ function Header(props) {
                 ></Redirect>
             ) : null}
 
+            <Snackbar open={shouldNudge} autoHideDuration={6000} onClose={closeNudge}>
+              <Alert onClose={closeNudge} severity="warning">
+                Press Enter/Return to search for &quot;{queryString}&quot;
+              </Alert>
+            </Snackbar>
+
             <header className="branding top-bar__logo">
                 <a className="branding__logo" href="/">
                     <img
@@ -322,9 +359,8 @@ function Header(props) {
                         ),   
                     style: {backgroundColor: "white", fontStyle: "normal", borderRadius: "15px"},  //look of searchbar
                     }}
-                    
+
                     onKeyUp={handleSearchKey}
-                    onChange={handleSearchText}
                     onKeyDown={eraseLabel}
 
                 ></TextField>
