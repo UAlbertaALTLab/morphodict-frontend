@@ -1,3 +1,5 @@
+import { visitSearch } from "../../../support/commands.js"
+
 context("Searching", () => {
   describe("I want to see search results showing dynamically while I type", () => {
     // https://github.com/UAlbertaALTLab/morphodict/issues/120

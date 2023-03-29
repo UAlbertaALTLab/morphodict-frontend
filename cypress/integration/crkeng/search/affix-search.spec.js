@@ -1,3 +1,5 @@
+import { visitSearch } from "../../../support/commands.js"
+
 context("Searching", () => {
   context("Affix search", () => {
     it("should do prefix search and suffix search for Cree", () => {

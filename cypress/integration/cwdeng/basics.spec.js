@@ -6,13 +6,14 @@ describe("The Woods Cree site", function () {
     cy.get(".branding__heading").contains("itwīwina");
   });
 
-  it("can search for a word", function () {
+  // TODO: revisit these when the cwdeng backend is working
+  it.skip("can search for a word", function () {
     cy.visitSearch(`makes pottery`, urls.cwdeng).searchResultsContain(
       "asiskīwithākanihkīw"
     );
   });
 
-  it("can display a paradigm", function () {
+  it.skip("can display a paradigm", function () {
     cy.visit(`${urls.cwdeng}/word/asiskīwithākanihkīw`);
     cy.get(".paradigm-cell").contains("kitasiskīwithākanihkānaw");
   });

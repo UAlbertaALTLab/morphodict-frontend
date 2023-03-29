@@ -1,3 +1,5 @@
+import { visitSearch } from "../../../support/commands.js"
+
 context("Searching", () => {
   describe("Loading indicator", () => {
     beforeEach(() => {
@@ -8,7 +10,7 @@ context("Searching", () => {
       cy.search("amisk");
 
       // The loading indicator should be visible!
-      cy.get(".spinner-grow").should("be.visible");
+      cy.get("[data-cy='spinner']").should("be.visible");
 
       // Wait for the results to come back
       cy.wait(3000);
@@ -20,7 +22,7 @@ context("Searching", () => {
       cy.search("amitonan")
 
       // The loading indicator should be visible!
-      cy.get(".spinner-grow").should("be.visible");
+      cy.get("[data-cy='spinner']").should("be.visible");
 
       // Wait for the results to come back
       cy.wait(3000);

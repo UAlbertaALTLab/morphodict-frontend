@@ -1,3 +1,5 @@
+import { visitSearch } from "../../support/commands.js"
+
 /**
  * Test how citations should work in crkeng (itwêwina Plains Cree
  * dictionary).

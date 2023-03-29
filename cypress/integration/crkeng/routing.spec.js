@@ -1,3 +1,5 @@
+import { visitSearch } from "../../support/commands.js"
+
 // if I click this or visit that, xxx should show
 
 // corresponding requirements: https://github.com/UAlbertaALTLab/morphodict/issues/143
@@ -5,11 +7,12 @@ describe("urls for lemma detail page should be handled correctly", () => {
   it("should show lemma detail (paradigms) if a unambiguous url is given", function () {
     // Get to the definition/paradigm page for "wâpamêw"
     cy.visit("/word/wâpamêw/");
-    cy.wait(25000);
-    cy.get('.row > :nth-child(1)')
-      .should("be.visible")
-        .click()
-    cy.get(':nth-child(1) > .card > .MuiPaper-root > .MuiCollapse-root > .MuiCollapse-wrapper > .MuiCollapse-wrapperInner > #panel1a-content > .MuiAccordionDetails-root > [style="width: 100%;"] > .card-body')
+    cy.wait(11000);
+    cy.get('[data-cy="paradigm"]')
+      .should("be.visible");
+    cy.get('[data-cy="paradigm"] > :nth-child(1) > :nth-child(1)').click();
+
+    cy.get('.MuiPaper-root.Mui-expanded')
       .should("contain", "kiwâpamitin");
   });
 

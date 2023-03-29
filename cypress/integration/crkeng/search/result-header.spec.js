@@ -1,3 +1,5 @@
+import { visitSearch } from "../../../support/commands.js"
+
 context("Searching", () => {
   // See: https://github.com/UAlbertaALTLab/morphodict/issues/445#:~:text=4.%20Inflected%20form
   context("result header", function () {
@@ -186,7 +188,7 @@ context("Searching", () => {
       cy.visitSearch(preverb);
       cy.wait(2000);
 
-      cy.get('[data-cy=all-search-results').first()
+      cy.get('[data-cy=all-search-results]').first()
         .should("contain", "like: pê-")
         .and("not.contain", "None");
     });

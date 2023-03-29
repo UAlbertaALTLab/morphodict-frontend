@@ -1,3 +1,5 @@
+import { visitSearch } from "../../../support/commands.js"
+
 context("Searching", () => {
   describe("I want to see search results by the URL", () => {
     it("performs the search by going directly to the URL", () => {

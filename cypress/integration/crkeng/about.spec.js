@@ -1,6 +1,9 @@
 /**
  * General tests about the website's behaviour as a regular website.
  */
+
+import { visitSearch } from "../../support/commands.js"
+
 context("The About page", function () {
   describe("Visiting any page", () => {
     it("should have a link to the about page in the footer", () => {

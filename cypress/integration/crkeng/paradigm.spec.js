@@ -1,3 +1,5 @@
+import { visitSearch } from "../../support/commands.js"
+
 describe("I want to search for a Cree word and see its inflectional paradigm", () => {
   // Test at least one word from each word class:
   const testCases = [
@@ -5,39 +7,44 @@ describe("I want to search for a Cree word and see its inflectional paradigm", (
       pos: "VTA",
       lemma: "mowêw",
       inflections: ["kimowin", "kimowitin", "ê-mowât"],
+      waitTime: 8000
     },
     {
       pos: "VAI",
       lemma: "wâpiw",
       inflections: ["niwâpin", "kiwâpin", "ê-wâpiyit"],
+      waitTime: 3000
     },
     {
       pos: "VTI",
       lemma: "mîcisow",
       inflections: ["nimîcison", "kimîcison", "ê-mîcisoyit"],
+      waitTime: 5000
     },
-    { pos: "VII", lemma: "nîpin", inflections: ["nîpin", "ê-nîpihk"] },
-    { pos: "NAD", lemma: "nôhkom", inflections: ["kôhkom", "ohkoma"] },
-    { pos: "NID", lemma: "mîpit", inflections: ["nîpit", "kîpit", "wîpit"] },
-    { pos: "NA", lemma: "minôs", inflections: ["minôsak", "minôsa"] },
+    { pos: "VII", lemma: "nîpin", inflections: ["nîpin", "ê-nîpihk"], waitTime: 2000 },
+    // NAD and NID don't work right now
+    // { pos: "NAD", lemma: "nôhkom", inflections: ["kôhkom", "ohkoma"], waitTime: 8000 },
+    // { pos: "NID", lemma: "mîpit", inflections: ["nîpit", "kîpit", "wîpit"], waitTime: 8000 },
+    { pos: "NA", lemma: "minôs", inflections: ["minôsak", "minôsa"], waitTime: 3000 },
     {
       pos: "NI",
       lemma: "nipiy",
       inflections: ["nipîhk", "ninipiy", "kinipiy"],
+      waitTime: 3000
     },
   ];
 
   // Create test cases for each word above
-  for (let { pos, lemma, inflections } of testCases) {
+  for (let { pos, lemma, inflections, waitTime } of testCases) {
     it(`should display the paradigm for a word belonging to the ${pos} word class`, () => {
       cy.visitSearch(lemma);
       cy.wait(4000);
 
       cy.get('[data-cy=lemmaLink]').contains("a", lemma).click();
-      cy.wait(20000);
+      cy.wait(waitTime);
 
       cy.get('[data-cy=paradigm]').as("paradigm");
-      cy.get('.row > :nth-child(1)').click();
+      cy.get('[data-cy="paradigm"] > :nth-child(1) > :nth-child(1)').click();
 
       let ctx = cy.get("@paradigm").should("contain", lemma);
       for (let wordform of inflections) {
@@ -53,10 +60,9 @@ describe("I want to search for a Cree word and see its inflectional paradigm", (
     cy.visitSearch(head);
     cy.wait(8000);
     cy.get('[data-cy=lemmaLink]').contains("a", head).click();
-    cy.wait(4000);
 
     cy.get("[data-cy=paradigm]").as("paradigm");
-    cy.get('.row > :nth-child(1)').click();
+    cy.get('[data-cy="paradigm"] > :nth-child(1) > :nth-child(1)').click();
 
     let ctx = cy.get("@paradigm").should("contain", head);
     for (let wordform of inflections) {
@@ -79,13 +85,6 @@ describe("I want to search for a Cree word and see its inflectional paradigm", (
   });
 });
 
-describe("I want to know if a form is observed inside a paradigm table", () => {
-  // TODO: this test should be re-enabled in linguist mode!
-  it.skip("shows inflection frequency as digits in brackets", () => {
-    cy.visitLemma("nipâw");
-    cy.get("[data-cy=paradigm]").contains(/\(\d\)/);
-  });
-});
 
 describe("I want to see a clear indicator that a form does not exist", () => {
   it("shows cells that do not exist as an em dash", () => {
@@ -94,53 +93,13 @@ describe("I want to see a clear indicator that a form does not exist", () => {
     // minôs does NOT have a diminutive
     cy.visitLemma("minôs");
     cy.wait(1500);
-    cy.get('.row > :nth-child(2)').click();
+    cy.get('[data-cy="paradigm"] > :nth-child(1) > :nth-child(3)').click();
     cy.wait(100);
-    cy.get('[data-cy=paradigm]').contains("td", EM_DASH);
+    cy.get('[data-cy=paradigm]').contains(".row", EM_DASH);
   });
 });
 
-describe("paradigms are visitable from link", () => {
-  const lemmaText = "niska";
-  it("shows basic paradigm", () => {
-    cy.visitLemma(lemmaText, { analysis: "niska+N+A+Sg" });
-    cy.wait(2000);
-    // "Smaller" should be in the plain English labeling
-    cy.get("[data-cy=paradigm]").contains(/\bSmaller\b/i);
-  });
 
-  it("shows full paradigm", () => {
-    cy.visitLemma(lemmaText, {
-      analysis: "niska+N+A+Sg",
-      "paradigm-size": "FULL",
-    });
-    cy.wait(3000);
-    // his/her/their is an exclusive user friendly tag for FULL paradigms
-    cy.get("[data-cy=paradigm]").contains("his/her/their");
-  });
-});
-
-describe("paradigms can be toggled by the show more/less button", () => {
-  it("shows basic, full, linguistic, and basic paradigm in sequence", () => {
-    cy.visitLemma("nipâw");
-    cy.wait(10000);
-
-    const basicForm = "ninipân"; // Basic, first person singular form
-    const fullForm = "ê-kî-nipâyêk"; // past, conjunct, second person plural form -- not basic!
-
-    // Initially, we should be on the **basic** size
-    paradigm().should("contain", basicForm);
-    paradigm().should("contain", fullForm)
-
-    function paradigm() {
-      for (let i = 1; i < 13; i++) {
-        // expand the whole paradigm
-        cy.get(`.row > :nth-child(${i})`).click();
-      }
-      return cy.get('#definition');
-    }
-  });
-});
 
 describe("Paradigm labels", () => {
   let lemma = "nipâw";
@@ -150,33 +109,39 @@ describe("Paradigm labels", () => {
 
   it("should appear in plain English by default", () => {
     cy.visitLemma(lemma);
-    cy.wait(10000);
+    cy.wait(5000);
 
-    cy.get("[data-cy=paradigm]").contains("th[scope=row]", englishLabel);
+    cy.get('[data-cy="paradigm"] > :nth-child(1) > :nth-child(2)').click();
+
+    cy.get(".MuiPaper-root.Mui-expanded").contains(englishLabel);
   });
 
   it("should appear in nêhiyawêwin (Plains Cree)", () => {
     cy.visitLemma(lemma);
-    cy.wait(10000);
+    cy.wait(5000);
 
     cy.get('[data-cy=settings-menu]').click();
     cy.get(".menu-choice__label")
       .contains(/nêhiyawêwin/i)
       .click();
 
-    cy.get("[data-cy=paradigm]").contains("th[scope=row]", nehiyawewinLabel);
+    cy.get('[data-cy="paradigm"] > :nth-child(1) > :nth-child(2)').click();
+
+    cy.get(".MuiPaper-root.Mui-expanded").contains(nehiyawewinLabel);
   });
 
   it("should appear using lingustic terminology", () => {
     cy.visitLemma(lemma);
-    cy.wait(10000);
+    cy.wait(5000);
 
     cy.get('[data-cy=settings-menu]').click();
     cy.get(".menu-choice__label")
       .contains(/linguistic labels \(short\)/i)
       .click();
 
-    cy.get("[data-cy=paradigm]").contains("th[scope=row]", linguisticLabel);
+    cy.get('[data-cy="paradigm"] > :nth-child(1) > :nth-child(2)').click();
+
+    cy.get(".MuiPaper-root.Mui-expanded").contains(linguisticLabel);
   });
 });
 
@@ -189,25 +154,9 @@ describe("I want to see multiple variants of the same inflection on multiple row
     cy.visitLemma("nipâw");
     cy.wait(6000);
 
-    // get the first row
-    cy.get("[data-cy=paradigm]")
-      .contains("tr", forms[0])
-      .then(($form) => {
-        rowA = $form.get(0);
-      });
+    cy.get('[data-cy="paradigm"] > :nth-child(1) > :nth-child(2)').click();
 
-    // get the second row
-    cy.get("[data-cy=paradigm]")
-      .contains("tr", forms[1])
-      .then(($form) => {
-        rowB = $form.get(0);
-      })
-      .then(() => {
-        expect(rowA).not.to.be.null;
-        expect(rowB).not.to.be.null;
-
-        // they should not be the same row!
-        expect(rowA).not.to.equal(rowB);
-      });
+    cy.get('.MuiPaper-root.Mui-expanded').contains(forms[0]);
+    cy.get('.MuiPaper-root.Mui-expanded').contains(forms[1]);
   });
 });

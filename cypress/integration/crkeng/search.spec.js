@@ -1,3 +1,5 @@
+import { visitSearch } from "../../support/commands.js"
+
 context("Searching", () => {
   describe("I want to know what a Cree word means in English", () => {
     // https://github.com/UAlbertaALTLab/morphodict/issues/120
@@ -68,7 +70,7 @@ context("Searching", () => {
 
     it("should handle English-influenced spelling", () => {
       cy.visitSearch("atchakosuk");
-      cy.wait(7000);
+      cy.wait(3000);
       cy.searchResultsContain("atâhk");
     });
   });
@@ -100,7 +102,7 @@ context("Searching", () => {
   it("should leave out not normatized content", () => {
     // nipa means "Kill Him" in MD
     cy.visitSearch("nipa");
-    cy.wait(8000);
+    cy.wait(6000);
     cy.searchResultsContain("sleeps")
       .and("not.contain", "Kill");
   });
@@ -114,7 +116,7 @@ context("Searching", () => {
       // borrowed the following four lines from above and used 'nipaw' for testing purposes.
       const searchTerm = "niya";
       cy.visitSearch(searchTerm);
-      cy.wait(8000);
+      cy.wait(6000);
 
       cy.get('[data-cy=infoButton]').first().click();
       cy.get('[data-cy=infoButtonInfo]').should('be.visible');

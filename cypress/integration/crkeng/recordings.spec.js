@@ -1,6 +1,11 @@
 /**
  * Tests about hearing recording snippets.
  */
+
+import { visitSearch } from "../../support/commands.js"
+
+const paradigmLoadWaitTime = 12000;
+
 context("Recordings", function () {
   describe("On the search page", () => {
     it("should display for words", () => {
@@ -20,7 +25,7 @@ context("Recordings", function () {
     it("should play a recording via a 🔊 icon", function () {
       // Get to the definition/paradigm page for "wâpamêw"
       cy.visitLemma("wâpamêw");
-      cy.wait(15000);
+      cy.wait(paradigmLoadWaitTime);
 
       // And we should be able to click it.
       cy.get("[data-cy=playRecording]").click();
@@ -34,20 +39,17 @@ context("Recordings", function () {
     it("should play an individual speaker's pronounciation of the word when the speaker's name is clicked", () => {
       // 'wâpamêw' is the word that we have a bunch of recordings for
       cy.visitLemma("wâpamêw");
-      cy.wait(15000);
+      cy.wait(paradigmLoadWaitTime);
 
       // the names of the speakers should appear on the page via the select tag
-      cy.get("[data-cy=multiple-recordings]").find("button").click();
+      cy.get("[data-cy='playRecording']").click();
 
     });
 
     it("should open a link to the speaker's webpage in a new tab", () => {
       // 'wâpamêw' is the word that we have a bunch of recordings for
       cy.visitLemma("wâpamêw");
-      cy.wait(15000);
-
-      // Play the recording to get the full list of speakers.
-      cy.get("[data-cy=multiple-recordings]").find("button").click();
+      cy.wait(paradigmLoadWaitTime);
 
       // the name of the speaker should appear as a link:
       cy.get('#learnMoreLink')

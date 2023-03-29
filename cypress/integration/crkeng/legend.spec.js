@@ -1,16 +1,19 @@
+import { visitSearch } from "../../support/commands.js"
+import urls from "../../support/urls.js"
+
 context("The Legend page", function () {
   describe("Visiting any page", () => {
     it("should have a link to the about page in the footer", () => {
       cy.visit("/");
       cy.get("footer").contains("a", "Legend").click();
 
-      cy.url().should("contain", Cypress.env("legend_url"));
+      cy.url().should("contain", `${urls.legend}`);
     });
   });
 
   describe("Visiting the legend page", () => {
     beforeEach(function () {
-      cy.visit(Cypress.env("legend_url"));
+      cy.visit(`${urls.legend}`);
     });
 
     it("should have a title", () => {

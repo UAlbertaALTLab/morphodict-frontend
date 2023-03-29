@@ -313,8 +313,8 @@ img {
 
 .top-bar__search {
   grid-area: search;
-  margin-left: 20%;
-  max-width: 60%;
+  margin-left: 10%;
+  max-width: 80%;
 }
 
 /**
