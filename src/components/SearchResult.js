@@ -14,8 +14,8 @@ import { Alert } from "react-bootstrap";
 
 import { useQuery } from "react-query";
 
-import React, { CSSProperties, useEffect } from "react";
-import { Redirect } from "react-router-dom/cjs/react-router-dom.min";
+import React, { CSSProperties } from "react";
+import { Redirect } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 
 function replaceSpecials(query) {
@@ -31,7 +31,6 @@ function SearchResult(props) {
   const query = props.location.state.queryString;
   console.log("API URL", apiUrl);
   console.log("QUERY", query);
-
 
   async function getAllData() {
     if (query === "") {
@@ -61,9 +60,18 @@ function SearchResult(props) {
     }
   );
 
-  window.addEventListener("executeSearch", () => refetch())
+  window.addEventListener("executeSearch", () => refetch());
 
-
+  if (!query) {
+    return <>
+        <Redirect
+            to={{
+                pathname: "/",
+            }}
+        ></Redirect>
+    </>
+  }
+  
   let results = data;
 
   let filterFunc = (d) => { return d; };
