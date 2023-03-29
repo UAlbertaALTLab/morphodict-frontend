@@ -2,7 +2,7 @@ import "./style.css";
 import morphodict_default_logo from "../static/morphodict-default-logo-192.png";
 
 import React, { useState } from "react";
-import { InputAdornment, TextField } from "@mui/material";
+import { InputAdornment, TextField, Snackbar, Alert } from "@mui/material";
 import { Redirect } from "react-router-dom";
 import Settings from "../HelperClasses/SettingClass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -79,6 +79,7 @@ function Header(props) {
     const [queryString, setQueryString] = useState("");
     const [query, setQuery] = useState(false);
     const [type, setDispType] = useState("Latn");
+    const [showNoQueryAlert, setShowNoQueryAlert] = useState(false);
     const settingMenu = defaultSettings;
 
 
@@ -182,22 +183,32 @@ function Header(props) {
     };
 
     const handleSearchKey = (e) => {
-        if (e.target.value === "") {
+        if (e.target.value === "" && e.key !== "Enter") {
             e.target.labels[0].innerText = "Search in Cree or English";
-        } else if (e.key === "Enter" && queryString) {
-            setQuery(true);
-            window.dispatchEvent(new Event("executeSearch"));
-        } else {
-            setQueryString(e.target.value);
         }
+
+        if (e.key === "Enter" && queryString) {
+            setQuery(true);
+            setShowNoQueryAlert(false);
+        }
+
+        if (e.key === "Enter") {
+            setShowNoQueryAlert(true);
+        }
+
+        setQueryString(e.target.value);
     };
 
 
     //start search when magnifynig glass icon is clicked
     const handleMagGlassClick = (e) => {
-        setQuery(true);
-        window.dispatchEvent(new Event("executeSearch"));
-    }
+        if (queryString) {
+            setQuery(true);
+            window.dispatchEvent(new Event("executeSearch"));
+        } else {
+            setShowNoQueryAlert(true);
+        }
+    };
 
     // when search bar focused, change message to search instructions
     const setEnterMessage = (e) => {
@@ -210,7 +221,7 @@ function Header(props) {
         for (let l of legends) {
             l.style.paddingRight = "100px";
         }
-    }
+    };
 
     // when search unfocused, change message back to default
     const setDefaultMessage = (e) => {
@@ -219,8 +230,20 @@ function Header(props) {
         // we no longer need the extra 100px of padding
         let legends = document.getElementsByTagName("legend");
         for (let l of legends) {
-            l.style.paddingRight = "0px";
+            if (queryString) {
+                // is the legend above the text?
+                // then it still needs more space
+                l.style.paddingRight = "75px";
+            } else {
+                // no queryString means text is inside the input field
+                // no additional padding needed
+                l.style.paddingRight = "0px";
+            }
         }
+    };
+
+    const handleClose = () => {
+        setShowNoQueryAlert(false);
     }
 
 
@@ -276,6 +299,12 @@ function Header(props) {
                     }}
                 ></Redirect>
             ) : null}
+
+            <Snackbar open={showNoQueryAlert} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical: "bottom", horizontal: "center"}}>
+              <Alert onClose={handleClose} severity="error">
+                Please enter a word or a phrase to search
+              </Alert>
+            </Snackbar>
 
             <header className="branding top-bar__logo">
                 <a className="branding__logo" href="/">
