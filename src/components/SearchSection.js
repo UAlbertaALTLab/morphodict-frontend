@@ -87,6 +87,8 @@ const SearchSection = (props) => {
         return wordInformation["wordform_text"][displayType]
     }
 
+    console.log("PROPS IN SEARCH SECTION");
+    console.log(props);
     let wordInformation = props.display;
     if (!wordInformation) {
         return (<div>Something went wrong here</div>);
@@ -154,6 +156,15 @@ const SearchSection = (props) => {
         audio.play();
     };
 
+    const handleSoundIconOnMouseOver = () => {
+        document.getElementById("soundicon").style.color="#1c9dfe";
+    }
+
+    const handleSoundIconMouseLeave = () => {
+        document.getElementById("soundicon").style.color="#286995";
+    }
+
+
     if (information !== "") {
         infoBtn = (
             <Button
@@ -174,12 +185,18 @@ const SearchSection = (props) => {
     //Information on api only learned on 2/24/2022 moved into sp3
     if (sound !== "") {
         soundBtn = (
-            <Button variant="btn bg-white rounded" onMouseDown={(e)=> {e.preventDefault()} }
+            <Button variant="btn bg-white rounded" onMouseDown={(e)=> {e.preventDefault()}}
                     id="soundbutton"
                     onClick={handleSoundPlay}
                     data-cy="playRecording"
                     >
-                <FontAwesomeIcon icon={faVolumeUp} size="sm" />
+                <FontAwesomeIcon icon={faVolumeUp} 
+                id="soundicon" 
+                size="xl" 
+                onMouseOver={handleSoundIconOnMouseOver} 
+                onMouseLeave={handleSoundIconMouseLeave}
+                style={{color:"#286995", marginLeft:"-12px"}} 
+                />
             </Button>
         );
     }
@@ -268,6 +285,7 @@ const SearchSection = (props) => {
 
             <LikeWord
                 wordform={wordInformation}
+                
             />
             <ul className="list-group text-center">
                 {wordsDefs.map((item, i) => (
