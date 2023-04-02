@@ -46,6 +46,9 @@ function getInflectionalCategoryPlainEnglish(wordInformation) {
 
 const SearchSection = (props) => {
 
+    let [persistTooltip, setPersistTooltip] = useState(false);
+    let [showTooltip, setShowTooltip] = useState(false);
+
     const getInformation = () => {
         console.log("HERE:", wordInformation);
         if (wordInformation["relabelled_fst_analysis"]) {
@@ -154,17 +157,21 @@ const SearchSection = (props) => {
         audio.play();
     };
 
+    const handleInfoLinkClick = () => {
+        navigator.clipboard.writeText(getStem() +
+        " - " +
+        information);
+        setPersistTooltip(!persistTooltip)
+    }
+
     if (information !== "") {
         infoBtn = (
             <Button
                 variant="btn bg-white rounded shadow-none"
-                onClick={() =>
-                    navigator.clipboard.writeText(
-                        getStem() +
-                        " - " +
-                        information
-                    )
-                }
+                onMouseDown={(e)=> {e.preventDefault()}}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onClick={() => handleInfoLinkClick()}
                 data-cy="infoButton">
                 <FontAwesomeIcon icon={faInfoCircle} size="xl" color="navy"/>
             </Button>
@@ -256,8 +263,8 @@ const SearchSection = (props) => {
                 <div className="definition__icon definition-title__tooltip-icon">
                     <OverlayTrigger
                         placement="bottom"
-                        delay={{show: 250, hide: 400}}
                         overlay={renderInformationToolTip}
+                        show={persistTooltip||showTooltip}
                     >
                         {infoBtn}
                     </OverlayTrigger>
