@@ -1036,6 +1036,21 @@ a.menu-choice__label:active {
 
 }
 
+.tooltip{
+  opacity: 1 !important;
+}
+
+
+.tooltip > div.tooltip-inner {
+  background-color: white;
+  color: black;
+  box-shadow: 2px 2px 4px 0px rgba(161, 161, 161, 1);
+}
+
+.bs-tooltip-auto[data-popper-placement^=bottom] .tooltip-arrow::before, .bs-tooltip-bottom .tooltip-arrow::before {
+  border-bottom-color: white !important;
+  border-width: 0 0 12px !important;
+}
 
 .definition__elaboration {
   margin: var(--small-gap) 0 0;
