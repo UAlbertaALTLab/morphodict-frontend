@@ -403,7 +403,7 @@ function Header(props) {
                                         >
                       <span className="menu-choice__label">
                         {settingMenu[id]}
-                        {id == "ENGLISH"  &&  <hr style={{marginTop: "1.3em", marginBottom: "-0.5em"}} className="menu__separator"></hr>}
+                        {id == "Cans"  &&  <hr style={{marginTop: "1.3em", marginBottom: "-0.5em"}} className="menu__separator"></hr>}
 
                       </span>
                                         </button>
