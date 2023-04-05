@@ -40,9 +40,9 @@ function Welcome(props) {
     return (
         <div>
             <article className="prose box">
-                <h2 className="prose__heading no-italics">{welcome}</h2>
+                <h2 className="prose__heading no-italics" style={{fontSize: "140%"}}>{welcome}</h2>
 
-                <p>{title} is a {description}.</p>
+                <p style={{fontSize: "105%"}}><i>{title}</i> is a {description}.</p>
                 {endonym === "Tsuut'ina" ? <MainPageSrs/> :
                     endonym === "nêhiyawêwin" ? <MainPageCrk/> :
                         endonym === "Hinónoʼeitíít" ? <MainPageArp/> :
