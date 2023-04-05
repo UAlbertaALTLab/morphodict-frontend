@@ -245,7 +245,7 @@ const SearchSection = (props) => {
 
     //change
     wordBtn = (
-        <Button variant="btn bg-white rounded shadow-none">
+        <Button variant="btn bg-white rounded shadow-none" style={{fontSize:"105%", marginTop: "-1.5rem"}}>
             <Link
                 to={{
                     pathname: "/word/" + slug,
@@ -267,7 +267,7 @@ const SearchSection = (props) => {
                 should never happen!
             </div>
             }
-            <div className="d-flex align-items-end">
+            <div className="d-flex flex-row">
                 <div className="definition-title" data-cy="definitionTitle">{wordBtn}</div>
 
                 <div className="definition__icon definition-title__tooltip-icon">
@@ -290,7 +290,9 @@ const SearchSection = (props) => {
             <ul className="list-group text-center">
                 {wordsDefs.map((item, i) => (
                     <li className="list-group-item result-definition" data-cy="definitionText" key={i}>
-                        {i + 1}. {item["text"]} &nbsp; {item.source_ids.map((i, index) => (
+                        {i + 1}. {item["text"]} &nbsp; <span id="result-definition-source-id" 
+                        style={{fontSize:"60%", verticalAlign: "0.3em", marginLeft: "-0.5em", fontWeight: "600"}}> 
+                        {item.source_ids.map((i, index) => (
                         <OverlayTrigger
                             placement="bottom"
                             delay={{show: 250, hide: 400}}
@@ -299,7 +301,7 @@ const SearchSection = (props) => {
                             </Tooltip>}
                         >
                             <span data-cy="citation">{i}&nbsp;</span>
-                        </OverlayTrigger>))}
+                        </OverlayTrigger>))} </span>
                         {/*TODO: make a better trigger for src so that they can copy the tooltip SP3*/}
                     </li>
                 ))}

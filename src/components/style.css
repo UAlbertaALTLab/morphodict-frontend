@@ -171,7 +171,7 @@ img {
 /**
  * Highlight colour
  */
- 
+
  ::selection {
   background: firebrick;
   color: white;
@@ -957,6 +957,7 @@ a.menu-choice__label:active {
  */
 
 .result-definition {
+  font-size: 120%;
   text-align: left;
   border: 0px !important;
 }
@@ -1170,7 +1171,7 @@ a.multiple-recordings__action-button {
   text-decoration-line: underline !important;
   text-decoration-style: dotted !important;
   background-color: transparent !important;
-  border: none !important; 
+  border: none !important;
 }
 
 /**
@@ -1572,3 +1573,47 @@ textarea {
   width: 98%;
 }
 
+
+/***********************LEGEND OF ABBREVIATIONS PAGE*****************************/
+
+.abbr__section-title{
+  font-weight: bold;
+  font-size: 160%;
+  padding-top: 1.5rem;
+}
+
+.abbr__section-subtitle{
+  font-weight: normal;
+  padding-top: 0.5rem;
+  font-size: 110%;
+}
+
+.abbr__section-subsection{
+  padding-left: 2rem;
+  margin-top: -0.20rem;
+  font-size: 110%;
+  margin-bottom: -0.4rem;
+  line-height:125%
+}
+
+/*******************************WELCOME MAIN PAGE**********************************/
+
+.main-page{
+  line-height: 135%;
+  font-size: 105%;
+}
+
+
+/*********************************ABOUT PAGE*************************************/
+
+.about-page{
+  font-size: 105%;
+  line-height: 130%;
+
+}
+
+/**********************************CONTACT US PAGE*******************************/
+.contact-us-page{
+  font-size: 105%;
+  line-height: 135%;
+}

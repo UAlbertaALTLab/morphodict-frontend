@@ -2,20 +2,20 @@ import "./style.css";
 
 function About(props) {
   return (
-    <div>
+    <div className="about-page">
       <section id="source-materials" className="prose box box--spaced">
         <h2 className="prose__section-title">Source Materials</h2>
 
-        <h3 className="prose__heading"> Plains Cree / nêhiyawêwin</h3>
+        <h3 className="prose__heading"> Plains Cree / <i>nêhiyawêwin</i></h3>
         <p>
-          The computational model for analyzing Plains Cree / nêhiyawêwin' words
+          The computational model for analyzing Plains Cree / <i>nêhiyawêwin'</i> words
           and generating the various inflectional paradigms is based on the
           lexical materials and scientific research in{" "}
           <a
             href="https://uofrpress.ca/Books/C/Cree-Words"
             className="source-title"
           >
-            nêhiyawêwin : itwêwina / Cree: Words
+            <i>nêhiyawêwin : itwêwina / Cree: Words</i>
           </a>{" "}
           (Compiled by Arok Wolvengrey. Regina: Canadian Plains Research Center,
           2001), and described in{" "}
@@ -23,7 +23,7 @@ function About(props) {
             href="http://altlab.artsrn.ualberta.ca/wp-content/uploads/2019/01/Snoek_et_al_CEL1_2014.pdf"
             className="source-title"
           >
-            Modeling the Noun Morphology of Plains Cree
+            <i>Modeling the Noun Morphology of Plains Cree</i>
           </a>{" "}
           (Conor Snoek, Dorothy Thunder, Kaidi Lõo, Antti Arppe, Jordan Lachler,
           Sjur Moshagen &amp; Trond Trosterud, 2014) and{" "}
@@ -31,7 +31,7 @@ function About(props) {
             href="http://altlab.artsrn.ualberta.ca/wp-content/uploads/2019/01/Harrigan_Schmirler_Arppe_Antonsen_Trosterud_Wolvengrey_2017fc.pdf"
             className="source-title"
           >
-            Learning from the Computational Modeling of Plains Cree Verbs
+            <i>Learning from the Computational Modeling of Plains Cree Verbs</i>
           </a>{" "}
           (Atticus G. Harrigan, Katherine Schmirler, Antti Arppe, Lene Antonsen,
           Trond Trosterud &amp; Arok Wolvengrey. Morphology, 2018).
@@ -39,16 +39,16 @@ function About(props) {
 
         <h3 className="prose__heading">
           {" "}
-          Plains Cree / nêhiyawêwin ↔ English / âkayâsîmowin{" "}
+          Plains Cree / <i>nêhiyawêwin</i> ↔ English / <i>âkayâsîmowin</i>{" "}
         </h3>
         <p>
-          The bilingual Dictionary for Plains Cree / nêhiyawêwin and English /
-          âkayâsîmowin is based on the lexical materials in{" "}
+          The bilingual Dictionary for Plains Cree / <i>nêhiyawêwin</i> and English /
+          <i> âkayâsîmowin</i> is based on the lexical materials in{" "}
           <a
             href="https://uofrpress.ca/Books/C/Cree-Words"
             className="source-title"
           >
-            nêhiyawêwin : itwêwina / Cree: Words
+            <i>nêhiyawêwin : itwêwina / Cree: Words</i>
           </a>
           . (Compiled by Arok Wolvengrey. Regina: Canadian Plains Research
           Center, 2001), in the{" "}
@@ -56,7 +56,7 @@ function About(props) {
             href="https://www.altlab.dev/maskwacis/dictionary.html"
             className="source-title"
           >
-            Maskwacîs Dictionary of Cree Words / Nêhiyaw Pîkiskwêwinisa
+            <i>Maskwacîs Dictionary of Cree Words / Nêhiyaw Pîkiskwêwinisa</i>
           </a>{" "}
           (Maskwachees Cultural College, Maskwacîs, 2009) ,and in the {" "}
           <a href="https://www.uap.ualberta.ca/titles/122-9780888642844-alberta-elders-cree-dictionary-alperta-ohci-kehtehayak-nehiyaw-otwestamakewasinahikan">Alberta Elders' Cree Dictionary</a> / 
@@ -71,8 +71,8 @@ function About(props) {
           speakers in Maskwacîs, Alberta, have been recorded in the joint
           project{" "}
           <a href="https://www.altlab.dev/maskwacis/" className="source-title">
-            Spoken Dictionary of Maskwacîs Cree – nêhiyaw-pîkiskwêwina
-            maskwacîsihk
+            <i>Spoken Dictionary of Maskwacîs Cree – nêhiyaw-pîkiskwêwina
+            maskwacîsihk</i>
           </a>{" "}
           between then Miyo Wahkohtowin Education, now{" "}
           <a href="https://www.maskwacised.ca/">
@@ -103,7 +103,7 @@ function About(props) {
         <h2 className="prose__section-title">Credits</h2>
 
         <p>
-          itwêwina is{" "}
+          <i>itwêwina</i> is{" "}
           <a href="https://github.com/UAlbertaALTLab/morphodict">
             an open-source project
           </a>
@@ -113,7 +113,7 @@ function About(props) {
           </a>
         </p>
 
-        <p> The mîkiwâhp (teepee) logo was created by Tasha Powers. </p>
+        <p> The <i>mîkiwâhp</i> (teepee) logo was created by Tasha Powers. </p>
 
         <p>
           This project has been supported by the Social Sciences and Humanities
