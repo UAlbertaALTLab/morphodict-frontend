@@ -46,6 +46,9 @@ function getInflectionalCategoryPlainEnglish(wordInformation) {
 
 const SearchSection = (props) => {
 
+    let [persistTooltip, setPersistTooltip] = useState(false);
+    let [showTooltip, setShowTooltip] = useState(false);
+
     const getInformation = () => {
         console.log("HERE:", wordInformation);
         if (wordInformation["relabelled_fst_analysis"]) {
@@ -87,8 +90,6 @@ const SearchSection = (props) => {
         return wordInformation["wordform_text"][displayType]
     }
 
-    console.log("PROPS IN SEARCH SECTION");
-    console.log(props);
     let wordInformation = props.display;
     if (!wordInformation) {
         return (<div>Something went wrong here</div>);
@@ -156,6 +157,13 @@ const SearchSection = (props) => {
         audio.play();
     };
 
+    const handleInfoLinkClick = () => {
+        navigator.clipboard.writeText(getStem() +
+        " - " +
+        information);
+        setPersistTooltip(!persistTooltip)
+    }
+
     const handleSoundIconOnMouseOver = () => {
         document.getElementById("soundicon").style.color="#1c9dfe";
     }
@@ -164,18 +172,14 @@ const SearchSection = (props) => {
         document.getElementById("soundicon").style.color="#286995";
     }
 
-
     if (information !== "") {
         infoBtn = (
             <Button
                 variant="btn bg-white rounded shadow-none"
-                onClick={() =>
-                    navigator.clipboard.writeText(
-                        getStem() +
-                        " - " +
-                        information
-                    )
-                }
+                onMouseDown={(e)=> {e.preventDefault()}}
+                    onMouseLeave={() => setShowTooltip(false)}
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onClick={() => handleInfoLinkClick()}
                 data-cy="infoButton">
                 <FontAwesomeIcon icon={faInfoCircle} size="xl" color="navy"/>
             </Button>
@@ -190,12 +194,12 @@ const SearchSection = (props) => {
                     onClick={handleSoundPlay}
                     data-cy="playRecording"
                     >
-                <FontAwesomeIcon icon={faVolumeUp} 
-                id="soundicon" 
-                size="xl" 
-                onMouseOver={handleSoundIconOnMouseOver} 
+                <FontAwesomeIcon icon={faVolumeUp}
+                id="soundicon"
+                size="xl"
+                onMouseOver={handleSoundIconOnMouseOver}
                 onMouseLeave={handleSoundIconMouseLeave}
-                style={{color:"#286995", marginLeft:"-12px"}} 
+                style={{color:"#286995", marginLeft:"-12px"}}
                 />
             </Button>
         );
@@ -245,7 +249,7 @@ const SearchSection = (props) => {
 
     //change
     wordBtn = (
-        <Button variant="btn bg-white rounded shadow-none">
+        <Button variant="btn bg-white rounded shadow-none" style={{fontSize:"105%", marginTop: "-1.5rem"}}>
             <Link
                 to={{
                     pathname: "/word/" + slug,
@@ -267,14 +271,14 @@ const SearchSection = (props) => {
                 should never happen!
             </div>
             }
-            <div className="d-flex align-items-end">
+            <div className="d-flex flex-row">
                 <div className="definition-title" data-cy="definitionTitle">{wordBtn}</div>
 
                 <div className="definition__icon definition-title__tooltip-icon">
                     <OverlayTrigger
                         placement="bottom"
-                        delay={{show: 250, hide: 400}}
                         overlay={renderInformationToolTip}
+                        show={persistTooltip||showTooltip}
                     >
                         {infoBtn}
                     </OverlayTrigger>
@@ -285,12 +289,14 @@ const SearchSection = (props) => {
 
             <LikeWord
                 wordform={wordInformation}
-                
+
             />
             <ul className="list-group text-center">
                 {wordsDefs.map((item, i) => (
                     <li className="list-group-item result-definition" data-cy="definitionText" key={i}>
-                        {i + 1}. {item["text"]} &nbsp; {item.source_ids.map((i, index) => (
+                        {i + 1}. {item["text"]} &nbsp; <span id="result-definition-source-id"
+                        style={{fontSize:"60%", verticalAlign: "0.3em", marginLeft: "-0.5em", fontWeight: "600"}}>
+                        {item.source_ids.map((i, index) => (
                         <OverlayTrigger
                             placement="bottom"
                             delay={{show: 250, hide: 400}}
@@ -299,7 +305,7 @@ const SearchSection = (props) => {
                             </Tooltip>}
                         >
                             <span data-cy="citation">{i}&nbsp;</span>
-                        </OverlayTrigger>))}
+                        </OverlayTrigger>))} </span>
                         {/*TODO: make a better trigger for src so that they can copy the tooltip SP3*/}
                     </li>
                 ))}

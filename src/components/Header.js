@@ -1,9 +1,9 @@
 import "./style.css";
 import morphodict_default_logo from "../static/morphodict-default-logo-192.png";
 
-import React, {useState} from "react";
-import {InputAdornment, rgbToHex, TextField} from "@mui/material";
-import {Redirect} from "react-router-dom";
+import React, { useState } from "react";
+import { InputAdornment, TextField, Snackbar, Alert } from "@mui/material";
+import { Redirect } from "react-router-dom";
 import Settings from "../HelperClasses/SettingClass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
@@ -79,7 +79,9 @@ function Header(props) {
     const [queryString, setQueryString] = useState("");
     const [query, setQuery] = useState(false);
     const [type, setDispType] = useState("Latn");
+    const [showNoQueryAlert, setShowNoQueryAlert] = useState(false);
     const settingMenu = defaultSettings;
+
 
     if (!window.localStorage.getItem("settings")) {
         window.localStorage.setItem("settings", JSON.stringify(new Settings()));
@@ -181,35 +183,86 @@ function Header(props) {
     };
 
     const handleSearchKey = (e) => {
-        if (e.target.value === "") {
+        if (e.target.value === "" && e.key !== "Enter") {
             e.target.labels[0].innerText = "Search in Cree or English";
         }
 
-        //console.log(e.target.value);
-        
-        if (e.key === "Enter") {
+        if (e.key === "Enter" && queryString) {
             setQuery(true);
+            setShowNoQueryAlert(false);
         }
+
+        if (e.key === "Enter") {
+            setShowNoQueryAlert(true);
+        }
+
+        setQueryString(e.target.value);
     };
+
 
     //start search when magnifynig glass icon is clicked
     const handleMagGlassClick = (e) => {
-        setQuery(true);
-    }
-
-    const handleSearchText = ({target}) => {     
-        setQueryString(target.value);
-        
+        if (queryString) {
+            setQuery(true);
+            window.dispatchEvent(new Event("executeSearch"));
+        } else {
+            setShowNoQueryAlert(true);
+        }
     };
 
-    //when user starts typing, search label disappears
-    const eraseLabel = (e) => {
-        e.target.labels[0].innerText = "";       
+    // when search bar focused, change message to search instructions
+    const setEnterMessage = (e) => {
+        e.target.labels[0].innerText = `Press Enter/Return to Search`;
+
+        // when focused, the search bar has a blue border
+        // that blue border cuts into the words
+        // trial and error told me I need an extra 100px of padding to stop that from happening
+        let legends = document.getElementsByTagName("legend");
+        for (let l of legends) {
+            l.style.paddingRight = "100px";
+        }
+    };
+
+    // when search unfocused, change message back to default
+    const setDefaultMessage = (e) => {
+        e.target.labels[0].innerText = `Search in Cree or English`;
+
+        // we no longer need the extra 100px of padding
+        let legends = document.getElementsByTagName("legend");
+        for (let l of legends) {
+            if (queryString) {
+                // is the legend above the text?
+                // then it still needs more space
+                l.style.paddingRight = "75px";
+            } else {
+                // no queryString means text is inside the input field
+                // no additional padding needed
+                l.style.paddingRight = "0px";
+            }
+        }
+    };
+
+    const handleClose = () => {
+        setShowNoQueryAlert(false);
     }
 
 
     return (
         <div className="top-bar app__header">
+            {window.location.href.includes("search") && query && (
+                <>
+                    <Redirect
+                        to={{
+                            pathname: "/search/?q=" + queryString,
+                            state: {
+                                queryString: queryString,
+                                query: query,
+                                type: type,
+                            },
+                        }}
+                    ></Redirect>
+                </>
+            )}
             {window.location.href.includes("search") && (
                 <>
                     <Redirect
@@ -247,6 +300,12 @@ function Header(props) {
                 ></Redirect>
             ) : null}
 
+            <Snackbar open={showNoQueryAlert} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical: "bottom", horizontal: "center"}}>
+              <Alert onClose={handleClose} severity="error">
+                Please enter a word or a phrase to search
+              </Alert>
+            </Snackbar>
+
             <header className="branding top-bar__logo">
                 <a className="branding__logo" href="/">
                     <img
@@ -279,18 +338,19 @@ function Header(props) {
                     fullWidth
                     label="Search in Cree or English"
                     autoComplete="off"  //prevents history from popping up
+                    onFocus={setEnterMessage}
+                    onBlur={setDefaultMessage}
                     
                     
                     //styling for label text
                     InputLabelProps={                      
                         {
-                        shrink: false, //prevents label text from hopping to top of search bar on focus  
                         style:{
                             fontStyle: "italic",
                             fontFamily: "Calibri",  //other acceptable fonts? - Tahoma, Segoe UI, Microsoft PhagsPa, Microsoft YaHei, Nirmala UI
                             fontSize: "170%", 
                             marginTop: "-9px",
-                            color: "gray" 
+                            color: "gray",
                             }
                         }
                     }
@@ -307,10 +367,8 @@ function Header(props) {
                         ),   
                     style: {backgroundColor: "white", fontStyle: "normal", borderRadius: "15px"},  //look of searchbar
                     }}
-                    
+
                     onKeyUp={handleSearchKey}
-                    onChange={handleSearchText}
-                    onKeyDown={eraseLabel}
 
                 ></TextField>
             </nav>
