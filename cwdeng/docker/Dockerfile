@@ -13,19 +13,25 @@
 #
 
 ################################ Build stage #################################
-FROM node:alpine AS builder
+FROM python:3.9-slim-buster AS builder
 
 LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
 ARG MORPHODICT_UID_GID=60006
-ARG NODE_VERSION=v12.20.2
+ARG NODE_VERSION=v15.4.0
 
+# Install Node + npm
+# (note: default npm is too old for the apt install'd version of NodeJS??!?!?!)
 WORKDIR /tmp
+ADD https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-x64.tar.gz /tmp/node.tar.gz
+RUN tar xf node.tar.gz \
+ && mv node-${NODE_VERSION}-linux-x64 /opt/node
+ENV PATH="/opt/node/bin:${PATH}"
 
 # Create the non-root user/group that will own the application code
-#RUN groupadd --gid ${MORPHODICT_UID_GID} morphodict \
-# && useradd --no-log-init --gid morphodict \
-#    --uid ${MORPHODICT_UID_GID} morphodict --create-home
+RUN groupadd --gid ${MORPHODICT_UID_GID} morphodict \
+ && useradd --no-log-init --gid morphodict \
+    --uid ${MORPHODICT_UID_GID} morphodict --create-home
 # Install and build dependencies,
 # then remove build-time dependencies to keep the image slim!
 RUN set -ex \
@@ -35,7 +41,6 @@ RUN set -ex \
     libfoma0 \
     git `# for installing python packages direct from github` \
  && rm -rf /var/cache/apt \
- && pip install pipenv \
  && mkdir /app/ \
  && chown morphodict /app
 
@@ -44,20 +49,27 @@ USER morphodict
 WORKDIR /app/
 
 # Install Python and NodeJS dependencies
-ADD Pipfile Pipfile.lock package.json package-lock.json /app/
+ADD --chown=morphodict package.json package-lock.json /app/
 # On Andrew’s linux machine, docker builds were sometimes ridiculously slow
 # without this option. npm would try to download/install(?) too many packages
 # all at once and some sort of resource would get exhausted leading to hangs.
 RUN echo maxsockets=4 > ~/.npmrc
-RUN PIPENV_VENV_IN_PROJECT=1 pipenv install --deploy \
- && npm install --loglevel=verbose --only=production
+RUN npm install --loglevel=verbose --only=production
 
 # Add everything else now:
 ADD --chown=morphodict . /app/
 
+# pre-compile all .py files
+RUN python -m compileall -q .
+
+# Build the application:
+ENV NODE_ENV=production
+RUN ls /app/generated 2>&1 && echo 0 || mkdir /app/generated
+RUN ls /app/generated/frontend 2>&1 && echo 0 || mkdir /app/generated/frontend
+
 ############################# Application image ##############################
 
-FROM node:alpine
+FROM python:3.9-slim-buster
 LABEL maintainer="Jolene Poulin <jcpoulin@ualberta.ca>"
 
 # Choose an ID that will be consistent across all machines in the network
@@ -67,9 +79,17 @@ ARG MORPHODICT_UID_GID=60006
 ARG MORPHODICT_RUN_UID_GID=60007
 ARG TINI_VERSION=v0.19.0
 
+# Node >12 also needs to be installed here
+ARG NODE_VERSION=v15.4.0
+WORKDIR /tmp
+ADD https://nodejs.org/dist/${NODE_VERSION}/node-${NODE_VERSION}-linux-x64.tar.gz /tmp/node.tar.gz
+RUN tar xf node.tar.gz \
+ && mv node-${NODE_VERSION}-linux-x64 /opt/node
+ENV PATH="/opt/node/bin:${PATH}"
+
 RUN set -ex \
  && apt-get update \
- && apt-get install -y --no-install-recommends tini libfoma0 \
+ && apt-get install -y --no-install-recommends tini libfoma0 npm \
  && rm -rf /var/cache/apt
 
 # Create the user/group that will run the application code
@@ -85,7 +105,7 @@ RUN set -xv ; groupadd --gid ${MORPHODICT_UID_GID} morphodict \
 # Copy over the built application from the builder:
 COPY --from=builder --chown=morphodict /app /app
 
-COPY docker/app.sh /app
+COPY cwdeng/docker/app.sh /app
 
 USER morphodict-run
 WORKDIR /app
@@ -95,12 +115,17 @@ ENV PATH="${VIRTUAL_ENV}/bin:${PATH}"
 ENV PYTHONPATH="/app/src"
 
 # uWSGI will bind HTTP to this port:
-EXPOSE 3000
+EXPOSE 3002
 # uWSGI stats are accessible on this port
 # I view them with this command:
 #
 #    $ nc 127.0.0.1 9191 | jq
 #
-EXPOSE 4141
+EXPOSE 4002
 
-CMD ["npm", "run", "start:crkeng"]
+# Among other things, tini makes typing Ctrl-C into docker-compose work
+# see: https://github.com/krallin/tini#tini---a-tiny-but-valid-init-for-containers
+ENTRYPOINT ["tini", "--"]
+# Startup takes a bit of conditional logic, which we wrap it into a shell script
+# instead of inlining it here.
+CMD ["/app/app.sh"]

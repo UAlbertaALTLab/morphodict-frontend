@@ -169,6 +169,16 @@ img {
 }
 
 /**
+ * Highlight colour
+ */
+
+ ::selection {
+  background: firebrick;
+  color: white;
+}
+
+
+/**
  * BLOCK app
  *
  * A block containing the ENTIRE application.
@@ -949,6 +959,7 @@ a.menu-choice__label:active {
 .result-definition {
   font-size: 120%;
   text-align: left;
+  border: 0px !important;
 }
 
 /**
@@ -991,6 +1002,7 @@ a.menu-choice__label:active {
 .definition-title {
   font-size: var(--definition-title-size);
   margin: 0;
+  white-space: nowrap;
 }
 
 .definition-title__title {
@@ -1044,10 +1056,15 @@ a.menu-choice__label:active {
  .definition-title__play-icon,
 .speaker-playback-action-button {
   width: 100%;
-  margin-left: -12px;
   border: none !important;
   outline: none !important;
   
+}
+
+.book-icon-button{
+  background-color: transparent !important;
+  border: none !important;
+  margin-left: -0.8em;
 }
 
 .elaboration__row {
@@ -1144,6 +1161,17 @@ a.menu-choice__label:active {
 a.multiple-recordings__action-button {
   font-weight: var(--body-font-weight);
   font-style: italic;
+}
+
+/**
+* Like Word
+*/
+.like-word-text {
+  color:#000 !important;
+  text-decoration-line: underline !important;
+  text-decoration-style: dotted !important;
+  background-color: transparent !important;
+  border: none !important;
 }
 
 /**
@@ -1539,6 +1567,10 @@ textarea {
   font-weight: bold;
   font-size: 105%;
   padding-left: 35px !important;
+}
+
+.settings-save-alert{
+  width: 98%;
 }
 
 

@@ -9,10 +9,14 @@ import {ListGroup, Form} from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "react-bootstrap";
 import Settings from "../../HelperClasses/SettingClass";
-import { color } from "@mui/system";
+import { useState } from "react";
+import { Snackbar } from "@mui/material";
+import { Alert } from "@mui/material";
 
 function CreeDictionarySettings(props) {
     let localStorage = window.localStorage;
+
+    let [showAlert,setShowAlert] = useState(false); //for success snackbar alert, default = false
 
     let settings = localStorage.getItem("settings");
     if (!settings) {
@@ -24,11 +28,13 @@ function CreeDictionarySettings(props) {
 
     let changeSettingsMain = (e) => {
         settings.label = e.target.id;
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     };
 
     let changeSettingsEmoji = (e) => {
         settings.active_emoji = e.target.id;
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     };
 
@@ -61,6 +67,8 @@ function CreeDictionarySettings(props) {
             default:
                 break;
         }
+
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     };
 
@@ -76,6 +84,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     };
 
@@ -100,6 +109,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -133,6 +143,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -149,6 +160,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -165,6 +177,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -181,6 +194,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -197,6 +211,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -213,6 +228,7 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
@@ -229,17 +245,22 @@ function CreeDictionarySettings(props) {
                 break;
         }
 
+        setShowAlert(true);
         window.localStorage.setItem("settings", JSON.stringify(settings));
     }
 
+    function handleSaveAlertClose() {
+        setShowAlert(false);
+    }
+
+
     return (
-        <div className="container bg-white">
+        <div id="settings-page" className="container bg-white">
             <h2 style={{fontWeight: "bold", fontSize: "160%", paddingTop: "25px", paddingLeft: "5px", paddingBottom:"5px"}}>Settings</h2>
 
-            <h2 className="settings-option-titles" style={{paddingTop:"10px"}}> Paradigm labels</h2>
+            <h2 className="settings-option-titles" style={{paddingTop:"10px"}}> Display Mode</h2>
             <p className="settings-option-subtitles">
-                These are the labels that appear on the <b>paradigm table</b> to label
-                features like person, tense, plurals, etc.
+                How would you like the labels to appear throughout the site?
             </p>
 
             <ListGroup variant="flush" data-cy="label-choice">
@@ -293,9 +314,9 @@ function CreeDictionarySettings(props) {
                 </ListGroup.Item>
             </ListGroup>
 
-            <h2 className="settings-option-titles">Show Morpheme Boundaries</h2>
+            <h2 className="settings-option-titles">Morpheme Boundaries</h2>
             <p className="settings-option-subtitles">
-                Where would you like morpheme boundaries to be shown?</p>
+                Where would you like to see morpheme boundaries to be shown?</p>
 
             <ListGroup variant="flush" data-cy="morpheme-choice">
                 <ListGroup.Item className="settings-listgroup-item">
@@ -310,7 +331,7 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        Show morpheme boundaries everywhere
+                        I would like to see morpheme boundaries in entry headers and in paradigm tables
                     </p>
                 </ListGroup.Item>
                 <ListGroup.Item className="settings-listgroup-item">
@@ -325,7 +346,7 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        Show morpheme boundaries in entry headers only
+                        I would like to see morpheme boundaries in headers only
                     </p>
                 </ListGroup.Item>
                 <ListGroup.Item className="settings-listgroup-item">
@@ -340,7 +361,7 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        Show morpheme boundaries in the paradigms
+                        I would like to see morpheme boundaries in paradigm tables only
                     </p>
                 </ListGroup.Item>
                 <ListGroup.Item className="settings-listgroup-item">
@@ -355,14 +376,14 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        Don't show morpheme boundaries anywhere
+                        I do not want to see morpheme boundaries (default)
                     </p>
                 </ListGroup.Item>
             </ListGroup>
 
-            <h2 className="settings-option-titles">Show Inflectional Category</h2>
+            <h2 className="settings-option-titles">Inflectional Category</h2>
             <p className="settings-option-subtitles">
-                Would you like to see the inflectional category?</p>
+                Would you like to see the inflectional category with search results?</p>
 
             <ListGroup variant="flush" data-cy="ic-choice">
                 <ListGroup.Item className="settings-listgroup-item">
@@ -377,7 +398,7 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        I want to see the inflectional category with every entry
+                        I always want to see the inflectional category
                     </p>
                 </ListGroup.Item>
                 <ListGroup.Item className="settings-listgroup-item">
@@ -386,20 +407,20 @@ function CreeDictionarySettings(props) {
                         id={"IC-NO"}
                         name="ic"
                         label="No"
-                        defaultChecked={settings.ShowIC ? false : true}
-                        value={settings.ShowIC}
+                        defaultChecked={settings.showIC ? false : true}
+                        value={settings.showIC}
                         onChange={changeSettingsIc}
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        I don't want to see the inflectional category with entries
+                        I only want to see the infelctional category in linguistic mode
                     </p>
                 </ListGroup.Item>
             </ListGroup>
 
-            <h2 className="settings-option-titles">Show Emojis</h2>
+            <h2 className="settings-option-titles">Show Emojis with entries?</h2>
             <p className="settings-option-subtitles">
-                Would you like to see the emojis?</p>
+                Emojis illustrate word classes</p>
 
             <ListGroup variant="flush" data-cy="see-emoji-choice">
                 <ListGroup.Item className="settings-listgroup-item">
@@ -414,7 +435,7 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        I want to see emojis
+                        Show emojis with my entries (default)
                     </p>
                 </ListGroup.Item>
                 <ListGroup.Item className="settings-listgroup-item">
@@ -429,7 +450,7 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        I do not want to see emojis
+                        Don't show emojis with my entries
                     </p>
                 </ListGroup.Item>
             </ListGroup>
@@ -579,14 +600,14 @@ function CreeDictionarySettings(props) {
                         type={"radio"}
                         id={"ALL-DIC"}
                         name="dict-sources"
-                        label="All"
+                        label="ALL"
                         defaultChecked={settings.all_sources ? true : false}
                         value={settings.all_sources}
                         onChange={changeSettingsDicts}
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                    Show entries from all sources (default) </p>
+                    Show entries from CW, AECD, and MD (default) </p>
                 </ListGroup.Item>
             </ListGroup>
 
@@ -608,7 +629,7 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        Show recordings from Maskwacîs.
+                        Show audio from the Maskwacîs Cree community
                     </p>
                 </ListGroup.Item>
                 <ListGroup.Item className="settings-listgroup-item">
@@ -623,7 +644,7 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        Show recordings from mōswacīhk.
+                        Show audio from the mōswacīhk communiy (White Bear First Nations, Saskatchewan)
                     </p>
                 </ListGroup.Item>
                 <ListGroup.Item className="settings-listgroup-item">
@@ -638,11 +659,11 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                    Show recordings from Maskwacîs and mōswacīhk </p>
+                    Show audio from both sources (default) </p>
                 </ListGroup.Item>
             </ListGroup>
 
-            <h2 className="settings-option-titles">Show Paradigm Audio</h2>
+            <h2 className="settings-option-titles">Show/Play Paradigm Audio</h2>
             <p className="settings-option-subtitles">
                 When available, paradigm audio will be displayed and played in paradigms
             </p>
@@ -676,7 +697,7 @@ function CreeDictionarySettings(props) {
                 </ListGroup.Item>
             </ListGroup>
 
-            <h2 className="settings-option-titles">Show Synthesized Audio</h2>
+            <h2 className="settings-option-titles">Show/Play Synthesized Audio</h2>
             <p className="settings-option-subtitles">
                 Synthesized audio is generated by a computer model. It is fairly accurate, but not as precise or natural
                 as a human speaker. This setting applies to all speech except the paradigm layouts.
@@ -715,7 +736,7 @@ function CreeDictionarySettings(props) {
                 </ListGroup.Item>
             </ListGroup>
 
-            <h2 className="settings-option-titles">Show Synthesized Audio in Paradigms</h2>
+            <h2 className="settings-option-titles">Show/Play Synthesized Audio in Paradigms</h2>
             <p className="settings-option-subtitles">
                 Synthesized audio is generated by a computer model. It is fairly accurate, but not as precise or natural
                 as a human speaker. This setting applies to the Paradigm Layouts specifically. <i>Note: this setting
@@ -734,7 +755,7 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        Show synthesized recordings in the paradigms
+                        I would like to hear synthesized recordings in my paradigm layouts
                     </p>
                 </ListGroup.Item>
                 <ListGroup.Item className="settings-listgroup-item">
@@ -749,7 +770,7 @@ function CreeDictionarySettings(props) {
                         className="settings-listgroup-item-title"
                     />
                     <p className="settings-listgroup-item-subtext">
-                        Don't show synthesized recordings in the paradigms
+                        I do not want to hear synthesized recordings in my paradigm layouts
                     </p>
                 </ListGroup.Item>
             </ListGroup>
@@ -823,6 +844,15 @@ function CreeDictionarySettings(props) {
                     </p>
                 </ListGroup.Item>
             </ListGroup>
+            {showAlert && (<div>
+                <Snackbar  className="settings-save-alert" open={true} onClose={handleSaveAlertClose} autoHideDuration={2000}>
+                    <Alert  
+                        className="settings-save-alert" 
+                        severity='success'
+                        variant="filled"
+                        >
+                        Saved!</Alert>
+                    </Snackbar></div>)}
         </div>
     );
 }
