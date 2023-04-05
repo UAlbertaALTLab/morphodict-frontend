@@ -222,6 +222,3 @@ jobs:
           curl -X POST https://deploy.altlab.dev/hdneng-frontend --fail
           -d '{ "secret": "${{ secrets.DEPLOY_ALTLAB_DEV_HDNENG_FRONTEND_KEY }}" }'
           -H 'Content-Type: application/json'
-
-
-

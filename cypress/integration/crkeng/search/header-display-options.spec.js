@@ -1,6 +1,9 @@
 /**
  * Similar to ./result-header.spec.js -- displays more data
  */
+
+import { visitSearch } from "../../../support/commands.js"
+
 context("Searching", () => {
   before(() => setDefaultDisplayMode());
   after(() => setDefaultDisplayMode());

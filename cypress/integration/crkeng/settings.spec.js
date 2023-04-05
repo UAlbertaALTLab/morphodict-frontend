@@ -1,11 +1,7 @@
-import Settings from "../../../src/morphodict/src/HelperClasses/SettingClass";
+import { visitSearch } from "../../support/commands.js"
+import urls from "../../support/urls.js"
 
 context("The settings page", () => {
-  beforeEach(function () {
-    if (!window.localStorage.getItem("settings")) {
-        window.localStorage.setItem("settings", JSON.stringify(new Settings()));
-    }
-  });
 
   it("should be accessible from the home page", () => {
     cy.visit("/");
@@ -22,7 +18,7 @@ context("The settings page", () => {
     it("should set the preference without a submit button", () => {
       let checkedValue;
 
-      cy.visit(Cypress.env("settings_url"));
+      cy.visit(`${urls.settings}`);
 
       cy.get('#NÊHIYAWÊWIN')
         .check();
@@ -36,7 +32,7 @@ context("The settings page", () => {
     // This test is good to have, but currently the settings always save and do so quietly
     // there's no success or error toast, so this test is unnecessary.
     it.skip("should show an error message if the save did not succeed", () => {
-      cy.visit(Cypress.env("settings_url"));
+      cy.visit(`${urls.settings}`);
 
       cy.get(`input[name=label_type]`)
         .parents("form")
@@ -74,20 +70,20 @@ context("The settings page", () => {
     const VAI_WORD = "nipâw";
 
     it("should be accessible from the settings page", () => {
-      cy.visit(Cypress.env("settings_url"));
+      cy.visit(`${urls.settings}`);
 
       cy.get("[data-cy=animate-emoji-choice]")
         .contains("label", NON_DEFAULT_EMOJI)
         .click();
 
       cy.visitSearch("mistikomin");
-      cy.wait(5000);
+      cy.wait(7000);
 
       cy.get("[data-cy=wordclassEmoji]").first().should("contain", NON_DEFAULT_EMOJI);
     });
 
-    it("should changes the emoji on the search page", () => {
-      cy.visit(Cypress.env("settings_url"));
+    it("should change the emoji on the search page", () => {
+      cy.visit(`${urls.settings}`);
 
       cy.get("[data-cy=animate-emoji-choice]")
         .contains("label", NON_DEFAULT_EMOJI)
@@ -111,7 +107,7 @@ context("The settings page", () => {
     });
 
     it("should changes the emoji on the details page", () => {
-      cy.visit(Cypress.env("settings_url"));
+      cy.visit(`${urls.settings}`);
 
       cy.get("[data-cy=animate-emoji-choice]")
         .contains("label", NON_DEFAULT_EMOJI)

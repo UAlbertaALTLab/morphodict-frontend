@@ -334,6 +334,7 @@ function Header(props) {
                     id="search"
                     className="search-bar"
                     variant="outlined"
+                    width={"60%"}
                     fullWidth
                     label="Search in Cree or English"
                     autoComplete="off"  //prevents history from popping up

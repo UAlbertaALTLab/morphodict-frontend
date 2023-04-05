@@ -1,6 +1,9 @@
 /**
  * General tests about the website's behaviour as a regular website.
  */
+
+import { visitSearch } from "../../support/commands.js"
+
 context("General", function () {
   beforeEach(function () {
     cy.visit("/");

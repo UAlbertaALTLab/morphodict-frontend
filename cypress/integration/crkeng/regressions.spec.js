@@ -1,3 +1,5 @@
+import { visitSearch } from "../../support/commands.js"
+
 context("Regressions", () => {
   /**
    * Cypress does not URL-encode non-ASCII components in URLs automatically,
@@ -162,13 +164,15 @@ context("Regressions", () => {
     cy.visitSearch("wâpamêw");
     cy.wait(4000);
     cy.contains("a", "wâpamêw").click();
-    cy.wait(18000);
+    cy.wait(10000);
+
+    cy.get('[data-cy="paradigm"] > :nth-child(1) > :nth-child(2)').click()
 
     // N.B.: This test will fail if the labels change. ¯\_(ツ)_/¯
-    cy.contains("th", "s/he → him/her/them"); // 3Sg → 4Sg/PlO (lemma)
-    cy.contains("th", "s/he → me"); // 3Sg → 1Sg
-    cy.contains("th", "s/he → you"); // 3Sg → 2Sg
-    cy.contains("th", "s/he/they → him/her"); // 4Sg/Pl → 3Sg
+    cy.contains(".MuiPaper-root.Mui-expanded", "s/he → him/her/them"); // 3Sg → 4Sg/PlO (lemma)
+    cy.contains(".MuiPaper-root.Mui-expanded", "s/he → me"); // 3Sg → 1Sg
+    cy.contains(".MuiPaper-root.Mui-expanded", "s/he → you"); // 3Sg → 2Sg
+    cy.contains(".MuiPaper-root.Mui-expanded", "s/he/they → him/her"); // 4Sg/Pl → 3Sg
   });
 
   /**
@@ -178,7 +182,6 @@ context("Regressions", () => {
    */
   it("should search from the about page", function () {
     cy.visit("/about");
-    cy.wait(3000);
 
     cy.search("acâhkos");
     cy.wait(4000);

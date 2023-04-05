@@ -1,3 +1,5 @@
+import { visitSearch } from "../../support/commands.js"
+
 describe("click-in-text", function () {
   beforeEach(function () {
     cy.visit("/click-in-text-embedded-test");

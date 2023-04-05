@@ -1,4 +1,4 @@
-import { skipOn } from "@cypress/skip-test";
+import { visitSearch } from "../../support/commands.js"
 
 describe("Orthography selection", function () {
   describe("switching orthography", function () {
@@ -44,13 +44,6 @@ describe("Orthography selection", function () {
     });
 
     it("should persist my preference after a page load", function () {
-      // XXX: This test fails in headless mode for Electron version < v6.0
-      // There was a bug with setting cookies via fetch():
-      //    https://github.com/cypress-io/cypress/issues/4433
-      // This should work in Cypress 3.5.0 using Chrome.
-      // TODO: switch CI to use Chrome instead of Electron!
-      skipOn("electron");
-
       cy.visit("/");
 
       // Get the introduction: it should be in SRO
@@ -70,12 +63,5 @@ describe("Orthography selection", function () {
       cy.contains("h1", "ᐃᑘᐏᓇ");
     });
 
-    it.skip("should display Cree examples in syllabics", function () {
-      cy.setCookie("orth", "Cans");
-
-      // Visiting a page should be in syllabics
-      cy.visitSearch("ᓃᒥᓈᓂᐘᐣ");
-      cy.contains("[data-cy=elaboration]", "like: ᓂᐹᐤ");
-    });
   });
 });

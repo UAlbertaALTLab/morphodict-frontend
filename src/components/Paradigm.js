@@ -61,7 +61,7 @@ function Paradigm(state) {
     });
 
     return (
-        <div className="container">
+        <div className="container" data-cy={"paradigm"}>
             <div className={"row"}>
                 {
                     Object.keys(paradigm).map((label, index) => {
