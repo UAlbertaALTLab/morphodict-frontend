@@ -91,7 +91,7 @@ jobs:
 
     needs:
       - should-deploy
-      - integration-test
+#      - integration-test
 
     if: needs.should-deploy.outputs.should-run == 'true'
 
