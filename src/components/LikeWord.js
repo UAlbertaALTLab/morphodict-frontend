@@ -11,6 +11,9 @@ Goal         : Show word information and also provide the ability to highlight a
 
 import React, {useState} from "react";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
+
 
 function updateLabelSettings(label, icPlainEnglish, icLinguisticLong, icLinguisticShort, icSourceLanguage) {
     let primaryInfo = "";
@@ -124,6 +127,36 @@ const LikeWord = (props) => {
         </Tooltip>
     );
 
+    let bookIconInfo = "No info found";
+
+    if (props.wordform.lemma_wordform) {
+        if (props.wordform.lemma_wordform.linguist_info) {
+            if (props.wordform.lemma_wordform.linguist_info.analysis){
+                bookIconInfo = props.wordform.lemma_wordf0rm.linguist_info.analysis;
+            } else if (props.wordform.lemma_wordform.linguist_info.stem) {
+                bookIconInfo = props.wordform.lemma_wordform.linguist_info.stem;
+            }
+        }       
+    } 
+
+    // needed for Gunáhà refactor - analyis tag indicates an html table instead of a string
+    /*else if (props.wordform){
+        if (props.wordform.linguist_info.analysis){
+            //bookIconInfo = <div>dangerouslySetInnerHTML={{__html: props.wordform.linguist_ingo.analysis}}</div>;
+            console.log(props.wordform.linguist_info.analysis);
+            //dangerouslySetInnerHTML={{__html: data}}
+        } else {
+            bookIconInfo = props.wordform.linguist_info.stem;
+        }
+    }*/
+
+    const renderBookToolTip = (props) => (
+        <Tooltip id="book-tooltip" {...props}>
+            {bookIconInfo}
+        </Tooltip>
+
+    )
+
     return (<>
             <div data-cy="elaboration" className="container">
                 <div className="d-flex flex-row">
@@ -136,8 +169,17 @@ const LikeWord = (props) => {
                             overlay={renderInformationToolTip}
                         >
                             {infoLink}
+                        </OverlayTrigger>   
+                        <OverlayTrigger
+                            placement="bottom"
+                            delay={{show: 250, hide: 400}}
+                            overlay={renderBookToolTip}
+                            >
+                        <Button className="book-icon-button">📖</Button>
                         </OverlayTrigger>
+                               
                     </div>
+                    
                 </div>
             </div>
         </>
