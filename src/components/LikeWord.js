@@ -69,6 +69,8 @@ function getEmoticon(wordform) {
 }
 
 const LikeWord = (props) => {
+    let [persistTooltip, setPersistTooltip] = useState(false);
+    let [showTooltip, setShowTooltip] = useState(false);
     const wordform = props.wordform;
     const relabelledIc = getRelabelledIc(wordform);
     let icLinguisticShort = wordform.inflectional_category_linguistic;
@@ -113,8 +115,10 @@ const LikeWord = (props) => {
 
 
     const infoLink = (
-        <Button
-            onClick={() => navigator.clipboard.writeText(secondaryInfo)}
+        <Button onMouseDown={(e)=> {e.preventDefault()}}
+            onMouseLeave={() => setShowTooltip(false)}
+            onMouseEnter={() => setShowTooltip(true)}
+            onClick={() => handleInfoLinkClick()}
             className="like-word-text"
             >
             {primaryInfo}
@@ -136,8 +140,8 @@ const LikeWord = (props) => {
             } else if (props.wordform.lemma_wordform.linguist_info.stem) {
                 bookIconInfo = props.wordform.lemma_wordform.linguist_info.stem;
             }
-        }       
-    } 
+        }
+    }
 
     // needed for Gunáhà refactor - analyis tag indicates an html table instead of a string
     /*else if (props.wordform){
@@ -157,6 +161,11 @@ const LikeWord = (props) => {
 
     )
 
+    const handleInfoLinkClick = () => {
+        navigator.clipboard.writeText(secondaryInfo);
+        setPersistTooltip(!persistTooltip)
+    }
+
     return (<>
             <div data-cy="elaboration" className="container">
                 <div className="d-flex flex-row">
@@ -165,11 +174,11 @@ const LikeWord = (props) => {
                         <span data-cy="wordclassEmoji">{showEmoji ? emoticon + " " : ""}</span>
                         <OverlayTrigger
                             placement="bottom"
-                            delay={{show: 250, hide: 400}}
                             overlay={renderInformationToolTip}
+                            show={persistTooltip||showTooltip}
                         >
                             {infoLink}
-                        </OverlayTrigger>   
+                        </OverlayTrigger>
                         <OverlayTrigger
                             placement="bottom"
                             delay={{show: 250, hide: 400}}
@@ -177,9 +186,9 @@ const LikeWord = (props) => {
                             >
                         <Button className="book-icon-button">📖</Button>
                         </OverlayTrigger>
-                               
+
                     </div>
-                    
+
                 </div>
             </div>
         </>
