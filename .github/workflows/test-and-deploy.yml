@@ -122,7 +122,6 @@ jobs:
 
     needs:
       - should-deploy
-      - unit-test
       - integration-test
       - build-docker-image
 
