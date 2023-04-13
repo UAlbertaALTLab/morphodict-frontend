@@ -404,6 +404,8 @@ function Header(props) {
                                         >
                       <span className="menu-choice__label">
                         {settingMenu[id]}
+                        {id == "Cans"  &&  <hr style={{marginTop: "1.3em", marginBottom: "-0.5em"}} className="menu__separator"></hr>}
+
                       </span>
                                         </button>
                                     </li>
@@ -411,7 +413,7 @@ function Header(props) {
                             </ul>
                         </div>
 
-                        <hr className="menu__separator"></hr>
+                        <hr style={{marginTop: "0.5em", marginBottom: "1em", marginLeft: "1.3em", marginRight: "1.3em"}} className="menu__separator"></hr>
 
                         <div className="menu__category">
                             <a
@@ -419,7 +421,7 @@ function Header(props) {
                                 className="menu-choice"
                                 data-cy="settings-link"
                             >
-                <span className="menu-choice__label fill-width">
+                <span className="menu-choice__label fill-width" style={{marginTop: "-0.5em", marginBottom: "0.5em"}}>
                   View all settings
                 </span>
                             </a>
