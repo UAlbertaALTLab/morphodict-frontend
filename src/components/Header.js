@@ -192,7 +192,7 @@ function Header(props) {
             setShowNoQueryAlert(false);
         }
 
-        if (e.key === "Enter") {
+        else if (e.key === "Enter") {
             setShowNoQueryAlert(true);
         }
 
