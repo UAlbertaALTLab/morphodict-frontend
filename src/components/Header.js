@@ -187,7 +187,7 @@ function Header(props) {
             e.target.labels[0].innerText = "Search in Cree or English";
         }
 
-        if (e.key === "Enter" && queryString) {
+        if (e.key === "Enter" && queryString && queryString !== "") {
             setQuery(true);
             setShowNoQueryAlert(false);
             window.dispatchEvent(new Event("executeSearch"));
