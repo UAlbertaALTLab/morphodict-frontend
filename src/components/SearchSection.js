@@ -265,7 +265,7 @@ const SearchSection = (props) => {
     );
 
     return (
-        <div id="results" className="shadow p-3 mb-5 bg-body rounded" data-cy="searchResults">
+        <div id="results" className="shadow p-3 mb-5 bg-body rounded" data-cy="searchResults" style={{marginLeft: "auto", marginRight: "auto", paddingRight: "2em"}}>
             {wordInformation === "" &&
             <div>
                 should never happen!
@@ -291,11 +291,11 @@ const SearchSection = (props) => {
                 wordform={wordInformation}
 
             />
-            <ul className="list-group text-center">
+            <ul style={{marginTop: "-0.5em"}} className="list-group text-center">
                 {wordsDefs.map((item, i) => (
-                    <li className="list-group-item result-definition" data-cy="definitionText" key={i}>
+                    <li style={{fontSize: "130%", marginBottom: "-0.5em"}} className="list-group-item result-definition" data-cy="definitionText" key={i}>
                         {i + 1}. {item["text"]} &nbsp; <span id="result-definition-source-id"
-                        style={{fontSize:"60%", verticalAlign: "0.3em", marginLeft: "-0.5em", fontWeight: "600"}}>
+                        style={{fontSize:"50%", verticalAlign: "0.1em", marginLeft: "-0.8em", fontWeight: "700"}}>
                         {item.source_ids.map((i, index) => (
                         <OverlayTrigger
                             placement="bottom"
@@ -305,7 +305,7 @@ const SearchSection = (props) => {
                             </Tooltip>}
                         >
                             <span data-cy="citation">{i}&nbsp;</span>
-                        </OverlayTrigger>))} </span>
+                        </OverlayTrigger>))}</span>
                         {/*TODO: make a better trigger for src so that they can copy the tooltip SP3*/}
                     </li>
                 ))}

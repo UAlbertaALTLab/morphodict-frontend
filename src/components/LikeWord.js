@@ -101,7 +101,7 @@ const LikeWord = (props) => {
     if (showEmoji === false) {
         emoticon = "";
     } else {
-        emoticon = emoticon + " - "
+        emoticon = emoticon  //+ " - "
     }
 
     let primaryInfo = "";
@@ -120,6 +120,7 @@ const LikeWord = (props) => {
             onMouseEnter={() => setShowTooltip(true)}
             onClick={() => handleInfoLinkClick()}
             className="like-word-text"
+            style={{fontSize: "115%"}}
             >
             {primaryInfo}
         </Button>
@@ -168,14 +169,15 @@ const LikeWord = (props) => {
 
     return (<>
             <div data-cy="elaboration" className="container">
-                <div className="d-flex flex-row">
+                <div style={{marginTop: "-1em", marginLeft: "-0.4em"}} className="d-flex flex-row">
                     <div className="mb-auto p-2">
-                        <span data-cy="inflectionalCategory">{(showIc) ? displayIc + " " : ""}</span>
-                        <span data-cy="wordclassEmoji">{showEmoji ? emoticon + " " : ""}</span>
+                        <span style={{fontSize: "130%", verticalAlign: "-0.15em"}} data-cy="inflectionalCategory">{(showIc) ? displayIc + " " : ""}</span>
+                        <span style={{fontSize: "130%", verticalAlign: "-0.15em"}} data-cy="wordclassEmoji">{showEmoji ? emoticon /*+ " "*/ : ""}</span>
                         <OverlayTrigger
                             placement="bottom"
                             overlay={renderInformationToolTip}
                             show={persistTooltip||showTooltip}
+                            
                         >
                             {infoLink}
                         </OverlayTrigger>
@@ -184,7 +186,7 @@ const LikeWord = (props) => {
                             delay={{show: 250, hide: 400}}
                             overlay={renderBookToolTip}
                             >
-                        <Button className="book-icon-button">📖</Button>
+                        <Button style={{fontSize: "130%", verticalAlign: "-0.18em"}} className="book-icon-button">📖</Button>
                         </OverlayTrigger>
 
                     </div>
