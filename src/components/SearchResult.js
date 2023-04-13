@@ -62,15 +62,6 @@ function SearchResult(props) {
 
   window.addEventListener("executeSearch", () => refetch());
 
-  if (!query) {
-    return <>
-        <Redirect
-            to={{
-                pathname: "/",
-            }}
-        ></Redirect>
-    </>
-  }
   
   let results = data;
 
@@ -147,7 +138,7 @@ function SearchResult(props) {
 
   return (
     <div className="container">
-      {typeof results === "undefined" && !isFetching && (
+      {typeof results === "undefined" && !isFetching && (        
         <>
           <Alert variant="danger" className="justify-content-center">
             <Alert.Heading>
@@ -176,14 +167,7 @@ function SearchResult(props) {
           </Alert>
         </>
       )}
-
-      {data === "empty" && (
-        <Redirect
-          to={{
-            pathname: "/",
-          }}
-        ></Redirect>
-      )}
+      
 
       <div className="container" data-cy="all-search-results">
         {/* what happens if we get a result from the the db call*/}

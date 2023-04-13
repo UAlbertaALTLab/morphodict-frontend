@@ -190,6 +190,7 @@ function Header(props) {
         if (e.key === "Enter" && queryString) {
             setQuery(true);
             setShowNoQueryAlert(false);
+            window.dispatchEvent(new Event("executeSearch"));
         }
 
         else if (e.key === "Enter") {
