@@ -35,6 +35,7 @@ REACT_APP_BACKEND
 
 These files should be in the root directory of the project.
 
+## To Run on Linux/Mac
 Start the project using:
 ```shell
 npm run start:sssttt
@@ -45,6 +46,20 @@ language ISO code.
 To run itwêwina:
 ```shell
 npm run start:crkeng
+```
+
+## To Run on Windows
+
+Start the project using:
+```shell
+npx env-cmd -f .env.sssttt react-scripts start
+```
+Again where `sss` is the source language ISO code and `ttt` is the target 
+language ISO code.
+
+To run itwêwina:
+```shell
+npx env-cmd -f .env.crkeng react-scripts start
 ```
 
 To see a list of available services to run, consult the `scripts` section of 
