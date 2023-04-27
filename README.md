@@ -48,6 +48,9 @@ To run itwêwina:
 npm run start:crkeng
 ```
 
+To see a list of available services to run, consult the `scripts` section of 
+`package.json`.
+
 ## To Run on Windows
 
 Start the project using:
@@ -61,9 +64,6 @@ To run itwêwina:
 ```shell
 npx env-cmd -f .env.crkeng react-scripts start
 ```
-
-
-
 
 To see a list of available services to run, consult the `scripts` section of 
 `package.json`.
