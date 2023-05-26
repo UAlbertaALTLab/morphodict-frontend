@@ -222,7 +222,7 @@ function WordEntry(props) {
                                             {citationChoices[i]}
                                         </Tooltip>}
                                     >
-                                        <span>{i}</span>
+                                        <span>{i+" "}</span>
                                     </OverlayTrigger>))}
                                 </li>
                             ))}

@@ -61,7 +61,7 @@ function Paradigm(state) {
     });
 
     return (
-        <div className="container" data-cy={"paradigm"}>
+        <div className="container" data-cy={"paradigm"} style={{width: "70%"}}>
             <div className={"row"}>
                 {
                     Object.keys(paradigm).map((label, index) => {
@@ -80,62 +80,68 @@ function Paradigm(state) {
                                         let entry = paradigm[label]["rows"][element];
                                         if ("subheader" in entry) {
                                             let subheader = entry["subheader"][relabelling];
-                                            return <div
-                                                style={{fontWeight: "bolder", textAlign: "center"}}>{subheader}</div>
+                                            return <div><div
+                                                style={{textAlign: "center", fontStyle: "italic"}}>{subheader}</div>
+                                                <br></br></div>
                                         } else {
                                             let actor = paradigm[label]["rows"][element]["label"][relabelling];
-                                            return <div className={"row"}>
-                                                <div className={"col"}>
-                                                    <p style={{fontStyle: "italic", textAlign: "center"}}>{actor}</p>
+                                            if (header.includes("smaller")) {console.log(actor)}
+                                            return  <div className="d-flex justify-content-between">
+                                                <div style={{textAlign: "left"}}>
+                                                    <p style={{fontStyle: "italic", textAlign: "left", marginLeft: "10em"}}>{actor}</p>
                                                 </div>
+                                                <div className="d-flex flex-column" style={{ marginRight: "5em", width: "10em"}}>
                                                 {
-                                                    Object.keys(entry["inflections"]).map((element, index) => {
-                                                        let currentEntry = entry["inflections"][element];
+                                                        Object.keys(entry["inflections"]).map((element, index) => {
+                                                            let currentEntry = entry["inflections"][element];
 
-                                                        let displayWord = currentEntry["wordform"];
-                                                        if ("wordform_text" in currentEntry && type) {
-                                                            displayWord = currentEntry["wordform_text"][type];
-                                                        }
-                                                        if (showMorphemes == "paradigms" || showMorphemes == "everywhere") {
-                                                            if ("morphemes" in currentEntry && type) {
-                                                                displayWord = currentEntry["morphemes"][type].join("·");
+                                                            let displayWord = currentEntry["wordform"];
+                                                            if ("wordform_text" in currentEntry && type) {
+                                                                displayWord = currentEntry["wordform_text"][type];
                                                             }
-                                                        }
-
-                                                        let recording = "";
-                                                        if ("recording" in currentEntry) {
-                                                            recording = currentEntry["recording"];
-                                                        }
-
-                                                        if (recording && showAudio) {
-                                                            function playRecording() {
-                                                                const audio = new Audio(recording);
-                                                                audio.play();
+                                                            if (showMorphemes == "paradigms" || showMorphemes == "everywhere") {
+                                                                if ("morphemes" in currentEntry && type) {
+                                                                    displayWord = currentEntry["morphemes"][type].join("·");
+                                                                }
                                                             }
 
-                                                            return (
-                                                                <div className={"col"} style={{textAlign: "center"}}>
-                                                                    <p>
-                                                                        {displayWord}&nbsp;
-                                                                        <FontAwesomeIcon icon={faVolumeUp} size="xs"
-                                                                                         onClick={playRecording}/>
-                                                                    </p>
-                                                                </div>
-                                                            )
-                                                        } else {
-                                                            return (
-                                                                <div className={"col"} style={{textAlign: "center"}}>
-                                                                    <p>{displayWord}</p>
-                                                                </div>
-                                                            )
-                                                        }
-                                                    })
+                                                            let recording = "";
+                                                            if ("recording" in currentEntry) {
+                                                                recording = currentEntry["recording"];
+                                                            }
+
+                                                            if (recording && showAudio) {
+                                                                function playRecording() {
+                                                                    const audio = new Audio(recording);
+                                                                    audio.play();
+                                                                }
+
+                                                                return (
+                                                                <div className={"col"} style={{textAlign: "left"}}>
+                                                                        <p>
+                                                                            {displayWord}&nbsp;
+                                                                            <FontAwesomeIcon icon={faVolumeUp} size="xs"
+                                                                                            onClick={playRecording}/>
+                                                                        </p>
+                                                                    </div>
+                                                                )
+                                                            } else {
+                                                                return (
+                                                                <div style={{textAlign: "left", justifyContent: "left"}}>
+                                                                        <p>{displayWord}</p>
+                                                                    </div>
+                                                                )
+                                                            }
+                                                        })
                                                 }
+                                                </div>
                                             </div>
                                         }
                                     })
+                                    
 
                                 }
+                               
                             </AccordionDetails>
                         </Accordion>
                     })
