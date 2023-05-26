@@ -79,13 +79,11 @@ function Paradigm(state) {
                                     Object.keys(paradigm[label]["rows"]).map((element, index) => {
                                         let entry = paradigm[label]["rows"][element];
                                         if ("subheader" in entry) {
-                                            //console.log("subheader");
                                             let subheader = entry["subheader"][relabelling];
                                             return <div><div
                                                 style={{textAlign: "center", fontStyle: "italic"}}>{subheader}</div>
                                                 <br></br></div>
                                         } else {
-                                            //console.log("else");
                                             let actor = paradigm[label]["rows"][element]["label"][relabelling];
                                             if (header.includes("smaller")) {console.log(actor)}
                                             return  <div className="d-flex justify-content-between">
