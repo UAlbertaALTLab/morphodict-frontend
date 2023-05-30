@@ -99,8 +99,6 @@ const SearchSection = (props) => {
 
     const renderInformationToolTip = (props) => (
         <Tooltip data-cy="infoButtonInfo" id="button-tooltip" {...props}>
-            {getStem()}
-            <br/>
             {information.map((item, i) => (<li className="unbullet">{item}</li>))}
         </Tooltip>
     );
