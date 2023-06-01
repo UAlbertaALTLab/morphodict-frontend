@@ -65,6 +65,7 @@ function WordEntry(props) {
 
     let wordform = "";
     let wordInformation = "";
+    let likeword = "";
     let recordings = "";
     let paradigm = "";
     let type = getType();
@@ -152,7 +153,8 @@ function WordEntry(props) {
             emoji = emoji.replaceAll("🧑🏽", settings.active_emoji);
         }
 
-        wordInformation = wordform["inflectional_category"] + "  " + emoji + "  " + wordform["inflectional_category_plain_english"][type]
+        wordInformation = wordform["inflectional_category"] + "  " + emoji + "  ";
+        likeword = wordform["inflectional_category_plain_english"][type];
         if (settings.morphemes_everywhere || settings.morphemes_headers) {
             if ("morphemes" in wordform) {
                 displayText = wordform["morphemes"][type].join("•");
@@ -192,7 +194,8 @@ function WordEntry(props) {
                             </Grid>
                         </Grid>
                     </header>
-                    <p> {wordInformation} </p>
+                    <p> {wordInformation} <span className="like-word-text">{likeword}</span> </p>
+
 
                     {recordings[0] ? (<section
                         className="multiple-recordings"
@@ -213,8 +216,9 @@ function WordEntry(props) {
                     <section className="definition__meanings" data-cy="meanings">
                         <ol className="meanings">
                             {wordform.definitions.map((def, index) => (
-                                <li className="meanings__meaning" key={index}>
-                                    {def.text} {def.source_ids.map((i, index) => (
+                                <li className="meanings__meaning" key={index} style={{fontSize: "120%"}}>
+                                    {def.text} 
+                                    <span style={{fontSize:"50%", verticalAlign: "0.1em", marginLeft: "0.5em", fontWeight: "700"}}> {def.source_ids.map((i, index) => (
                                     <OverlayTrigger
                                         placement="bottom"
                                         delay={{show: 250, hide: 400}}
@@ -223,7 +227,7 @@ function WordEntry(props) {
                                         </Tooltip>}
                                     >
                                         <span>{i+" "}</span>
-                                    </OverlayTrigger>))}
+                                    </OverlayTrigger>))}</span>
                                 </li>
                             ))}
                         </ol>
