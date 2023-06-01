@@ -216,8 +216,9 @@ function WordEntry(props) {
                     <section className="definition__meanings" data-cy="meanings">
                         <ol className="meanings">
                             {wordform.definitions.map((def, index) => (
-                                <li className="meanings__meaning" key={index}>
-                                    {def.text} {def.source_ids.map((i, index) => (
+                                <li className="meanings__meaning" key={index} style={{fontSize: "120%"}}>
+                                    {def.text} 
+                                    <span style={{fontSize:"50%", verticalAlign: "0.1em", marginLeft: "0.5em", fontWeight: "700"}}> {def.source_ids.map((i, index) => (
                                     <OverlayTrigger
                                         placement="bottom"
                                         delay={{show: 250, hide: 400}}
@@ -226,7 +227,7 @@ function WordEntry(props) {
                                         </Tooltip>}
                                     >
                                         <span>{i+" "}</span>
-                                    </OverlayTrigger>))}
+                                    </OverlayTrigger>))}</span>
                                 </li>
                             ))}
                         </ol>
