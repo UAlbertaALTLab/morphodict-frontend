@@ -65,6 +65,7 @@ function WordEntry(props) {
 
     let wordform = "";
     let wordInformation = "";
+    let likeword = "";
     let recordings = "";
     let paradigm = "";
     let type = getType();
@@ -152,7 +153,8 @@ function WordEntry(props) {
             emoji = emoji.replaceAll("🧑🏽", settings.active_emoji);
         }
 
-        wordInformation = wordform["inflectional_category"] + "  " + emoji + "  " + wordform["inflectional_category_plain_english"][type]
+        wordInformation = wordform["inflectional_category"] + "  " + emoji + "  ";
+        likeword = wordform["inflectional_category_plain_english"][type];
         if (settings.morphemes_everywhere || settings.morphemes_headers) {
             if ("morphemes" in wordform) {
                 displayText = wordform["morphemes"][type].join("•");
@@ -192,7 +194,8 @@ function WordEntry(props) {
                             </Grid>
                         </Grid>
                     </header>
-                    <p> {wordInformation} </p>
+                    <p> {wordInformation} <span className="like-word-text">{likeword}</span> </p>
+
 
                     {recordings[0] ? (<section
                         className="multiple-recordings"
