@@ -61,7 +61,7 @@ function Paradigm(state) {
     });
 
     return (
-        <div className="container" data-cy={"paradigm"} style={{width: "70%"}}>
+        <div className="container" data-cy={"paradigm"} style={{width: "30em"}}>
             <div className={"row"}>
                 {
                     Object.keys(paradigm).map((label, index) => {
@@ -88,9 +88,9 @@ function Paradigm(state) {
                                             if (header.includes("smaller")) {console.log(actor)}
                                             return  <div className="d-flex justify-content-between">
                                                 <div style={{textAlign: "left"}}>
-                                                    <p style={{fontStyle: "italic", textAlign: "left", marginLeft: "10em"}}>{actor}</p>
+                                                    <p style={{fontStyle: "italic", textAlign: "left", marginLeft: "5em"}}>{actor}</p>
                                                 </div>
-                                                <div className="d-flex flex-column" style={{ marginRight: "5em", width: "10em"}}>
+                                                <div className="d-flex flex-column" style={{ marginRight: "0em", width: "10em"}}>
                                                 {
                                                         Object.keys(entry["inflections"]).map((element, index) => {
                                                             let currentEntry = entry["inflections"][element];
