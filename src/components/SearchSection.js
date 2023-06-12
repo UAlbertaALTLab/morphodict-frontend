@@ -112,7 +112,7 @@ const SearchSection = (props) => {
         const settings = JSON.parse(window.localStorage.getItem("settings"));
         try {
             if (settings.morphemes_everywhere || settings.morphemes_headers) {
-                return wordInformation["morphemes"][displayType];
+                return wordInformation["morphemes"][displayType].join("·");
             } else {
                 return wordInformation['wordform_text'][displayType];
             }
