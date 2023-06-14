@@ -71,6 +71,9 @@ function getEmoticon(wordform) {
 const LikeWord = (props) => {
     let [persistTooltip, setPersistTooltip] = useState(false);
     let [showTooltip, setShowTooltip] = useState(false);
+    let [persistBookInfo, setPersistBookInfo] = useState(false);
+    let [showBookInfo, setShowBookInfo] = useState(false);
+
     const wordform = props.wordform;
     const relabelledIc = getRelabelledIc(wordform);
     let icLinguisticShort = wordform.inflectional_category_linguistic;
@@ -137,7 +140,7 @@ const LikeWord = (props) => {
     if (props.wordform.lemma_wordform) {
         if (props.wordform.lemma_wordform.linguist_info) {
             if (props.wordform.lemma_wordform.linguist_info.analysis){
-                bookIconInfo = props.wordform.lemma_wordf0rm.linguist_info.analysis;
+                bookIconInfo = props.wordform.lemma_wordform.linguist_info.analysis;
             } else if (props.wordform.lemma_wordform.linguist_info.stem) {
                 bookIconInfo = props.wordform.lemma_wordform.linguist_info.stem;
             }
@@ -167,6 +170,11 @@ const LikeWord = (props) => {
         setPersistTooltip(!persistTooltip)
     }
 
+    const handleBookIconClick = () => {
+        navigator.clipboard.writeText(bookIconInfo);
+        setPersistBookInfo(!persistBookInfo);
+    }
+
     return (<>
             <div data-cy="elaboration" className="container">
                 <div style={{marginTop: "-1em", marginLeft: "-0.4em"}} className="d-flex flex-row">
@@ -185,8 +193,17 @@ const LikeWord = (props) => {
                             placement="bottom"
                             delay={{show: 250, hide: 400}}
                             overlay={renderBookToolTip}
+                            show={persistBookInfo||showBookInfo}
                             >
-                        <Button style={{fontSize: "130%", verticalAlign: "-0.18em"}} className="book-icon-button">📖</Button>
+                        <Button style={{fontSize: "130%", verticalAlign: "-0.18em", marginLeft: "-0.6em"}} 
+                        className="book-icon-button"
+                        variant="btn bg-white rounded shadow-none"
+                        onMouseDown={(e)=> {e.preventDefault()}}
+                        onMouseLeave={() => setShowBookInfo(false)}
+                        onMouseEnter={() => setShowBookInfo(true)}
+                        onClick={() => handleBookIconClick()}>
+                            📖
+                            </Button>
                         </OverlayTrigger>
 
                     </div>
