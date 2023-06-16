@@ -183,6 +183,12 @@ function Paradigm(state) {
                     })
                 }
             </div>
+            <Button 
+            variant="btn bg-white rounded shadow-none"
+            onClick={() => changeButtonMessage()}
+            style={{marginTop: "1em", marginBottom: "1em", fontWeight: "bold", fontSize: "10pt", marginLeft: "-0.9em"}}>
+                {buttonMessage}
+                </Button>
         </div>);
 }
 
