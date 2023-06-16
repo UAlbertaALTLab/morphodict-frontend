@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { Button } from "react-bootstrap";
 
 function getLabelSetting() {
     let settings = JSON.parse(window.localStorage.getItem("settings"));
@@ -46,6 +47,7 @@ function getMorphemeSettings() {
 }
 
 
+
 function Paradigm(state) {
     const paradigm = state.paradigm;
     const type = state.type;
@@ -53,20 +55,56 @@ function Paradigm(state) {
     const showMorphemes = getMorphemeSettings();
     let counter = 0;
 
+
     let labelSetting = getLabelSetting();
     let [relabelling, setRelabelling] = useState(labelSetting);
+    let [expandThisAccordion, setExpandThisAccordion] = useState(Array(Object.keys(paradigm).length).fill(false));
+    let [buttonMessage, setButtonMessage] = useState("EXPAND ALL");
+
     window.addEventListener("settings", () => {
         labelSetting = getLabelSetting();
         setRelabelling(labelSetting);
     });
 
-    return (
+    function changeButtonMessage() {
+        if (buttonMessage == "EXPAND ALL") {
+            setButtonMessage("COLLAPSE ALL");
+            expandThisAccordion.fill(true);
+        }
+        else if (buttonMessage == "COLLAPSE ALL") {
+            setButtonMessage("EXPAND ALL");
+            expandThisAccordion.fill(false);
+            
+        }
+    }
+
+    function changeAccordionState(index) {
+        let newArray = [...expandThisAccordion];
+        newArray[index] = !newArray[index];
+        setExpandThisAccordion(newArray);
+
+        if (!newArray.includes(false)) {
+            setButtonMessage("COLLAPSE ALL");
+        }
+        else if (!newArray.includes(true)) {
+            setButtonMessage("EXPAND ALL");
+        }
+    }
+
+    return (  
         <div className="container" data-cy={"paradigm"} style={{width: "30em", maxWidth: "100%"}}>
+        <Button 
+            variant="btn bg-white rounded shadow-none"
+            onClick={() => changeButtonMessage()}
+            style={{marginTop: "1em", marginBottom: "1em", fontWeight: "bold", fontSize: "10pt", marginLeft: "-0.9em"}}>
+                {buttonMessage}
+                </Button>
             <div className={"row"}>
                 {
                     Object.keys(paradigm).map((label, index) => {
                         let header = paradigm[label]["relabelled_header"][labelSetting];
-                        return <Accordion key={index}>
+                        return <Accordion key={index} expanded={expandThisAccordion[index]}   
+                            onClick={() => {changeAccordionState(index)}}>
                             <AccordionSummary>
                                 <div>
                                     <Typography style={{fontWeight: "bold", fontSize: "14pt"}}>
@@ -138,8 +176,6 @@ function Paradigm(state) {
                                             </div>
                                         }
                                     })
-                                    
-
                                 }
                                
                             </AccordionDetails>
@@ -147,6 +183,12 @@ function Paradigm(state) {
                     })
                 }
             </div>
+            <Button 
+            variant="btn bg-white rounded shadow-none"
+            onClick={() => changeButtonMessage()}
+            style={{marginTop: "1em", marginBottom: "1em", fontWeight: "bold", fontSize: "10pt", marginLeft: "-0.9em"}}>
+                {buttonMessage}
+                </Button>
         </div>);
 }
 
