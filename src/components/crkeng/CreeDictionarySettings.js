@@ -539,6 +539,17 @@ function CreeDictionarySettings(props) {
                         onChange={changeSettingsEmoji}
                     />
                 </ListGroup.Item>
+                <ListGroup.Item className="settings-listgroup-item">
+                    <Form.Check
+                        type={"radio"}
+                        id={"🦅"}
+                        name="emoji"
+                        label="🦅"
+                        style={{paddingLeft: "35px"}}
+                        defaultChecked={settings.active_emoti === "🦅" ? true : false}
+                        onChange={changeSettingsEmoji}
+                    />
+                </ListGroup.Item>
             </ListGroup>
 
             <h2 className="settings-option-titles">Select Dictionary Source</h2>
