@@ -9,10 +9,14 @@ import {Redirect} from "react-router-dom";
 import {faVolumeUp} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import ClipLoader from "react-spinners/ClipLoader";
+import {Button} from "react-bootstrap";
+import LikeWord from "./LikeWord.js";
 
 function WordEntry(props) {
     const backendUrl = process.env.REACT_APP_BACKEND;
     const word = window.location.href.split("/")[4];
+    
+    let [likeWordInfo, setLikeWordInfo] = useState(null);
 
     async function getWord() {
         if (word === "") {
@@ -28,9 +32,34 @@ function WordEntry(props) {
         );
     }
 
+    async function getLikeWordInfo() {
+        if (word === "") {
+            return null;
+        }
+        return fetch(backendUrl + "/api/search/?name=" + word).then((res) => {
+                if (res.status !== 200) {
+                    return res.status;
+                } else {
+                    return res.json();
+                }
+            }
+        );
+    }
+
+
     async function getWordRes() {
         let namedData = await getWord();
-        console.log(namedData);
+        let likeInfo = await getLikeWordInfo();
+
+        //find correct 
+        let searchResults = likeInfo["search_results"];
+        for (let resultIndex in searchResults) {
+            if (namedData.entry.lemma_id === searchResults[resultIndex].lemma_wordform.id) {
+                setLikeWordInfo(searchResults[resultIndex]);
+            }
+
+
+        }
         try {
             // namedData = JSON.parse(namedData);
             return namedData;
@@ -177,6 +206,38 @@ function WordEntry(props) {
         </Tooltip>
     );
 
+    let soundBtn = "";
+    let sound = "sound";
+
+    const handleSoundIconOnMouseOver = () => {
+        document.getElementById("soundicon").style.color="#1c9dfe";
+    }
+
+    const handleSoundIconMouseLeave = () => {
+        document.getElementById("soundicon").style.color="#286995";
+    }
+    
+
+    if (sound !== "") {
+        soundBtn = (
+            <Button onMouseDown={(e)=> {e.preventDefault()}}
+                    id="soundbutton"
+                    style={{backgroundColor:"transparent", border:"none", outline:"none", boxShadow:"none", paddingLeft: "1.2em"}}
+                    data-cy="playRecording"
+                    onClick={handleSoundPlay}
+                    >
+                <FontAwesomeIcon icon={faVolumeUp}
+                id="soundicon"
+                size="xl"
+                style={{color:"#286995", marginLeft:"-12px"}}
+                onMouseOver={handleSoundIconOnMouseOver}
+                onMouseLeave={handleSoundIconMouseLeave}
+                />
+            </Button>
+        );
+    }
+
+
     return (
         <>
             {(!isFetching && !error && data !== null) ? (
@@ -188,13 +249,18 @@ function WordEntry(props) {
                                     <dfn className="definition__matched-head">
                                         <data id="data:head" value="{{ lemma.text }}">
                                             {displayText}
+                                            {soundBtn}
                                         </data>
                                     </dfn>
                                 </h1>
                             </Grid>
                         </Grid>
                     </header>
-                    <p> {wordInformation} <span className="like-word-text">{likeword}</span> </p>
+                    
+                    <div style={{marginLeft: "-0.8em"}}>
+                        <LikeWord wordform={likeWordInfo}/>
+                    </div>
+                    
 
 
                     {recordings[0] ? (<section
