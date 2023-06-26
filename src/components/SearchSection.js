@@ -50,7 +50,6 @@ const SearchSection = (props) => {
     let [showTooltip, setShowTooltip] = useState(false);
 
     const getInformation = () => {
-        console.log("HERE:", wordInformation);
         if (wordInformation["relabelled_fst_analysis"]) {
             switch (settings.label) {
                 case "ENGLISH":

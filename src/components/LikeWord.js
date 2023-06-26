@@ -12,8 +12,6 @@ Goal         : Show word information and also provide the ability to highlight a
 import React, {useState} from "react";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
-import { faBookOpen } from "@fortawesome/free-solid-svg-icons";
-
 
 function updateLabelSettings(label, icPlainEnglish, icLinguisticLong, icLinguisticShort, icSourceLanguage) {
     let primaryInfo = "";
@@ -197,7 +195,6 @@ const LikeWord = (props) => {
                             >
                         <Button style={{fontSize: "130%", verticalAlign: "-0.18em", marginLeft: "-0.6em"}} 
                         className="book-icon-button"
-                        variant="btn bg-white rounded shadow-none"
                         onMouseDown={(e)=> {e.preventDefault()}}
                         onMouseLeave={() => setShowBookInfo(false)}
                         onMouseEnter={() => setShowBookInfo(true)}
