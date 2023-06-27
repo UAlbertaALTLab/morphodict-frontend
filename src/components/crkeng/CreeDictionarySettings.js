@@ -520,6 +520,17 @@ function CreeDictionarySettings(props) {
                 <ListGroup.Item className="settings-listgroup-item">
                     <Form.Check
                         type={"radio"}
+                        id={"🦅"}
+                        name="emoji"
+                        label="🦅"
+                        style={{paddingLeft: "35px"}}
+                        defaultChecked={settings.active_emoti === "🦅" ? true : false}
+                        onChange={changeSettingsEmoji}
+                    />
+                </ListGroup.Item>
+                <ListGroup.Item className="settings-listgroup-item">
+                    <Form.Check
+                        type={"radio"}
                         id={"🍞"}
                         name="emoji"
                         label="🍞"
@@ -536,17 +547,6 @@ function CreeDictionarySettings(props) {
                         label="🌟"
                         style={{paddingLeft: "35px"}}
                         defaultChecked={settings.active_emoti === "🌟" ? true : false}
-                        onChange={changeSettingsEmoji}
-                    />
-                </ListGroup.Item>
-                <ListGroup.Item className="settings-listgroup-item">
-                    <Form.Check
-                        type={"radio"}
-                        id={"🦅"}
-                        name="emoji"
-                        label="🦅"
-                        style={{paddingLeft: "35px"}}
-                        defaultChecked={settings.active_emoti === "🦅" ? true : false}
                         onChange={changeSettingsEmoji}
                     />
                 </ListGroup.Item>
