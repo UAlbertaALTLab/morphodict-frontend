@@ -174,8 +174,8 @@ const LikeWord = (props) => {
     }
 
     return (<>
-            <div data-cy="elaboration" className="container">
-                <div style={{marginTop: "-1em", marginLeft: "-0.4em"}} className="d-flex flex-row">
+            <div data-cy="elaboration" >
+                <div style={{marginTop: "-1em"}} className="d-flex flex-row">
                     <div className="mb-auto p-2">
                         <span style={{fontSize: "130%", verticalAlign: "-0.15em"}} data-cy="inflectionalCategory">{(showIc) ? displayIc + " " : ""}</span>
                         <span style={{fontSize: "130%", verticalAlign: "-0.15em"}} data-cy="wordclassEmoji">{showEmoji ? emoticon /*+ " "*/ : ""}</span>

@@ -268,7 +268,7 @@ const SearchSection = (props) => {
                 should never happen!
             </div>
             }
-            <div className="d-flex flex-row">
+            <div className="d-flex flex-row" style={{marginLeft: "-0.3em", marginTop: "0.2em"}}>
                 <div className="definition-title" data-cy="definitionTitle">{wordBtn}</div>
 
                 <div className="definition__icon definition-title__tooltip-icon">
