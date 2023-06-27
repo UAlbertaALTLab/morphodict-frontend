@@ -217,10 +217,10 @@ function Header(props) {
 
         // when focused, the search bar has a blue border
         // that blue border cuts into the words
-        // trial and error told me I need an extra 100px of padding to stop that from happening
+        // trial and error told me I need an extra 115px of padding to stop that from happening
         let legends = document.getElementsByTagName("legend");
         for (let l of legends) {
-            l.style.paddingRight = "100px";
+            l.style.paddingRight = "115px";
         }
     };
 
@@ -348,9 +348,9 @@ function Header(props) {
                         {
                         style:{
                             fontStyle: "italic",
-                            fontFamily: "Calibri",  //other acceptable fonts? - Tahoma, Segoe UI, Microsoft PhagsPa, Microsoft YaHei, Nirmala UI
-                            fontSize: "170%", 
-                            marginTop: "-9px",
+                            fontFamily: "",  //other acceptable fonts? - Tahoma, Segoe UI, Microsoft PhagsPa, Microsoft YaHei, Nirmala UI
+                            fontSize: "160%", 
+                            marginTop: "-7px",
                             color: "gray",
                             }
                         }
