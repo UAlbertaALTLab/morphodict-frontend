@@ -315,6 +315,7 @@ img {
   grid-area: search;
   margin-left: 10%;
   max-width: 80%;
+  padding-top: 1em;
 }
 
 /**
