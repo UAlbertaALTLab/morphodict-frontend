@@ -175,7 +175,7 @@ const LikeWord = (props) => {
 
     return (<>
             <div data-cy="elaboration" >
-                <div style={{marginTop: "-1em"}} className="d-flex flex-row">
+                <div style={{marginTop: "-1em", marginLeft: "-0.5em"}} className="d-flex flex-wrap">
                     <div className="mb-auto p-2">
                         <span style={{fontSize: "130%", verticalAlign: "-0.15em"}} data-cy="inflectionalCategory">{(showIc) ? displayIc + " " : ""}</span>
                         <span style={{fontSize: "130%", verticalAlign: "-0.15em"}} data-cy="wordclassEmoji">{showEmoji ? emoticon /*+ " "*/ : ""}</span>
@@ -193,7 +193,7 @@ const LikeWord = (props) => {
                             overlay={renderBookToolTip}
                             show={persistBookInfo||showBookInfo}
                             >
-                        <Button style={{fontSize: "130%", verticalAlign: "-0.18em", marginLeft: "-0.6em"}} 
+                        <Button style={{fontSize: "130%", verticalAlign: "-0.18em"}} 
                         className="book-icon-button"
                         onMouseDown={(e)=> {e.preventDefault()}}
                         onMouseLeave={() => setShowBookInfo(false)}

@@ -172,6 +172,7 @@ const SearchSection = (props) => {
     if (information !== "") {
         infoBtn = (
             <Button
+                style={{marginTop: "0.1em", marginLeft: "0.7em"}}
                 variant="btn bg-white rounded shadow-none"
                 onMouseDown={(e)=> {e.preventDefault()}}
                     onMouseLeave={() => setShowTooltip(false)}
@@ -246,7 +247,7 @@ const SearchSection = (props) => {
 
     //change
     wordBtn = (
-        <Button variant="btn bg-white rounded shadow-none" style={{fontSize:"105%", marginTop: "-1.5rem"}}>
+        <Button variant="btn bg-white rounded shadow-none" style={{fontSize:"105%", marginTop: "-1.5rem", textAlign: "left"}}>
             <Link
                 to={{
                     pathname: "/word/" + slug,
@@ -268,9 +269,10 @@ const SearchSection = (props) => {
                 should never happen!
             </div>
             }
-            <div className="d-flex flex-row" style={{marginLeft: "-0.3em", marginTop: "0.2em"}}>
+            <div className="d-flex flex-wrap" style={{marginLeft: "-0.8em", marginTop: "0.5em"}}>
+                
                 <div className="definition-title" data-cy="definitionTitle">{wordBtn}</div>
-
+                <div name="sound-info-btn group" className="d-flex flex-row">
                 <div className="definition__icon definition-title__tooltip-icon">
                     <OverlayTrigger
                         placement="bottom"
@@ -281,7 +283,8 @@ const SearchSection = (props) => {
                     </OverlayTrigger>
                 </div>
 
-                <div className="definition-title__play-icon">{soundBtn}</div>
+                <div style= {{marginTop: "0.1em"}} className="definition-title__play-icon">{soundBtn}</div>
+                </div>
             </div>
 
             <LikeWord
