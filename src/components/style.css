@@ -1003,7 +1003,6 @@ a.menu-choice__label:active {
 .definition-title {
   font-size: var(--definition-title-size);
   margin: 0;
-  white-space: nowrap;
 }
 
 .definition-title__title {
@@ -1071,7 +1070,6 @@ a.menu-choice__label:active {
 
  .definition-title__play-icon,
 .speaker-playback-action-button {
-  width: 100%;
   border: none !important;
   outline: none !important;
   
