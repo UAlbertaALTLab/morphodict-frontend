@@ -197,7 +197,10 @@ function Header(props) {
             setShowNoQueryAlert(true);
         }
 
-        setQueryString(e.target.value);
+        else {
+            setQueryString(e.target.value);
+        }
+
     };
 
 
@@ -264,7 +267,7 @@ function Header(props) {
                     ></Redirect>
                 </>
             )}
-            {window.location.href.includes("search") && (
+            {window.location.href.includes("search") && query && (
                 <>
                     <Redirect
                         to={{
@@ -278,7 +281,7 @@ function Header(props) {
                     ></Redirect>
                 </>
             )}
-            {window.location.href.includes("word") && (
+            {window.location.href.includes("word") && query && (
                 <>
                     <Redirect
                         to={{
