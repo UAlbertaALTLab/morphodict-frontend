@@ -79,6 +79,7 @@ function Header(props) {
     const [queryString, setQueryString] = useState("");
     const [query, setQuery] = useState(false);
     const [type, setDispType] = useState("Latn");
+    const [settingsLabelType, setSettingsLabelType] = useState("ENGLISH");
     const [showNoQueryAlert, setShowNoQueryAlert] = useState(false);
     const settingMenu = defaultSettings;
 
@@ -144,15 +145,19 @@ function Header(props) {
                 break;
             case "ENGLISH":
                 settings.label = "ENGLISH";
+                setSettingsLabelType("ENGLISH");
                 break;
             case "LINGUISTIC (LONG)":
                 settings.label = "LINGUISTIC (LONG)";
+                setSettingsLabelType("LINGUISTIC (LONG)");
                 break;
             case "LINGUISTIC (SHORT)":
                 settings.label = "LINGUISTIC (SHORT)";
+                setSettingsLabelType("LINGUISTIC (SHORT)");
                 break;
             case "NÊHIYAWÊWIN":
                 settings.label = "NÊHIYAWÊWIN";
+                setSettingsLabelType("NÊHIYAWÊWIN");
                 break;
             case "TSUUT'INA":
                 settings.label = "TSUUT'INA";
@@ -197,7 +202,10 @@ function Header(props) {
             setShowNoQueryAlert(true);
         }
 
-        setQueryString(e.target.value);
+        else {
+            setQueryString(e.target.value);
+        }
+
     };
 
 
@@ -247,6 +255,11 @@ function Header(props) {
         setShowNoQueryAlert(false);
     }
 
+    const handleHighlightedSettings = function(id) {
+        if (id == settingsLabelType || id == type) {
+            return "#DCDCDC";
+        }
+    }
 
     return (
         <div className="top-bar app__header">
@@ -264,7 +277,7 @@ function Header(props) {
                     ></Redirect>
                 </>
             )}
-            {window.location.href.includes("search") && (
+            {window.location.href.includes("search") && query && (
                 <>
                     <Redirect
                         to={{
@@ -274,17 +287,17 @@ function Header(props) {
                                 query: window.location.href.split("q=")[1],
                                 type: type,
                             },
-                        }}
+                        }} 
                     ></Redirect>
                 </>
             )}
-            {window.location.href.includes("word") && (
+            {window.location.href.includes("word") && query && (
                 <>
                     <Redirect
                         to={{
                             pathname: "/word/" + window.location.href.split("/")[4],
                             state: {type: type}
-                        }}
+                        }} 
                     ></Redirect>
                 </>
             )}
@@ -398,6 +411,7 @@ function Header(props) {
                                 {Object.keys(settingMenu).map((id, index) => (
                                     <li className="menu-choice" key={index}>
                                         <button
+                                            style={{backgroundColor: handleHighlightedSettings(id)}}
                                             data-orth-switch
                                             value={id}
                                             className="unbutton fill-width"
@@ -413,7 +427,7 @@ function Header(props) {
                                 ))}
                             </ul>
                         </div>
-
+                        
                         <hr style={{marginTop: "0.5em", marginBottom: "1em", marginLeft: "1.3em", marginRight: "1.3em"}} className="menu__separator"></hr>
 
                         <div className="menu__category">
