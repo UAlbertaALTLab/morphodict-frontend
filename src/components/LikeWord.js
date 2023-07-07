@@ -88,7 +88,6 @@ const LikeWord = (props) => {
         }
     }
     const displayIc = getDisplayIc(wordform);
-    console.log(displayIc);
     let emoticon = getEmoticon(wordform);
     let [settings, setSettings] = useState(JSON.parse(window.localStorage.getItem("settings")));
 

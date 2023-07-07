@@ -15,7 +15,6 @@ import { Alert } from "react-bootstrap";
 import { useQuery } from "react-query";
 
 import React, { CSSProperties } from "react";
-import { Redirect } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
 
 function replaceSpecials(query) {
@@ -29,8 +28,6 @@ function replaceSpecials(query) {
 function SearchResult(props) {
   const apiUrl = process.env.REACT_APP_BACKEND
   const query = props.location.state.queryString;
-  console.log("API URL", apiUrl);
-  console.log("QUERY", query);
 
   async function getAllData() {
     if (query === "") {

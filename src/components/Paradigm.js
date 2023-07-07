@@ -123,7 +123,6 @@ function Paradigm(state) {
                                                 <br></br></div>
                                         } else {
                                             let actor = paradigm[label]["rows"][element]["label"][relabelling];
-                                            if (header.includes("smaller")) {console.log(actor)}
                                             return  <div className="d-flex justify-content-between">
                                                 <div style={{textAlign: "left"}}>
                                                     <p style={{fontStyle: "italic", textAlign: "left", marginLeft: "5em"}}>{actor}</p>
