@@ -255,6 +255,10 @@ function Header(props) {
         setShowNoQueryAlert(false);
     }
 
+    window.onpopstate = function(e) {  //prevents blank page when using "back" button  
+        window.location.reload();
+    }
+
     const handleHighlightedSettings = function(id) {
         if (id == settingsLabelType || id == type) {
             return "#DCDCDC";
