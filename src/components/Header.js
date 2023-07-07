@@ -255,33 +255,19 @@ function Header(props) {
         setShowNoQueryAlert(false);
     }
 
-    window.onpopstate = function(e) {  //prevents blank page when using "back" button  
-        window.location.reload();
-    }
-
     const handleHighlightedSettings = function(id) {
         if (id == settingsLabelType || id == type) {
             return "#DCDCDC";
         }
     }
 
+    window.onpopstate = function(e) {  //prevents blank page when using "back" button  
+        window.location.reload();
+    }
+
     return (
         <div className="top-bar app__header">
-            {window.location.href.includes("search") && query && (
-                <>
-                    <Redirect
-                        to={{
-                            pathname: "/search/?q=" + queryString,
-                            state: {
-                                queryString: queryString,
-                                query: query,
-                                type: type,
-                            },
-                        }}
-                    ></Redirect>
-                </>
-            )}
-            {window.location.href.includes("search") && query && (
+            {window.location.href.includes("search") && !query && (
                 <>
                     <Redirect
                         to={{
@@ -291,16 +277,6 @@ function Header(props) {
                                 query: window.location.href.split("q=")[1],
                                 type: type,
                             },
-                        }} 
-                    ></Redirect>
-                </>
-            )}
-            {window.location.href.includes("word") && query && (
-                <>
-                    <Redirect
-                        to={{
-                            pathname: "/word/" + window.location.href.split("/")[4],
-                            state: {type: type}
                         }} 
                     ></Redirect>
                 </>
