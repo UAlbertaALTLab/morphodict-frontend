@@ -267,23 +267,9 @@ function Header(props) {
 
     return (
         <div className="top-bar app__header">
-            {window.location.href.includes("search") && !query && (
-                <>
-                    <Redirect
-                        to={{
-                            pathname: "/search/?q=" + window.location.href.split("q=")[1],
-                            state: {
-                                queryString: window.location.href.split("q=")[1],
-                                query: window.location.href.split("q=")[1],
-                                type: type,
-                            },
-                        }} 
-                    ></Redirect>
-                </>
-            )}
             {query ? (
                 <Redirect
-                    to={{
+                    push to={{
                         pathname: "/search/?q=" + queryString,
                         state: {
                             queryString: queryString,
@@ -292,7 +278,7 @@ function Header(props) {
                         },
                     }}
                 ></Redirect>
-            ) : null}
+            ) : console.log("no query")}
 
             <Snackbar open={showNoQueryAlert} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical: "bottom", horizontal: "center"}}>
               <Alert onClose={handleClose} severity="error">

@@ -59,6 +59,7 @@ function Paradigm(state) {
     let labelSetting = getLabelSetting();
     let [relabelling, setRelabelling] = useState(labelSetting);
     let [expandThisAccordion, setExpandThisAccordion] = useState(Array(Object.keys(paradigm).length).fill(false));
+    let [keepThisAccordionExpanded, setKeepThisAccordionExpanded] = useState(Array(Object.keys(paradigm).length).fill(false));
     let [buttonMessage, setButtonMessage] = useState("EXPAND ALL");
 
     window.addEventListener("settings", () => {
@@ -81,6 +82,12 @@ function Paradigm(state) {
     function changeAccordionState(index) {
         let newArray = [...expandThisAccordion];
         newArray[index] = !newArray[index];
+       
+        if (keepThisAccordionExpanded[index]) {
+            newArray[index] = true;
+            changeKeepAccordionState(index, false);
+        }
+
         setExpandThisAccordion(newArray);
 
         if (!newArray.includes(false)) {
@@ -89,6 +96,12 @@ function Paradigm(state) {
         else if (!newArray.includes(true)) {
             setButtonMessage("EXPAND ALL");
         }
+    }
+
+    function changeKeepAccordionState(index, value) {
+        let newArray = [...keepThisAccordionExpanded];
+        newArray[index] = value;
+        setKeepThisAccordionExpanded(newArray);
     }
 
     return (  
@@ -103,7 +116,7 @@ function Paradigm(state) {
                 {
                     Object.keys(paradigm).map((label, index) => {
                         let header = paradigm[label]["relabelled_header"][labelSetting];
-                        return <Accordion key={index} expanded={expandThisAccordion[index]}   
+                        return <Accordion key={index} expanded={expandThisAccordion[index] || keepThisAccordionExpanded[index]}   
                             onClick={() => {changeAccordionState(index)}}>
                             <AccordionSummary>
                                 <div>
@@ -151,6 +164,7 @@ function Paradigm(state) {
                                                                 function playRecording() {
                                                                     const audio = new Audio(recording);
                                                                     audio.play();
+                                                                    changeKeepAccordionState(index, true);
                                                                 }
 
                                                                 return (
