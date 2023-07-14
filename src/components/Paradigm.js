@@ -100,7 +100,6 @@ function Paradigm(state) {
     let soundicons = document.getElementsByName("soundicon");
     for (let i = 0; i < soundicons.length; i++) {
         soundicons[i].addEventListener("click", () => {
-            console.log("soundicon clicked");
             setSoundiconClicked(true);
         });
     }
