@@ -59,6 +59,7 @@ function Paradigm(state) {
     let labelSetting = getLabelSetting();
     let [relabelling, setRelabelling] = useState(labelSetting);
     let [expandThisAccordion, setExpandThisAccordion] = useState(Array(Object.keys(paradigm).length).fill(false));
+    let [soundiconClicked, setSoundiconClicked] = useState(false);
     let [buttonMessage, setButtonMessage] = useState("EXPAND ALL");
 
     window.addEventListener("settings", () => {
@@ -79,16 +80,29 @@ function Paradigm(state) {
     }
 
     function changeAccordionState(index) {
-        let newArray = [...expandThisAccordion];
-        newArray[index] = !newArray[index];
-        setExpandThisAccordion(newArray);
+        if (!soundiconClicked) {
+            let newArray = [...expandThisAccordion];
+            newArray[index] = !newArray[index];
+            setExpandThisAccordion(newArray);
 
-        if (!newArray.includes(false)) {
-            setButtonMessage("COLLAPSE ALL");
+            if (!newArray.includes(false)) {
+                setButtonMessage("COLLAPSE ALL");
+            }
+            else if (!newArray.includes(true)) {
+                setButtonMessage("EXPAND ALL");
+            }
+        } else {
+            setSoundiconClicked(false);
         }
-        else if (!newArray.includes(true)) {
-            setButtonMessage("EXPAND ALL");
-        }
+    
+    }
+
+    let soundicons = document.getElementsByName("soundicon");
+    for (let i = 0; i < soundicons.length; i++) {
+        soundicons[i].addEventListener("click", () => {
+            console.log("soundicon clicked");
+            setSoundiconClicked(true);
+        });
     }
 
     return (  
@@ -104,7 +118,7 @@ function Paradigm(state) {
                     Object.keys(paradigm).map((label, index) => {
                         let header = paradigm[label]["relabelled_header"][labelSetting];
                         return <Accordion key={index} expanded={expandThisAccordion[index]}   
-                            onClick={() => {changeAccordionState(index)}}>
+                            onClick={() => {changeAccordionState(index)}} name="accordion">
                             <AccordionSummary>
                                 <div>
                                     <Typography style={{fontWeight: "bold", fontSize: "14pt"}}>
@@ -158,7 +172,7 @@ function Paradigm(state) {
                                                                         <p>
                                                                             {displayWord}&nbsp;
                                                                             <FontAwesomeIcon icon={faVolumeUp} size="xs"
-                                                                                            onClick={playRecording}/>
+                                                                                            onClick={playRecording} name="soundicon"/>
                                                                         </p>
                                                                     </div>
                                                                 )
