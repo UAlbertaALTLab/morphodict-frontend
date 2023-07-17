@@ -125,6 +125,7 @@ const SearchSection = (props) => {
         return wordInformation;
     }
 
+    const infoSoundButtons = props.infoSoundButtons;
 
     const wolvengrey =
         "Wolvengrey, Arok, editor. Cree: Words. Regina, University of Regina Press, 2001";
@@ -274,23 +275,24 @@ const SearchSection = (props) => {
                 <div className="definition-title" data-cy="definitionTitle">{wordBtn}</div>
                 <div name="sound-info-btn group" className="d-flex flex-row">
                 <div className="definition__icon definition-title__tooltip-icon">
+                    {infoSoundButtons ? 
                     <OverlayTrigger
                         placement="bottom"
                         overlay={renderInformationToolTip}
                         show={persistTooltip||showTooltip}
                     >
                         {infoBtn}
-                    </OverlayTrigger>
-                </div>
+                    </OverlayTrigger> : null}
+                </div> 
 
-                <div style= {{marginTop: "0.1em"}} className="definition-title__play-icon">{soundBtn}</div>
+                {infoSoundButtons ? <div style= {{marginTop: "0.1em"}} className="definition-title__play-icon">{soundBtn}</div> : null}
                 </div>
             </div>
 
-            <LikeWord
+            {shouldNotDisplayFormOf() ? <LikeWord
                 wordform={wordInformation}
 
-            />
+            /> : null}
             <ul style={{marginTop: "-0.5em"}} className="list-group text-center">
                 {wordsDefs.map((item, i) => (
                     <li style={{fontSize: "130%", marginBottom: "-0.5em"}} className="list-group-item result-definition" data-cy="definitionText" key={i}>
@@ -320,6 +322,7 @@ const SearchSection = (props) => {
                         emoji={getEmoticon()}
                         slug={getSlug()}
                         information={getInformation()}
+                        infoSoundButtons={false}
                     /></>}
 
         </div>
