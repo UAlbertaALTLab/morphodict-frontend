@@ -178,6 +178,7 @@ function SearchResult(props) {
               display={result}
               index={word_index}
               type={_type}
+              infoSoundButtons={true}
             ></SearchSection>
           ))}
       </div>
