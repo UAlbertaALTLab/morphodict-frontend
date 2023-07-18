@@ -136,11 +136,12 @@ function Paradigm(state) {
                                                 <br></br></div>
                                         } else {
                                             let actor = paradigm[label]["rows"][element]["label"][relabelling];
-                                            return  <div className="d-flex justify-content-between">
-                                                <div style={{textAlign: "left"}}>
-                                                    <p style={{fontStyle: "italic", textAlign: "left", marginLeft: "5em"}}>{actor}</p>
+                                            return  <div className="d-flex flex-row">
+                                                <div style={{width: "20%"}}></div>
+                                                <div style={{textAlign: "left",  width: "30%", overflowWrap:"break-word", paddingRight: "1em"}}>
+                                                    <p style={{fontStyle: "italic", textAlign: "left"}}>{actor}</p>
                                                 </div>
-                                                <div className="d-flex flex-column" style={{ marginRight: "0em", width: "10em"}}>
+                                                <div className="d-flex flex-column" style={{textAlign: "left", width: "50%"}}>
                                                 {
                                                         Object.keys(entry["inflections"]).map((element, index) => {
                                                             let currentEntry = entry["inflections"][element];
@@ -167,7 +168,7 @@ function Paradigm(state) {
                                                                 }
 
                                                                 return (
-                                                                <div className={"col"} style={{textAlign: "left"}}>
+                                                                <div className={"col"} style={{textAlign: "left", overflowWrap: "break-word"}}>
                                                                         <p>
                                                                             {displayWord}&nbsp;
                                                                             <FontAwesomeIcon icon={faVolumeUp} size="xs"
@@ -177,7 +178,7 @@ function Paradigm(state) {
                                                                 )
                                                             } else {
                                                                 return (
-                                                                <div style={{textAlign: "left", justifyContent: "left"}}>
+                                                                <div style={{textAlign: "left", justifyContent: "left", overflowWrap: "break-word"}}>
                                                                         <p>{displayWord}</p>
                                                                     </div>
                                                                 )
