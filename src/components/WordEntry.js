@@ -11,8 +11,11 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import ClipLoader from "react-spinners/ClipLoader";
 import {Button} from "react-bootstrap";
 import LikeWord from "./LikeWord.js";
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 function WordEntry(props) {
+
     const backendUrl = process.env.REACT_APP_BACKEND;
     const word = window.location.href.split("/")[4];
     
@@ -115,6 +118,9 @@ function WordEntry(props) {
                 }}
             ></Redirect>
         </>
+        // this is the search on the paradigm page --> add code to search only when the entered or magnifying glass is clicked
+        // in short add handle serahc key fucntion from header.js into this file
+        // see in searchresults page where it is written to search on
     }
 
     function getType() {

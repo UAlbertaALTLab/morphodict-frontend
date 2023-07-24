@@ -8,7 +8,9 @@ import Settings from "../HelperClasses/SettingClass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "react-bootstrap";
-
+import { useEffect } from 'react';
+import SearchResult from './SearchResult';
+import {useLocation } from 'react-router-dom';
 
 const crkSettings = {
     Latn: "SRO (êîôâ)",
@@ -76,13 +78,54 @@ function Header(props) {
     const [dictionaryName, setDictionaryName] = useState(process.env.REACT_APP_NAME);
     const description = process.env.REACT_APP_SUBTITLE;
     const sourceLanguageName = process.env.REACT_APP_SOURCE_LANGUAGE_ENDONYM;
-    const [queryString, setQueryString] = useState("");
+    const [queryString, setQueryString] = useState(""); // changed it from "" to false
     const [query, setQuery] = useState(false);
     const [type, setDispType] = useState("Latn");
     const [settingsLabelType, setSettingsLabelType] = useState("ENGLISH");
     const [showNoQueryAlert, setShowNoQueryAlert] = useState(false);
     const settingMenu = defaultSettings;
+    const [isSearchBarDisabled, setSearchBarDisabled] = useState(false);
 
+    // const backendUrl = process.env.REACT_APP_BACKEND;
+    const disableOnUrl = '/word/';
+    const location = useLocation();
+    console.log(disableOnUrl)
+    
+    //Changes Made for back button
+    useEffect(() => {
+        const handleBackButton = () => {
+          console.log('Back button pressed. Component is refreshed.');
+          setQuery(true);
+          setQueryString('')
+          console.log(query)
+          console.log(queryString)
+          window.location.href = '/';  
+        };
+    
+        window.addEventListener('popstate', handleBackButton);
+
+        return () => {
+          window.removeEventListener('popstate', handleBackButton);
+        };
+      }, []);
+
+      useEffect(() => {
+        const handleUrlChange = () => {
+            setSearchBarDisabled(window.location.pathname.includes(disableOnUrl));
+            console.log("ploi")
+            console.log(setSearchBarDisabled)
+          };
+
+          window.addEventListener('popstate', handleUrlChange);
+
+        return () => {
+            window.removeEventListener('popstate', handleUrlChange);
+          };
+          // Check if the current URL matches the URL where you want to disable the search bar
+         
+        }, []);
+
+    
 
     if (!window.localStorage.getItem("settings")) {
         window.localStorage.setItem("settings", JSON.stringify(new Settings()));
@@ -175,9 +218,12 @@ function Header(props) {
         window.dispatchEvent(new Event("settings"));
     };
 
+    // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
     window.dispatchEvent(new Event("type"));
 
     window.onload = () => {
+        // console.log("pranjal")
         updateDictionaryName();
     }
 
@@ -188,22 +234,34 @@ function Header(props) {
     };
 
     const handleSearchKey = (e) => {
+        // if (e.target.value === "")
+        // {
+        //     e.preventDefault()
+        //     console.log("llll")
+        // }
+       
+
+
         if (e.target.value === "" && e.key !== "Enter") {
             e.target.labels[0].innerText = "Search in Cree or English";
+            console.log("lllml")
         }
 
         if (e.key === "Enter" && queryString && queryString !== "") {
             setQuery(true);
             setShowNoQueryAlert(false);
             window.dispatchEvent(new Event("executeSearch"));
+            console.log("bhav")
         }
 
         else if (e.key === "Enter") {
             setShowNoQueryAlert(true);
+            console.log("llll??")
         }
 
         else {
             setQueryString(e.target.value);
+            console.log("hello")
         }
 
     };
@@ -261,9 +319,10 @@ function Header(props) {
         }
     }
 
-    window.onpopstate = function(e) {  //prevents blank page when using "back" button  
-        window.location.reload();
-    }
+    // window.onpopstate = function(e) {  //prevents blank page when using "back" button  
+    //     setQuery(true);
+    //     window.dispatchEvent(new Event("executeSearch"));
+    // }
 
     return (
         <div className="top-bar app__header">
@@ -337,21 +396,33 @@ function Header(props) {
 
                    size="small"
 
-                   InputProps={{                     
+                   InputProps={{     
+                    disabled: isSearchBarDisabled,                
                         endAdornment: (
                             <InputAdornment position="end">
-                                <Button onClick={handleMagGlassClick} onMouseDown={(e)=> {e.preventDefault()} } className="mag-glass-btn" >
+                                <Button onClick={handleMagGlassClick} className="mag-glass-btn" >
                                 <FontAwesomeIcon icon={faMagnifyingGlass} size="xl" color="gray"> </FontAwesomeIcon>
                                 </Button>
                             </InputAdornment>
+                            
                         ),   
                     style: {backgroundColor: "white", fontStyle: "normal", borderRadius: "15px"},  //look of searchbar
+                    
                     }}
+                    // added these two lines because onclick was not perfoming if we comment onKeyUp
+                    value={queryString}
+                    onChange={(e) => setQueryString(e.target.value)}
+                  
 
                     onKeyUp={handleSearchKey}
 
                 ></TextField>
             </nav>
+
+
+
+
+            {/* ++++++++++++++++++++ */}
             <nav className="top-bar__nav">
                 <details className="toggle-box toggle-box--with-menu close-on-click-away">
                     <summary

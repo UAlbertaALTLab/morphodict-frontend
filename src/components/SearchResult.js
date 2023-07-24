@@ -11,11 +11,15 @@ Goal          : Display a list of words that best match the queryString.
 import SearchSection from "./SearchSection";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Alert } from "react-bootstrap";
+import handleBackButton from './Header';
 
 import { useQuery } from "react-query";
 
 import React, { CSSProperties } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
+import { useEffect } from 'react';
+import Header from "./Header";
+
 
 function replaceSpecials(query) {
   let result = query.replace(/%C3%A2/g, 'â')
@@ -25,17 +29,28 @@ function replaceSpecials(query) {
   return result
 }
 
-function SearchResult(props) {
+  function SearchResult(props) {
+
   const apiUrl = process.env.REACT_APP_BACKEND
   const query = props.location.state.queryString;
 
   async function getAllData() {
-    if (query === "") {
-      return [];
+    // if (query === "") {
+    //   // when we select the whole text in the search field from the paradigm page and backspace it, it was eturning an empty page
+    //   // return window.location.href = '/';
+    //   return fetch(`${apiUrl}/api/search/?name=${query}`).then((res) =>
+    //   res.json());
+    // }
+    if(query === "")
+    {
+      console.log("farrrr")
     }
+    if(query !== ""){
     return fetch(`${apiUrl}/api/search/?name=${query}`).then((res) =>
       res.json()
+
     );
+    }
   }
 
   async function getMyResults() {
@@ -58,7 +73,6 @@ function SearchResult(props) {
   );
 
   window.addEventListener("executeSearch", () => refetch());
-
   
   let results = data;
 
