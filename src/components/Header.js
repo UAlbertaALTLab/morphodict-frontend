@@ -1,14 +1,15 @@
 import "./style.css";
 import morphodict_default_logo from "../static/morphodict-default-logo-192.png";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { InputAdornment, TextField, Snackbar, Alert } from "@mui/material";
 import { Redirect } from "react-router-dom";
 import Settings from "../HelperClasses/SettingClass";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "react-bootstrap";
-
+import { useHistory } from "react-router-dom";
 
 const crkSettings = {
     Latn: "SRO (êîôâ)",
@@ -82,6 +83,30 @@ function Header(props) {
     const [settingsLabelType, setSettingsLabelType] = useState("ENGLISH");
     const [showNoQueryAlert, setShowNoQueryAlert] = useState(false);
     const settingMenu = defaultSettings;
+    const apiUrl = process.env.REACT_APP_BACKEND;
+    const history = useHistory();
+    
+
+
+    window.onpopstate = function(e) {
+        if (document.location.href.includes("search")) {
+                console.log("search page");
+                console.log("query: " + document.location.href.split("q=")[1]);
+                if (document.location.href.split("q=")[1] != undefined) {
+                    setQueryString(document.location.href.split("q=")[1]);
+                    setQuery(true);
+                    window.dispatchEvent(new Event("executeSearch"));
+                }
+            }
+    
+        else {
+            console.log("not search page");  //this line prints to console, but user still ends up on "/search/?q=" with no queryString
+            setQueryString("");
+            setQuery(false);
+        }
+
+    };
+
 
 
     if (!window.localStorage.getItem("settings")) {
@@ -179,6 +204,7 @@ function Header(props) {
 
     window.onload = () => {
         updateDictionaryName();
+        //setQuery(false);
     }
 
     window.onstorage = () => {
@@ -188,13 +214,17 @@ function Header(props) {
     };
 
     const handleSearchKey = (e) => {
+        setQuery(false);
         if (e.target.value === "" && e.key !== "Enter") {
             e.target.labels[0].innerText = "Search in Cree or English";
         }
 
         if (e.key === "Enter" && queryString && queryString !== "") {
+
             setQuery(true);
             setShowNoQueryAlert(false);
+            console.log("queryString to be sent : " + queryString);
+            history.push(window.location.pathname, {queryString: queryString, query: queryString, type: type, data: data, isFetching: isFetching});
             window.dispatchEvent(new Event("executeSearch"));
         }
 
@@ -213,6 +243,7 @@ function Header(props) {
     const handleMagGlassClick = (e) => {
         if (queryString) {
             setQuery(true);
+            history.push(window.location.pathname, {queryString: queryString, query: queryString, type: type, data: data, isFetching: isFetching});
             window.dispatchEvent(new Event("executeSearch"));
         } else {
             setShowNoQueryAlert(true);
@@ -261,38 +292,54 @@ function Header(props) {
         }
     }
 
-    window.onpopstate = function(e) {  //prevents blank page when using "back" button  
-        window.location.reload();
+    async function getAllData() {
+        console.log("query in getAllData: ", queryString);
+        if (query === "") {
+        return [];
+        }
+        return fetch(`${apiUrl}/api/search/?name=${queryString}`).then((res) =>
+        res.json()
+        );
     }
+    
+    async function getMyResults() {
+        let namedData = await getAllData();
+        try {
+        // namedData = JSON.parse(namedData);
+    
+        return namedData["search_results"];
+        } catch (err) {
+        return "empty";
+        }
+    }
+    
+    const { isFetching, error, data, refetch } = useQuery(
+        "getMyResults",
+        () => getMyResults(),
+        {
+        refetchOnWindowFocus: false,
+        }
+    );
+    
+    window.addEventListener("executeSearch", () => refetch());
 
     return (
         <div className="top-bar app__header">
-            {window.location.href.includes("search") && !query && (
-                <>
-                    <Redirect
-                        to={{
-                            pathname: "/search/?q=" + window.location.href.split("q=")[1],
-                            state: {
-                                queryString: window.location.href.split("q=")[1],
-                                query: window.location.href.split("q=")[1],
-                                type: type,
-                            },
-                        }} 
-                    ></Redirect>
-                </>
-            )}
-            {query ? (
+            {console.log("query: "+query) || (query ?  (
                 <Redirect
                     to={{
                         pathname: "/search/?q=" + queryString,
                         state: {
                             queryString: queryString,
-                            query: query,
+                            query: queryString,
                             type: type,
+                            data: data,
+                            isFetching: isFetching,
                         },
                     }}
                 ></Redirect>
-            ) : null}
+            ) : null)}
+
 
             <Snackbar open={showNoQueryAlert} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical: "bottom", horizontal: "center"}}>
               <Alert onClose={handleClose} severity="error">
