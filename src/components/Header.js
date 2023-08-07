@@ -78,7 +78,7 @@ function Header(props) {
     const description = process.env.REACT_APP_SUBTITLE;
     const sourceLanguageName = process.env.REACT_APP_SOURCE_LANGUAGE_ENDONYM;
     const [queryString, setQueryString] = useState("");
-    const [query, setQuery] = useState(false);
+    const [queryBool, setQueryBool] = useState(false);
     const [type, setDispType] = useState("Latn");
     const [settingsLabelType, setSettingsLabelType] = useState("ENGLISH");
     const [showNoQueryAlert, setShowNoQueryAlert] = useState(false);
@@ -89,20 +89,21 @@ function Header(props) {
 
 
     window.onpopstate = function(e) {
+        setQueryBool(false);
         if (document.location.href.includes("search")) {
-                console.log("search page");
-                console.log("query: " + document.location.href.split("q=")[1]);
+                //console.log("search page");
+                //console.log("query: " + document.location.href.split("q=")[1]);
                 if (document.location.href.split("q=")[1] != undefined) {
                     setQueryString(document.location.href.split("q=")[1]);
-                    setQuery(true);
+                    setQueryBool(true);
                     window.dispatchEvent(new Event("executeSearch"));
                 }
             }
     
         else {
-            console.log("not search page");  //this line prints to console, but user still ends up on "/search/?q=" with no queryString
+            //console.log("not search page");  //this line prints to console, but user still ends up on "/search/?q=" with no queryString
             setQueryString("");
-            setQuery(false);
+            setQueryBool(false);
         }
 
     };
@@ -204,7 +205,6 @@ function Header(props) {
 
     window.onload = () => {
         updateDictionaryName();
-        //setQuery(false);
     }
 
     window.onstorage = () => {
@@ -214,16 +214,16 @@ function Header(props) {
     };
 
     const handleSearchKey = (e) => {
-        setQuery(false);
+        setQueryBool(false);
         if (e.target.value === "" && e.key !== "Enter") {
             e.target.labels[0].innerText = "Search in Cree or English";
         }
 
         if (e.key === "Enter" && queryString && queryString !== "") {
 
-            setQuery(true);
+            setQueryBool(true);
             setShowNoQueryAlert(false);
-            console.log("queryString to be sent : " + queryString);
+            //console.log("queryString to be sent : " + queryString);
             history.push(window.location.pathname, {queryString: queryString, query: queryString, type: type, data: data, isFetching: isFetching});
             window.dispatchEvent(new Event("executeSearch"));
         }
@@ -242,7 +242,7 @@ function Header(props) {
     //start search when magnifynig glass icon is clicked
     const handleMagGlassClick = (e) => {
         if (queryString) {
-            setQuery(true);
+            setQueryBool(true);
             history.push(window.location.pathname, {queryString: queryString, query: queryString, type: type, data: data, isFetching: isFetching});
             window.dispatchEvent(new Event("executeSearch"));
         } else {
@@ -293,8 +293,8 @@ function Header(props) {
     }
 
     async function getAllData() {
-        console.log("query in getAllData: ", queryString);
-        if (query === "") {
+        //console.log("query in getAllData: ", queryString);
+        if (queryString === "") {
         return [];
         }
         return fetch(`${apiUrl}/api/search/?name=${queryString}`).then((res) =>
@@ -325,7 +325,7 @@ function Header(props) {
 
     return (
         <div className="top-bar app__header">
-            {console.log("query: "+query) || (query ?  (
+            {console.log("queryBool: "+queryBool) || (queryBool ?  (
                 <Redirect
                     to={{
                         pathname: "/search/?q=" + queryString,
@@ -335,10 +335,11 @@ function Header(props) {
                             type: type,
                             data: data,
                             isFetching: isFetching,
+                            queryBool: false,
                         },
                     }}
                 ></Redirect>
-            ) : null)}
+            ): null)}
 
 
             <Snackbar open={showNoQueryAlert} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{vertical: "bottom", horizontal: "center"}}>
