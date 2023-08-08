@@ -13,6 +13,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { Alert } from "react-bootstrap";
 
 import { useQuery } from "react-query";
+import { useEffect, useState } from "react";
 
 import React, { CSSProperties } from "react";
 import ClipLoader from "react-spinners/ClipLoader";
@@ -27,9 +28,37 @@ function replaceSpecials(query) {
 
 function SearchResult(props) {
   const apiUrl = process.env.REACT_APP_BACKEND
-  const query = props.location.state.queryString;
+  //const [isFetching, setIsFetching] = useState(true);
+  //const [data, setData] = useState(null);
+  //const [error, setError] = useState(null);
+  const data = props.location.state.data;
+  const error = props.location.state.error;
+  const isFetching = props.location.state.isFetching;
 
+  //console.log("props: ", props);
+
+
+  //const query = props.location.state.queryString;
+
+  //const [query, setQuery] = useState("");
+
+  async function getQuery() {
+    //return props.history.location.state.queryString;
+    //console.log("url:" , document.URL);
+
+  }
+  /*
   async function getAllData() {
+    const query = props.history.location.state.queryString;
+    //setQuery(props.location.state.queryString);
+    //console.log("query in getAllData: ", query);
+    console.log("props: ", props );
+    console.log("props.history: ", props.history );
+    console.log("props.history.location: ", props.history.location );
+    console.log("props.history.location.state: ", props.history.location.state );
+    console.log("props.history.location.state.queryString: ", props.history.location.state.queryString );
+    //const query = await getQuery();
+    console.log("query in getAllData: ", query);
     if (query === "") {
       return [];
     }
@@ -57,7 +86,9 @@ function SearchResult(props) {
     }
   );
 
-  window.addEventListener("executeSearch", () => refetch());
+  window.addEventListener("executeSearch", () => refetch());*/
+
+  
 
   
   let results = data;
@@ -133,6 +164,10 @@ function SearchResult(props) {
       />
     }
 
+  if (error){
+    console.log("error: ", error)
+  }
+
   return (
     <div className="container">
       {typeof results === "undefined" && !isFetching && (        
@@ -159,7 +194,7 @@ function SearchResult(props) {
         <>
           <Alert variant="danger">
             <Alert.Heading>
-              No results found for {replaceSpecials(query)}
+              No results found for {replaceSpecials(props.location.state.queryString)}
             </Alert.Heading>
           </Alert>
         </>
