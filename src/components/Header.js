@@ -130,7 +130,7 @@ function Header(props) {
 
     const handleSettingChange = (value) => {
         let settings = JSON.parse(window.localStorage.getItem("settings"));
-
+        setQueryBool(false);
         switch (value) {
             case "Latn":
                 settings.latn = true;
@@ -201,7 +201,7 @@ function Header(props) {
         window.dispatchEvent(new Event("settings"));
     };
 
-    window.dispatchEvent(new Event("type"));
+    //window.dispatchEvent(new Event("type"));
 
     window.onload = () => {
         updateDictionaryName();
