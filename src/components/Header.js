@@ -197,6 +197,13 @@ function Header(props) {
             default:
                 break;
         }
+        if (document.location.href.includes("search")) {
+            if (document.location.href.split("q=")[1] != undefined) {
+                setQueryString(document.location.href.split("q=")[1]);
+                setQueryBool(true);
+                window.dispatchEvent(new Event("executeSearch"));
+            }
+        }
         window.localStorage.setItem("settings", JSON.stringify(settings));
         window.dispatchEvent(new Event("settings"));
     };

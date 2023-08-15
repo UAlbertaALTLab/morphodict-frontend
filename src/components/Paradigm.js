@@ -50,7 +50,7 @@ function getMorphemeSettings() {
 
 function Paradigm(state) {
     const paradigm = state.paradigm;
-    const type = state.type;
+    const [type, setType] = useState(state.type);
     const showAudio = JSON.parse(window.localStorage.getItem("settings"))["showAudio"];
     const showMorphemes = getMorphemeSettings();
     let counter = 0;
@@ -65,6 +65,10 @@ function Paradigm(state) {
     window.addEventListener("settings", () => {
         labelSetting = getLabelSetting();
         setRelabelling(labelSetting);
+        let settings = JSON.parse(window.localStorage.getItem("settings"));
+        if (settings.latn){setType("Latn")}
+        else if (settings.latn_x_macron){setType("Latn-x-macron")}
+        else if (settings.syllabics){setType("Cans")}
     });
 
     function changeButtonMessage() {
