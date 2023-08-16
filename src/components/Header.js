@@ -79,13 +79,46 @@ function Header(props) {
     const sourceLanguageName = process.env.REACT_APP_SOURCE_LANGUAGE_ENDONYM;
     const [queryString, setQueryString] = useState("");
     const [queryBool, setQueryBool] = useState(false);
-    const [type, setDispType] = useState("Latn");
-    const [settingsLabelType, setSettingsLabelType] = useState("ENGLISH");
+    const [type, setDispType] = useState("");
+    const [settingsLabelType, setSettingsLabelType] = useState("");
     const [showNoQueryAlert, setShowNoQueryAlert] = useState(false);
     const settingMenu = defaultSettings;
     const apiUrl = process.env.REACT_APP_BACKEND;
     const history = useHistory();
+    const settings = JSON.parse(window.localStorage.getItem("settings"));
     
+
+    useEffect(() => {
+        setSettingsLabelType(getSettingsLabelType());
+        setDispType(getDispType());
+    }, [settings]);
+
+
+    function getSettingsLabelType() {
+        console.log("settings:");
+        console.log(settings);
+        if (settings.label == "ENGLISH"){
+            return "ENGLISH";
+        } else if (settings.label == "LINGUISTIC (LONG)"){
+            return "LINGUISTIC (LONG)";
+        } else if (settings.label == "LINGUISTIC (SHORT)"){
+            return "LINGUISTIC (SHORT)";
+        } else if (settings.label == "NÊHIYAWÊWIN"){
+            return "NÊHIYAWÊWIN";
+        }
+    }
+
+    function getDispType() {
+        if (settings.latn) {
+            return "Latn";
+        } else if (settings.latn_x_macron) {
+            return "Latn-x-macron";
+        } else if (settings.syllabics) {
+            return "Cans";
+        }
+    }
+    
+
 
 
     window.onpopstate = function(e) {
