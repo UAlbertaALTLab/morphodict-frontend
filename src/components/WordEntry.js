@@ -1,6 +1,6 @@
 import {AiOutlineSound} from "react-icons/ai";
 import {Grid} from "@mui/material";
-import React, {useState, CSSProperties} from "react";
+import React, {useState, CSSProperties, useEffect} from "react";
 import Paradigm from "./Paradigm.js";
 import MultiPlayer from './MultiPlayer';
 import {useQuery} from "react-query";
@@ -15,8 +15,16 @@ import LikeWord from "./LikeWord.js";
 function WordEntry(props) {
     const backendUrl = process.env.REACT_APP_BACKEND;
     const word = window.location.href.split("/")[4];
+    const [displayText, setDisplayText] = useState("");
+    const settings = JSON.parse(window.localStorage.getItem("settings"));
     
     let [likeWordInfo, setLikeWordInfo] = useState(null);
+
+    useEffect(() => {
+        console.log("settings: ");
+        console.log(JSON.parse(window.localStorage.getItem("settings")));
+        setDisplayText(getDisplayText());
+    }, [settings]);
 
     async function getWord() {
         if (word === "") {
@@ -99,6 +107,12 @@ function WordEntry(props) {
     let paradigm = "";
     let type = getType();
 
+    window.addEventListener("settings" , () => {
+        type = getType();
+        setDisplayText(getDisplayText());
+        
+    });
+
     if ((!isFetching && typeof (data) === "number") || (!isFetching && !data)) {
         // No results found
         // or no search term given
@@ -118,11 +132,10 @@ function WordEntry(props) {
     }
 
     function getType() {
-        if ("state" in props.location && props.location.state) {
-            if ("type" in props.location.state && props.location.state.type) {
-                return props.location.state.type;
-            }
-        }
+        let settings = JSON.parse(window.localStorage.getItem("settings"));
+        if (settings.latn){return "Latn"}
+        else if (settings.latn_x_macron){return "Latn-x-macron"}
+        else if (settings.syllabics){return "Cans"}
         return "Latn";
     }
 
@@ -171,25 +184,33 @@ function WordEntry(props) {
     if (type === "Latn" && process.env.REACT_APP_ISO_CODE === "cwd") {
         type = "Latn-x-macron"
     }
+    
+    function getDisplayText() {
+        let text = ""
+        if (!isFetching && !error && data !== null) {
+            let settings = JSON.parse(window.localStorage.getItem("settings"));
+            console.log("type in wordentry:", type);
+            text =  wordform["text"][type];
+            let emoji = wordform["wordclass_emoji"];
 
-    let displayText = "";
-    if (!isFetching && !error && data !== null) {
-        let settings = JSON.parse(window.localStorage.getItem("settings"));
-        displayText = wordform["text"][type];
-        let emoji = wordform["wordclass_emoji"];
+            if (emoji && emoji.includes("🧑🏽")) {
+                emoji = emoji.replaceAll("🧑🏽", settings.active_emoji);
+            }
 
-        if (emoji && emoji.includes("🧑🏽")) {
-            emoji = emoji.replaceAll("🧑🏽", settings.active_emoji);
-        }
-
-        wordInformation = wordform["inflectional_category"] + "  " + emoji + "  ";
-        likeword = wordform["inflectional_category_plain_english"][type];
-        if (settings.morphemes_everywhere || settings.morphemes_headers) {
-            if ("morphemes" in wordform) {
-                displayText = wordform["morphemes"][type].join("•");
+            wordInformation = wordform["inflectional_category"] + "  " + emoji + "  ";
+            likeword = wordform["inflectional_category_plain_english"][type];
+            if (settings.morphemes_everywhere || settings.morphemes_headers) {
+                if ("morphemes" in wordform) {
+                    text =  wordform["morphemes"][type].join("•");
+                }
             }
         }
+        return text;
     }
+
+    
+
+   
 
     const wolvengrey =
         "Wolvengrey, Arok, editor. Cree: Words. Regina, University of Regina Press, 2001";
