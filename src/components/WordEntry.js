@@ -278,7 +278,7 @@ function WordEntry(props) {
                         </Grid>
                     </header>
                     
-                    <div style={{marginLeft: "-0.4em"}}>
+                    <div>
                     <LikeWord wordform={likeWordInfo}/>
                     </div>
                     
