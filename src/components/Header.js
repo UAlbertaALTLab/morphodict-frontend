@@ -118,14 +118,9 @@ function Header(props) {
         }
     }
     
-
-
-
     window.onpopstate = function(e) {
         setQueryBool(false);
         if (document.location.href.includes("search")) {
-                //console.log("search page");
-                //console.log("query: " + document.location.href.split("q=")[1]);
                 if (document.location.href.split("q=")[1] != undefined) {
                     setQueryString(document.location.href.split("q=")[1]);
                     setQueryBool(true);
@@ -134,7 +129,6 @@ function Header(props) {
             }
     
         else {
-            //console.log("not search page");  //this line prints to console, but user still ends up on "/search/?q=" with no queryString
             setQueryString("");
             setQueryBool(false);
         }
@@ -241,8 +235,6 @@ function Header(props) {
         window.dispatchEvent(new Event("settings"));
     };
 
-    //window.dispatchEvent(new Event("type"));
-
     window.onload = () => {
         updateDictionaryName();
     }
@@ -263,7 +255,6 @@ function Header(props) {
 
             setQueryBool(true);
             setShowNoQueryAlert(false);
-            //console.log("queryString to be sent : " + queryString);
             history.push(window.location.pathname, {queryString: queryString, query: queryString, type: type, data: data, isFetching: isFetching});
             window.dispatchEvent(new Event("executeSearch"));
         }
@@ -279,7 +270,7 @@ function Header(props) {
     };
 
 
-    //start search when magnifynig glass icon is clicked
+    //start search when magnifying glass icon is clicked
     const handleMagGlassClick = (e) => {
         if (queryString) {
             setQueryBool(true);
@@ -333,7 +324,6 @@ function Header(props) {
     }
 
     async function getAllData() {
-        //console.log("query in getAllData: ", queryString);
         if (queryString === "") {
         return [];
         }
@@ -345,8 +335,6 @@ function Header(props) {
     async function getMyResults() {
         let namedData = await getAllData();
         try {
-        // namedData = JSON.parse(namedData);
-    
         return namedData["search_results"];
         } catch (err) {
         return "empty";
@@ -365,7 +353,7 @@ function Header(props) {
 
     return (
         <div className="top-bar app__header">
-            {console.log("queryBool: "+queryBool) || (queryBool ?  (
+            {(queryBool ?  (
                 <Redirect
                     to={{
                         pathname: "/search/?q=" + queryString,

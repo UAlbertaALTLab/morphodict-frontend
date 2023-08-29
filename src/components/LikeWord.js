@@ -101,7 +101,7 @@ const LikeWord = (props) => {
     if (showEmoji === false) {
         emoticon = "";
     } else {
-        emoticon = emoticon  //+ " - "
+        emoticon = emoticon
     }
 
     let primaryInfo = "";

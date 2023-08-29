@@ -21,8 +21,6 @@ function WordEntry(props) {
     let [likeWordInfo, setLikeWordInfo] = useState(null);
 
     useEffect(() => {
-        console.log("settings: ");
-        console.log(JSON.parse(window.localStorage.getItem("settings")));
         setDisplayText(getDisplayText());
     }, [settings]);
 
@@ -69,7 +67,6 @@ function WordEntry(props) {
 
         }
         try {
-            // namedData = JSON.parse(namedData);
             return namedData;
         } catch (err) {
             console.log(err);
@@ -189,7 +186,6 @@ function WordEntry(props) {
         let text = ""
         if (!isFetching && !error && data !== null) {
             let settings = JSON.parse(window.localStorage.getItem("settings"));
-            console.log("type in wordentry:", type);
             text =  wordform["text"][type];
             let emoji = wordform["wordclass_emoji"];
 
