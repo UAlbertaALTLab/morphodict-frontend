@@ -95,8 +95,6 @@ function Header(props) {
 
 
     function getSettingsLabelType() {
-        console.log("settings:");
-        console.log(settings);
         if (settings.label == "ENGLISH"){
             return "ENGLISH";
         } else if (settings.label == "LINGUISTIC (LONG)"){
