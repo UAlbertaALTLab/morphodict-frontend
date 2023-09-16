@@ -71,10 +71,11 @@ function getInflectionalCategoryPlainEnglish(wordInformation) {
 
 const SearchSection = (props) => {
 
-    let [soundBtn, setBtn] = useState();
+    // let [soundBtnRes, setBtn] = useState();
     let [persistTooltip, setPersistTooltip] = useState(false);
     let [showTooltip, setShowTooltip] = useState(false);
-    let sound = '';
+    let sound = "";
+    let soundBtn = "";
     useEffect(() => {
         async function fetchFirstRecordingURL(wordform) {
             let response = await getRecordingsForWordformsFromMultipleUrls([wordform]);
@@ -174,29 +175,79 @@ const SearchSection = (props) => {
         }
 
         let wordform = displayWord();
-        sound = fetchFirstRecordingURL(wordform);
+        sound = fetchFirstRecordingURL(wordform)
+        .then((sound) => {
+            // Handle a successful response
+            if (sound !== "") {
+                console.log(sound)
+                soundBtn = (
+                    <Button onMouseDown={(e)=> {e.preventDefault()}}
+                            id="soundbutton"
+                            style={{backgroundColor:"transparent", border:"none", outline:"none", boxShadow:"none", paddingLeft: "1.2em"}}
+                            data-cy="playRecording"
+                            onClick={handleSoundPlay}
+                            >
+                        <FontAwesomeIcon icon={faVolumeUp}
+                        id="soundicon"
+                        size="xl"
+                        style={{color:"#286995", marginLeft:"-12px"}}
+                        onMouseOver={handleSoundIconOnMouseOver}
+                        onMouseLeave={handleSoundIconMouseLeave}
+                        />
+                    </Button>
+                );
+            }
+          })
+          .catch((error) => {
+            // Handle errors
+            console.error("Error:", error);
+          });
         //Information on api only learned on 2/24/2022 moved into sp3
-        if (sound !== "") {
-            let soundBtnRes = (
-                <Button variant="btn bg-white rounded" onMouseDown={(e)=> {e.preventDefault()}}
-                        id="soundbutton"
-                        onClick={handleSoundPlay}
-                        data-cy="playRecording"
-                >
-                    <FontAwesomeIcon icon={faVolumeUp}
-                    id="soundicon"
-                    size="xl"
-                    onMouseOver={handleSoundIconOnMouseOver}
-                    onMouseLeave={handleSoundIconMouseLeave}
-                    style={{color:"#286995", marginLeft:"-12px"}}
-                    />
-                </Button>
-            );
-            console.log(soundBtnRes);
-            setBtn(soundBtnRes);
-        }
-        console.log(soundBtn);
-        console.log(sound);
+        // if (sound !== "") {
+        //     console.log("pranjalllll")
+        //     soundBtnRes = (
+        //         <Button variant="btn bg-white rounded" onMouseDown={(e)=> {e.preventDefault()}}
+        //                 id="soundbutton"
+        //                 onClick={handleSoundPlay}
+        //                 data-cy="playRecording"
+        //         >
+        //             <FontAwesomeIcon icon={faVolumeUp}
+        //             id="soundicon"
+        //             size="xl"
+        //             onMouseOver={handleSoundIconOnMouseOver}
+        //             onMouseLeave={handleSoundIconMouseLeave}
+        //             style={{color:"#286995", marginLeft:"-12px"}}
+        //             />
+        //         </Button>
+        //     );
+        //     // console.log(soundBtnRes);
+        //     // setBtn(soundBtnRes);
+        //     // <div className="definition-title__play-icon">{soundBtnRes}</div>
+        // }
+
+        // if (sound !== "") {
+        //     console.log(sound)
+        //     soundBtn = (
+        //         <Button onMouseDown={(e)=> {e.preventDefault()}}
+        //                 id="soundbutton"
+        //                 style={{backgroundColor:"transparent", border:"none", outline:"none", boxShadow:"none", paddingLeft: "1.2em"}}
+        //                 data-cy="playRecording"
+        //                 onClick={handleSoundPlay}
+        //                 >
+        //             <FontAwesomeIcon icon={faVolumeUp}
+        //             id="soundicon"
+        //             size="xl"
+        //             style={{color:"#286995", marginLeft:"-12px"}}
+        //             onMouseOver={handleSoundIconOnMouseOver}
+        //             onMouseLeave={handleSoundIconMouseLeave}
+        //             />
+        //         </Button>
+        //     );
+        // }
+        // console.log(soundBtnRes);
+
+
+
       }, []);
     const getInformation = () => {
         if (wordInformation["relabelled_fst_analysis"]) {
@@ -275,6 +326,7 @@ const SearchSection = (props) => {
     }
 
     const infoSoundButtons = props.infoSoundButtons;
+    const soundBtnResNew = props.soundBtnResNew;
 
     const wolvengrey =
         "Wolvengrey, Arok, editor. Cree: Words. Regina, University of Regina Press, 2001";
@@ -401,7 +453,41 @@ const SearchSection = (props) => {
             <div className="d-flex flex-wrap" style={{marginLeft: "-0.8em", marginTop: "0.5em"}}>
                 
                 <div className="definition-title" data-cy="definitionTitle">{wordBtn}</div>
-                <div name="sound-info-btn group" className="d-flex flex-row">
+                <div className="definition__icon definition-title__tooltip-icon">
+  {infoSoundButtons && (
+    <>
+      {/* Display the sound button */}
+      <div className="sound-button">
+        {/* Place your sound button component or code here */}
+        {soundBtn}
+      </div>
+      {/* Display the info button */}
+      <OverlayTrigger
+        placement="bottom"
+        overlay={renderInformationToolTip}
+        show={persistTooltip || showTooltip}
+      >
+        {infoBtn}
+      </OverlayTrigger>
+    </>
+  )}
+</div>
+                {/* <div name="sound-btn group" className="d-flex flex-row">
+                <div className="definition__icon definition-title__tooltip-icon">
+                    {infoSoundButtons ? 
+                    <OverlayTrigger
+                        placement="bottom"
+                        overlay={renderInformationToolTip}
+                        show={persistTooltip||showTooltip}
+                    >
+                        {infoBtn}
+                    </OverlayTrigger> : null}
+                </div> 
+                </div> */}
+
+
+
+                {/* <div name="sound-info-btn group" className="d-flex flex-row">
                 <div className="definition__icon definition-title__tooltip-icon">
                     {infoSoundButtons ? 
                     <OverlayTrigger
@@ -413,8 +499,13 @@ const SearchSection = (props) => {
                     </OverlayTrigger> : null}
                 </div> 
 
-                {soundBtn =><div style= {{marginTop: "0.1em"}} className="definition-title__play-icon">{soundBtn}</div>}
-                </div>
+              
+
+                </div> */}
+
+
+
+
             </div>
             <script src="pathToJs" defer></script>
             {shouldNotDisplayFormOf() ? <LikeWord
