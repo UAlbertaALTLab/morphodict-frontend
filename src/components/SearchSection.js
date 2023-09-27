@@ -8,7 +8,6 @@ index  : the resulting index of the item from the returned array.
 Goal   : The purpose of this page is to display the search results gotten from user search. This is a single display of the word before a user picks the current file. 
        
 */
-import { default as logo } from './info-circle-solid.svg';
 import React, {useEffect, useState} from "react";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
