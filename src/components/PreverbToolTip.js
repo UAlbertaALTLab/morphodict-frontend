@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import { default as logo } from './info-circle-solid.svg';
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
 import {faVolumeUp, faInfoCircle, faBorderNone} from '@fortawesome/free-solid-svg-icons'
 import {Link, Redirect} from "react-router-dom";
@@ -55,7 +54,6 @@ const PreverbToolTip = (props) => {
             onMouseDown={(e)=> {e.preventDefault()}}
                 onMouseLeave={() => setPreverbShowTooltip(false)}
                 onMouseEnter={() => setPreverbShowTooltip(true)}
-                onClick={() => handleInfoLinkClick()}
                 data-cy="preverbButton">
             <FontAwesomeIcon icon={faInfoCircle} size="xl" color="navy"/>
         </Button>

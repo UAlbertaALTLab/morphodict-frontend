@@ -198,13 +198,6 @@ const SearchSection = (props) => {
             return [];
         }
     }
-    let handlePreverbMouseEnter = () => {
-        setPreverbShowTooltip(true);
-      };
-    
-    let handlePreverbMouseLeave = () => {
-        setPreverbShowTooltip(false);
-    };
     //Information BTN tooltip(Here is where the info is to be typed out)
     let [settings, setSettings] = useState(JSON.parse(window.localStorage.getItem("settings")));
     window.addEventListener("settings", () => {
