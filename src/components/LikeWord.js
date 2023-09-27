@@ -71,8 +71,8 @@ const LikeWord = (props) => {
     let [showTooltip, setShowTooltip] = useState(false);
     let [persistBookInfo, setPersistBookInfo] = useState(false);
     let [showBookInfo, setShowBookInfo] = useState(false);
-
     const wordform = props.wordform;
+    console.log(wordform);
     const relabelledIc = getRelabelledIc(wordform);
     let icLinguisticShort = wordform.inflectional_category_linguistic;
     let icLinguisticLong = wordform.inflectional_category_linguistic;;
@@ -101,7 +101,7 @@ const LikeWord = (props) => {
     if (showEmoji === false) {
         emoticon = "";
     } else {
-        emoticon = emoticon
+        emoticon = emoticon  //+ " - "
     }
 
     let primaryInfo = "";
@@ -112,6 +112,14 @@ const LikeWord = (props) => {
     });
 
     [primaryInfo, secondaryInfo] = updateLabelSettings(settings.label, icPlainEnglish, icLinguisticLong, icLinguisticShort, icSourceLanguage);
+
+    let handleMouseEnter = () => {
+        setShowTooltip(true);
+      };
+    
+    let handleMouseLeave = () => {
+        setShowTooltip(false);
+    };
 
 
     const infoLink = (

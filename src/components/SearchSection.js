@@ -8,14 +8,41 @@ index  : the resulting index of the item from the returned array.
 Goal   : The purpose of this page is to display the search results gotten from user search. This is a single display of the word before a user picks the current file. 
        
 */
-
-import React, {useState} from "react";
+import { default as logo } from './info-circle-solid.svg';
+import React, {useEffect, useState} from "react";
 import {Tooltip, OverlayTrigger, Button} from "react-bootstrap";
 import {Link, Redirect} from "react-router-dom";
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import {faVolumeUp, faInfoCircle, faBorderNone} from '@fortawesome/free-solid-svg-icons'
 import LikeWord from "./LikeWord";
-
+import SoundButton from "./SoundButton";
+import PreverbToolTip from "./PreverbToolTip";
+const LANGUAGE_CODES = getLanguageCodesFromLocation();
+const BASE_URL = "https://speech-db.altlab.app";
+function getLanguageCodesFromLocation() {
+    const location = window.location.toString();
+    console.log("Hello");
+    const audio_source = getCookie("audio_source");
+    if (audio_source && audio_source != "both") {
+      return [audio_source];
+    } else if (location.includes(`itwewina`) || location.includes(`crk`)) {
+      if (getCookie("synthesized_audio") == "yes") {
+        return [`maskwacis`, `moswacihk`, `synth`];
+      } else return [`maskwacis`, `moswacihk`];
+    } else if (location.includes(`itwiwina`) || location.includes(`cwd`))
+      return [`woodscree`];
+    else if (location.includes(`gunaha`) || location.includes(`srs`))
+      return [`tsuutina`];
+    else if (location.includes(`nihiitono`)) return [`arapaho`];
+    else if (location.includes(`guusaaw`) || location.includes(`hdn`))
+      return [`haida`];
+    return [`maskwacis`];
+}
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  }
 function getInflectionalCategory(wordInformation) {
     try {
         return wordInformation["lemma_wordform"]["inflectional_category_linguistic"] +
@@ -29,6 +56,7 @@ function getInflectionalCategory(wordInformation) {
             ")";
     }
 }
+
 
 function getInflectionalCategoryPlainEnglish(wordInformation) {
     try {
@@ -45,10 +73,112 @@ function getInflectionalCategoryPlainEnglish(wordInformation) {
 }
 
 const SearchSection = (props) => {
-
+    let [sound, setSound] = useState(null);
     let [persistTooltip, setPersistTooltip] = useState(false);
     let [showTooltip, setShowTooltip] = useState(false);
-
+    useEffect(() => {
+        async function fetchFirstRecordingURL(wordform) {
+            let response = await getRecordingsForWordformsFromMultipleUrls([wordform]);
+            return mapWordformsToBestRecordingURL(response).get(wordform);
+        }
+        async function getRecordingsForWordformsFromMultipleUrls(requestedWordforms) {
+            let retObject = { matched_recordings: [], not_found: [] };
+            for (let LANGUAGE_CODE of LANGUAGE_CODES) {
+              let bulkApiUrl = `${BASE_URL}/${LANGUAGE_CODE}/api/bulk_search`;
+              let response = await fetchRecordingUsingBulkSearch(
+                bulkApiUrl,
+                requestedWordforms
+              );
+              retObject["matched_recordings"] = retObject["matched_recordings"].concat(
+                response["matched_recordings"]
+              );
+              retObject["not_found"] = retObject["not_found"].concat(
+                response["not_found"]
+              );
+            }
+            return retObject;
+        }
+        function mapWordformsToBestRecordingURL(response) {
+            let wordform2recordingURL = new Map();
+          
+            for (let result of response["matched_recordings"]) {
+              let wordform = result["wordform"];
+          
+              if (!wordform2recordingURL.has(wordform)) {
+                // Assume the first result returned is the best recording:
+                wordform2recordingURL.set(wordform, result["recording_url"]);
+              }
+            }
+          
+            return wordform2recordingURL;
+        }
+        async function fetchRecordingUsingBulkSearch(bulkApiUrl, requestedWordforms) {
+            let batches = chunk(requestedWordforms);
+          
+            let allMatchedRecordings = [];
+            let allNotFound = [];
+          
+            for (let batch of batches) {
+              let response = await _fetchRecordingUsingBulkSearch(bulkApiUrl, batch);
+          
+              response["matched_recordings"].forEach((rec) =>
+                allMatchedRecordings.push(rec)
+              );
+              response["not_found"].forEach((rec) => allNotFound.push(rec));
+            }
+          
+            return {
+              matched_recordings: allMatchedRecordings,
+              not_found: allNotFound,
+            };
+        }
+        async function _fetchRecordingUsingBulkSearch(bulkApiUrl, requestedWordforms) {
+            // Construct the query parameters: ?q=word&q=word2&q=word3&q=...
+            let searchParams = new URLSearchParams();
+            for (let wordform of requestedWordforms) {
+              searchParams.append("q", wordform);
+            }
+            let url = new URL(bulkApiUrl);
+            url.search = searchParams;
+          
+            let response = await fetch(url);
+            if (!response.ok) {
+              throw new Error("Could not fetch recordings");
+            }
+          
+            return response.json();
+        }
+        function chunk(collection) {
+            const MAX_BATCH_SIZE = 30;
+          
+            // Chunk items iteratively, sort of like packing moving boxes, adding items
+            // to one box at at time until the box gets full, and then moving on to a
+            // new, empty box:
+            let chunks = [[]];
+            for (let item of collection) {
+              // invariant: the array of all chunks has at least one chunk
+              let currentChunk = chunks[chunks.length - 1];
+          
+              if (currentChunk.length >= MAX_BATCH_SIZE) {
+                // The current chunk is full!
+                // We can't add anymore items so start a new chunk.
+                currentChunk = [];
+                chunks.push(currentChunk);
+              }
+          
+              // invariant: currentChunk.length < batch size:
+              // ∴ it's safe to add an item to the current chunk
+              currentChunk.push(item);
+            }
+          
+            return chunks;
+        }
+        let wordform = displayWord();
+        let res = fetchFirstRecordingURL(wordform)
+        .then((res) => {
+            setSound(res);
+        })
+      }, []);
     const getInformation = () => {
         if (wordInformation["relabelled_fst_analysis"]) {
             switch (settings.label) {
@@ -69,6 +199,13 @@ const SearchSection = (props) => {
             return [];
         }
     }
+    let handlePreverbMouseEnter = () => {
+        setPreverbShowTooltip(true);
+      };
+    
+    let handlePreverbMouseLeave = () => {
+        setPreverbShowTooltip(false);
+    };
     //Information BTN tooltip(Here is where the info is to be typed out)
     let [settings, setSettings] = useState(JSON.parse(window.localStorage.getItem("settings")));
     window.addEventListener("settings", () => {
@@ -101,8 +238,9 @@ const SearchSection = (props) => {
             {information.map((item, i) => (<li className="unbullet">{item}</li>))}
         </Tooltip>
     );
-
     const wordsDefs = wordInformation["definitions"];
+    const preverbs = wordInformation["preverbs"];
+    console.log(preverbs);
     const displayType = props.type;
 
     const displayWord = function () {
@@ -145,29 +283,14 @@ const SearchSection = (props) => {
     }
 
     let infoBtn = "";
-    let soundBtn = "";
-    let sound = wordInformation["recording"];
     let wordBtn = "";
     let lemmaWordform = getLemmaWordform();
-
-    const handleSoundPlay = () => {
-        const audio = new Audio(sound);
-        audio.play();
-    };
 
     const handleInfoLinkClick = () => {
         navigator.clipboard.writeText(getStem() +
         " - " +
         information);
         setPersistTooltip(!persistTooltip)
-    }
-
-    const handleSoundIconOnMouseOver = () => {
-        document.getElementById("soundicon").style.color="#1c9dfe";
-    }
-
-    const handleSoundIconMouseLeave = () => {
-        document.getElementById("soundicon").style.color="#286995";
     }
 
     if (information !== "") {
@@ -185,24 +308,6 @@ const SearchSection = (props) => {
         );
     }
 
-    //Information on api only learned on 2/24/2022 moved into sp3
-    if (sound !== "") {
-        soundBtn = (
-            <Button variant="btn bg-white rounded" onMouseDown={(e)=> {e.preventDefault()}}
-                    id="soundbutton"
-                    onClick={handleSoundPlay}
-                    data-cy="playRecording"
-                    >
-                <FontAwesomeIcon icon={faVolumeUp}
-                id="soundicon"
-                size="xl"
-                onMouseOver={handleSoundIconOnMouseOver}
-                onMouseLeave={handleSoundIconMouseLeave}
-                style={{color:"#286995", marginLeft:"-12px"}}
-                />
-            </Button>
-        );
-    }
 
     const getEmoticon = () => {
         try {
@@ -277,7 +382,7 @@ const SearchSection = (props) => {
                 <div className="definition__icon definition-title__tooltip-icon">
                     {infoSoundButtons ? 
                     <OverlayTrigger
-                        placement="bottom"
+                        placement="right"
                         overlay={renderInformationToolTip}
                         show={persistTooltip||showTooltip}
                     >
@@ -285,10 +390,10 @@ const SearchSection = (props) => {
                     </OverlayTrigger> : null}
                 </div> 
 
-                {infoSoundButtons ? <div style= {{marginTop: "0.1em"}} className="definition-title__play-icon">{soundBtn}</div> : null}
+                {sound == null ? (<div></div>) : <SoundButton sound={sound} />}
                 </div>
             </div>
-
+            <script src="pathToJs" defer></script>
             {shouldNotDisplayFormOf() ? <LikeWord
                 wordform={wordInformation}
 
@@ -312,6 +417,16 @@ const SearchSection = (props) => {
                     </li>
                 ))}
             </ul>
+            
+               
+            <ol class="preverb-breakdown">
+                {preverbs && preverbs.map((item, i) => (
+                    <PreverbToolTip preverb={item} />
+                ))}
+            </ol>
+            
+
+
             {shouldNotDisplayFormOf() ? <></> :
                 <><p><i>Form of:</i></p>
                     <SearchSection
@@ -326,6 +441,7 @@ const SearchSection = (props) => {
                     /></>}
 
         </div>
+        
     );
 };
 

@@ -14,13 +14,16 @@ import LikeWord from "./LikeWord.js";
 
 function WordEntry(props) {
     const backendUrl = process.env.REACT_APP_BACKEND;
-    const word = window.location.href.split("/")[4];
+    let word = window.location.href.split("/")[4];
+    console.log(word)
     const [displayText, setDisplayText] = useState("");
     const settings = JSON.parse(window.localStorage.getItem("settings"));
     
     let [likeWordInfo, setLikeWordInfo] = useState(null);
 
     useEffect(() => {
+        console.log("settings: ");
+        console.log(JSON.parse(window.localStorage.getItem("settings")));
         setDisplayText(getDisplayText());
     }, [settings]);
 
@@ -30,6 +33,7 @@ function WordEntry(props) {
         }
         return fetch(backendUrl + "/api/word/" + word).then((res) => {
                 if (res.status !== 200) {
+                    console.log(res.status);
                     return res.status;
                 } else {
                     return res.json();
@@ -42,8 +46,16 @@ function WordEntry(props) {
         if (word === "") {
             return null;
         }
+        if (word === "k%C3%AE-@2"){
+            word = "ki";
+        }
+        else if (word === "k%C3%AEm%C3%B4ci-@ipv"){
+            word = "kîmôci";
+        }
+        console.log(word);
         return fetch(backendUrl + "/api/search/?name=" + word).then((res) => {
                 if (res.status !== 200) {
+                    console.log(res.status);
                     return res.status;
                 } else {
                     return res.json();
@@ -55,7 +67,9 @@ function WordEntry(props) {
 
     async function getWordRes() {
         let namedData = await getWord();
+        console.log(namedData);
         let likeInfo = await getLikeWordInfo();
+        console.log(likeInfo);
 
         //find correct 
         let searchResults = likeInfo["search_results"];
@@ -66,7 +80,9 @@ function WordEntry(props) {
 
 
         }
+        console.log(likeWordInfo);
         try {
+            // namedData = JSON.parse(namedData);
             return namedData;
         } catch (err) {
             console.log(err);
@@ -186,6 +202,7 @@ function WordEntry(props) {
         let text = ""
         if (!isFetching && !error && data !== null) {
             let settings = JSON.parse(window.localStorage.getItem("settings"));
+            console.log("type in wordentry:", type);
             text =  wordform["text"][type];
             let emoji = wordform["wordclass_emoji"];
 
@@ -274,7 +291,7 @@ function WordEntry(props) {
                         </Grid>
                     </header>
                     
-                    <div>
+                    <div style={{marginLeft: "-0.4em"}}>
                     <LikeWord wordform={likeWordInfo}/>
                     </div>
                     
@@ -325,5 +342,4 @@ function WordEntry(props) {
         </>
     );
 }
-
 export default WordEntry;
