@@ -1,6 +1,13 @@
 # morphodict-frontend
 The React front-end for the newly refactored Morphodict applications.
 
+## Current status of this repository
+This repository is part of an exploratory project to separate concerns
+in the morphodict monorepo into multiple separate domains.  This
+implementation is not feature-complete and is not currently used in
+any of the community-facing dictionary implementations maintained by
+altlab.  For the current implementation, visit the [morphodict](https://github.com/UAlbertaALTLab/morphodict/) repository.
+
 ## Working locally
 Clone this repo:
 ```shell
